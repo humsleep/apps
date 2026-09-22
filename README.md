@@ -19,6 +19,7 @@ boheme(GitHub `humsleep`)가 만든 앱들의 **공용** 안내 사이트. GitHu
 |---|---|---|---|
 | `mossol` | 모쏠 키우기 : 연애 시뮬레이션 게임 (iOS, com.hyukahn.mossol) | AdMob | Firebase Analytics |
 | `fcscope` | FC Scope (iOS + 웹, xyz.fcscope.app) — **외부 링크**: 방침·안내는 `www.fcscope.xyz` 에 있음, 이 저장소엔 아이콘(`assets/icons/fcscope.png`)만 | AdMob | 자체 익명 통계(Supabase `app_events`) |
+| `ribatto` | Ribatto: Rally Clips (iOS, com.ribatto.app) — 옛 주소 `humsleep.github.io/Ribatto/privacy.html` 은 여기로 리디렉트 | AdMob + UMP | 없음 |
 
 ## 새 앱 추가
 
