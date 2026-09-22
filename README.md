@@ -18,6 +18,7 @@ boheme(GitHub `humsleep`)가 만든 앱들의 **공용** 안내 사이트. GitHu
 | app-id | 앱 | 광고 | 분석 |
 |---|---|---|---|
 | `mossol` | 모쏠 키우기 : 연애 시뮬레이션 게임 (iOS, com.hyukahn.mossol) | AdMob | Firebase Analytics |
+| `fcscope` | FC Scope (iOS + 웹, xyz.fcscope.app) — **외부 링크**: 방침·안내는 `www.fcscope.xyz` 에 있음, 이 저장소엔 아이콘(`assets/icons/fcscope.png`)만 | AdMob | 자체 익명 통계(Supabase `app_events`) |
 
 ## 새 앱 추가
 
