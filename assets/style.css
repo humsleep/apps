@@ -1,0 +1,24 @@
+/* 모든 앱 페이지가 같이 쓰는 스타일. 앱별 강조색은 페이지 <body style="--accent:#...">로 바꾼다. */
+:root { --bg:#fbfafa; --fg:#221e1f; --muted:#6a6264; --accent:#c2295a; --line:#e7e2e3; --card:#ffffff; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg:#161415; --fg:#f1eced; --muted:#b1a8aa; --line:#342f30; --card:#1f1c1d; }
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg);
+  font:16px/1.7 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+  word-break:keep-all; overflow-wrap:anywhere; }
+main { max-width:720px; margin:0 auto; padding:32px 16px 64px; }
+header.site { max-width:720px; margin:0 auto; padding:16px 16px 0; font-size:14px; }
+header.site a { color:var(--muted); text-decoration:none; }
+h1 { font-size:24px; line-height:1.35; margin:0 0 4px; }
+h2 { font-size:18px; margin:32px 0 8px; padding-top:16px; border-top:1px solid var(--line); }
+a { color:var(--accent); }
+.muted { color:var(--muted); font-size:14px; }
+table { width:100%; border-collapse:collapse; font-size:14px; display:block; overflow-x:auto; }
+th, td { border:1px solid var(--line); padding:8px; text-align:left; vertical-align:top; }
+.apps { list-style:none; padding:0; display:grid; gap:12px; }
+.apps li { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; display:flex; gap:14px; align-items:center; }
+.apps img { width:56px; height:56px; border-radius:13px; flex:none; }
+.apps .links { font-size:14px; }
+.apps .links a { margin-right:12px; }
+footer { max-width:720px; margin:0 auto; padding:0 16px 32px; font-size:13px; color:var(--muted); }

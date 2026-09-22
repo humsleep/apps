@@ -1,0 +1,4 @@
+# humsleep 개발자 계정의 모든 앱이 공용으로 쓰는 파일(앱마다 따로 만들지 않는다).
+# AdMob 가입 후 "앱 → app-ads.txt 설정"에 나오는 한 줄로 아래 자리를 바꾼다.
+# 예: google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
