@@ -20,6 +20,7 @@ boheme(GitHub `humsleep`)가 만든 앱들의 **공용** 안내 사이트. GitHu
 | `mossol` | 모쏠 탈출기 : 100일 연애 시뮬레이션 (iOS, com.hyukahn.mossol) | AdMob | Firebase Analytics |
 | `fcscope` | FC Scope (iOS + 웹, xyz.fcscope.app) — **외부 링크**: 방침·안내는 `www.fcscope.xyz` 에 있음, 이 저장소엔 아이콘(`assets/icons/fcscope.png`)만 | AdMob | 자체 익명 통계(Supabase `app_events`) |
 | `ribatto` | Ribatto: Rally Clips (iOS, com.ribatto.app) — 옛 주소 `humsleep.github.io/Ribatto/privacy.html` 은 여기로 리디렉트 | AdMob + UMP | 없음 |
+| `duskwick` | Duskwick: Lantern Logic Puzzle (iOS, com.humsleep.duskwick) — 영어+한국어 페이지. `duskwick/<n>/`(1–400)은 공유 링크 `…/apps/duskwick/<n>?ct=share`의 착륙 페이지로 `_scripts/duskwick-days.mjs`가 만든다(손으로 고치지 않는다). App Store 주소는 `duskwick/config.js` 한 곳. 유니버설 링크용 `.well-known/apple-app-site-association`은 **이 저장소가 아니라** `humsleep/humsleep.github.io` 루트에 있다 | AdMob + UMP (ATT) | 없음 |
 
 ## 새 앱 추가
 

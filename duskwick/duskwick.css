@@ -1,0 +1,8 @@
+/* Duskwick pages: amber accent. #9A5A00 is 5.25:1 on the light background; the site's dark mode
+   uses #FFC864 (11.9:1 on #161415). Loaded after ../assets/style.css, so :root wins. */
+:root { --accent:#9A5A00; --on:#fff; }
+@media (prefers-color-scheme: dark) { :root { --accent:#FFC864; --on:#161415; } }
+.icon { border-radius:16px; }
+.btn { display:inline-block; margin:4px 8px 4px 0; padding:12px 18px; border-radius:12px; background:var(--accent); color:var(--on); font-weight:600; text-decoration:none; }
+.btn.alt { background:transparent; color:var(--accent); border:2px solid var(--accent); padding:10px 16px; }
+.btn[aria-disabled="true"] { background:transparent; color:var(--muted); border:2px dashed var(--line); padding:10px 16px; }
