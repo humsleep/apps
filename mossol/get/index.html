@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>모쏠 탈출기 — 모쏠에서 연애의 신까지, 100일 인생역전</title>
+<meta name="description" content="&quot;너는 진짜 좋은 친구야&quot; 그 고백, 100일 전으로 돌아가 다시 한다. 톡 연애 시뮬레이션 · 엔딩 67개 · 미니게임 20종">
+<!-- 카톡·인스타 링크 미리보기. 크롤러는 자바스크립트를 돌리지 않으므로 이 태그만 읽는다(이동은 사람에게만 일어난다). -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="모쏠 탈출기">
+<meta property="og:url" content="https://humsleep.github.io/apps/mossol/get/">
+<meta property="og:title" content="모쏠 탈출기 — 모쏠에서 연애의 신까지, 100일 인생역전">
+<meta property="og:description" content="&quot;너는 진짜 좋은 친구야&quot; 그 고백, 100일 전으로 돌아가 다시 한다. 톡 연애 시뮬레이션">
+<meta property="og:image" content="https://humsleep.github.io/apps/mossol/get/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root { --bg:#FFFAF9; --fg:#1B1030; --muted:#6B5E73; --brand:#C2295A; --on-brand:#fff; --card:#fff; --line:#EADFE3; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1B1030; --fg:#F6EEF2; --muted:#B9A9C2; --brand:#FF7A9C; --on-brand:#1B1030; --card:#2A1A40; --line:#3A2952; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif; word-break:keep-all; }
+  main { max-width:440px; margin:0 auto; padding:40px 16px; text-align:center; }
+  img.og { width:100%; height:auto; border-radius:16px; border:1px solid var(--line); }
+  h1 { font-size:28px; margin:24px 0 4px; }
+  p { margin:0 0 8px; color:var(--muted); }
+  .hook { color:var(--fg); font-weight:600; margin-top:16px; }
+  .btns { display:grid; gap:12px; margin-top:24px; }
+  a.btn { display:block; min-height:48px; padding:12px 16px; border-radius:12px; background:var(--brand); color:var(--on-brand); font-weight:700; text-decoration:none; }
+  a.btn.alt { background:var(--card); color:var(--fg); border:1px solid var(--line); }
+  a.btn[hidden] { display:none; }
+  small { display:block; margin-top:24px; color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <img class="og" src="og.png" width="1200" height="630" alt="모쏠 탈출기 캐릭터 12명">
+  <h1>모쏠 탈출기</h1>
+  <p>모쏠에서 연애의 신까지, 100일 인생역전</p>
+  <p class="hook">"너는 진짜 좋은 친구야"<br>그 고백, 100일 전으로 돌아가 다시 한다.</p>
+  <div class="btns">
+    <a class="btn" id="play" href="https://play.google.com/store/apps/details?id=com.hyukahn.mossol">Google Play에서 받기</a>
+    <a class="btn" id="notify" href="#" hidden>Android 출시 알림 받기</a>
+    <a class="btn alt" id="ios" href="https://apps.apple.com/app/id6815030883">App Store에서 받기</a>
+  </div>
+  <small id="note">무료 · 로그인 없이 바로 시작 · 게임 중 광고가 있어요</small>
+</main>
+<script>
+// 단일 공유 링크(docs/googleplay/SMART_LINK.md). OS 를 보고 스토어로 보내고, 모르면 이 페이지에 두 버튼을 둔다.
+// 출처(utm_*)는 Play 는 referrer 로, App Store 는 캠페인 토큰 ct 로 넘긴다.
+var PLAY_LIVE = false;   // Play 출시(또는 사전 등록) 날 true 로 바꿔 다시 배포한다. 그 전엔 Android 를 알림 폼으로 보낸다.
+var NOTIFY_URL = '';     // "Android 출시 알림 받기" 구글폼 주소. 비우면 그 버튼은 숨는다.
+var PLAY = 'https://play.google.com/store/apps/details?id=com.hyukahn.mossol';
+var APP_STORE = 'https://apps.apple.com/app/id6815030883';
+
+function utmOf(search) {
+  var out = [];
+  (search || '').replace(/^\?/, '').split('&').forEach(function (kv) {
+    var k = kv.split('=')[0];
+    if (/^utm_[a-z]+$/.test(k) && kv.indexOf('=') > 0) out.push(kv);
+  });
+  return out;
+}
+
+function sourceOf(search) {
+  var m = /(?:^|[?&])utm_source=([^&]*)/.exec(search || '');
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
+function links(search) {
+  var utm = utmOf(search);
+  var src = sourceOf(search);
+  return {
+    // Play 는 referrer 한 덩어리를 그대로 Install Referrer 로 넘긴다.
+    play: PLAY + (utm.length ? '&referrer=' + encodeURIComponent(utm.join('&')) : ''),
+    // App Store Connect 앱 분석의 캠페인(ct, 40자 이하).
+    ios: APP_STORE + (src ? '?ct=' + encodeURIComponent(src.slice(0, 40)) : '')
+  };
+}
+
+// 'android' | 'ios' | ''. 아이패드 사파리는 맥으로 자신을 소개하므로 터치 지점으로 가른다.
+function osOf(ua, touchPoints) {
+  if (/android/i.test(ua)) return 'android';
+  if (/iphone|ipad|ipod/i.test(ua)) return 'ios';
+  if (/macintosh/i.test(ua) && touchPoints > 1) return 'ios';
+  return '';
+}
+
+if (typeof document !== 'undefined') {
+  var l = links(location.search);
+  document.getElementById('play').href = l.play;
+  document.getElementById('ios').href = l.ios;
+  var notify = document.getElementById('notify');
+  if (!PLAY_LIVE) {
+    document.getElementById('play').hidden = true;
+    if (NOTIFY_URL) { notify.href = NOTIFY_URL; notify.hidden = false; }
+    else document.getElementById('note').textContent = 'Android는 곧 출시돼요 · iPhone은 지금 받을 수 있어요';
+  }
+  var os = osOf(navigator.userAgent, navigator.maxTouchPoints || 0);
+  if (os === 'ios') location.replace(l.ios);
+  else if (os === 'android' && PLAY_LIVE) location.replace(l.play);
+}
+
+if (typeof module !== 'undefined') module.exports = { links: links, osOf: osOf };
+</script>
+</body>
+</html>
