@@ -4,6 +4,8 @@
 // The App Store address is NOT here: it lives in duskwick/config.js (APP_STORE_URL). Rerun this script
 // after setting it so the pages get the Smart App Banner (Safari reads that meta tag only from the HTML).
 // Hand-written pages are untouched; only numbered folders are (re)written.
+// The puzzle itself is play/play.js (built in puzzle-lab: apps/client `npm run build:web`); it replaces
+// the #dw-play fallback text with today's playable board. Without JavaScript the page stays as before.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -37,8 +39,10 @@ ${appId ? `<meta name="apple-itunes-app" content="app-id=${appId}, app-argument=
 <body>
 <main>
 <img class="icon" src="../icon.png" alt="" width="72" height="72">
+<div id="dw-play" data-n="${n}">
 <h1>Duskwick #${n}</h1>
 <p>A calm lantern puzzle, new every day. Everyone gets the same board. Light every tile and never let two lanterns see each other.</p>
+</div>
 <p><a class="btn" href="duskwick://daily/${n}">Open in Duskwick</a>
 <a class="btn" data-store="Download on the App Store" aria-disabled="true">Coming soon to the App Store</a></p>
 <p class="muted">"Open in Duskwick" needs the app installed; it opens today's daily. 앱이 설치되어 있으면 오늘의 데일리가 열립니다.</p>
@@ -46,6 +50,7 @@ ${appId ? `<meta name="apple-itunes-app" content="app-id=${appId}, app-argument=
 </main>
 <script src="../config.js"></script>
 <script src="../app-store.js"></script>
+<script type="module" src="../play/play.js"></script>
 </body>
 </html>
 `;
@@ -57,5 +62,5 @@ for (let n = 1; n <= N; n++) {
 // self-check: the last page is complete and the first one points at its own number
 const a = readFileSync(`${root}1/index.html`, "utf8");
 const z = readFileSync(`${root}${N}/index.html`, "utf8");
-if (!a.includes("duskwick://daily/1\"") || !z.includes(`Duskwick #${N}`) || /undefined|\$\{/.test(a + z)) throw new Error("self-check failed");
+if (!a.includes("duskwick://daily/1\"") || !a.includes('id="dw-play" data-n="1"') || !z.includes("../play/play.js") || !z.includes(`Duskwick #${N}`) || /undefined|\$\{/.test(a + z)) throw new Error("self-check failed");
 console.log(`wrote ${N} pages${appId ? ` with Smart App Banner id ${appId}` : " (no App Store address yet: no banner)"}`);
