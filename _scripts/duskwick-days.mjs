@@ -5,7 +5,8 @@
 // after setting it so the pages get the Smart App Banner (Safari reads that meta tag only from the HTML).
 // Hand-written pages are untouched; only numbered folders are (re)written.
 // The puzzle itself is play/play.js (built in puzzle-lab: apps/client `npm run build:web`); it replaces
-// the #dw-play fallback text with today's playable board. Without JavaScript the page stays as before.
+// the #dw-play fallback (text + app / store buttons) with today's playable board; its done panel has its own,
+// localized store button. Without JavaScript the page stays as before.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
@@ -42,10 +43,10 @@ ${appId ? `<meta name="apple-itunes-app" content="app-id=${appId}, app-argument=
 <div id="dw-play" data-n="${n}">
 <h1>Duskwick #${n}</h1>
 <p>A calm lantern puzzle, new every day. Everyone gets the same board. Light every tile and never let two lanterns see each other.</p>
-</div>
 <p><a class="btn" href="duskwick://daily/${n}">Open in Duskwick</a>
 <a class="btn" data-store="Download on the App Store" aria-disabled="true">Coming soon to the App Store</a></p>
 <p class="muted">"Open in Duskwick" needs the app installed; it opens today's daily. 앱이 설치되어 있으면 오늘의 데일리가 열립니다.</p>
+</div>
 <p class="muted"><a href="../">About &amp; support</a> · <a href="../privacy/">Privacy</a></p>
 </main>
 <script src="../config.js"></script>
