@@ -17,6 +17,7 @@ boheme(GitHub `humsleep`)가 만든 앱들의 **공용** 안내 사이트. GitHu
 
 | app-id | 앱 | 광고 | 분석 |
 |---|---|---|---|
+| `teumteum` | 틈틈 - 초등 하교·학원 픽업 캘린더 (iOS·Android, com.humsleep.familycalendar) — 카드 링크·캘린더 구독·초대·삭제 요청 페이지는 서버 기능이 있어 앱 저장소(`family_calndar/site`, Cloudflare Workers `oneulnuga.oneulnuga.workers.dev`)에 있고, 옛 방침 주소 `…workers.dev/privacy/`는 여기로 리디렉트 | 쿠팡 파트너스 배너(웹뷰, 광고 식별자 없음) | 자체 주 단위 사용 기록(Supabase) |
 | `mossol` | 모쏠 탈출기 : 100일 연애 시뮬레이션 (iOS, com.hyukahn.mossol) | AdMob | Firebase Analytics |
 | `fcscope` | FC Scope (iOS + 웹, xyz.fcscope.app) — **외부 링크**: 방침·안내는 `www.fcscope.xyz` 에 있음, 이 저장소엔 아이콘(`assets/icons/fcscope.png`)만 | AdMob | 자체 익명 통계(Supabase `app_events`) |
 | `ribatto` | Ribatto: Rally Clips (iOS, com.ribatto.app) — 옛 주소 `humsleep.github.io/Ribatto/privacy.html` 은 여기로 리디렉트 | AdMob + UMP | 없음 |
