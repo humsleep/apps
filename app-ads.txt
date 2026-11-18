@@ -1,4 +1,11 @@
 # humsleep 개발자 계정의 모든 앱이 공용으로 쓰는 파일(앱마다 따로 만들지 않는다).
-# AdMob 가입 후 "앱 → app-ads.txt 설정"에 나오는 한 줄로 아래 자리를 바꾼다.
-# 예: google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
-google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+#
+# 주의: 크롤러가 읽는 곳은 이 경로가 아니다.
+# IAB 규격상 app-ads.txt는 **도메인 루트**에서만 읽힌다 — https://humsleep.github.io/app-ads.txt
+# (github.io는 공개 접미사라 humsleep.github.io가 루트 도메인이다).
+# 이 저장소는 /apps/ 아래로 서비스되므로 여기 둔 사본은 크롤링되지 않는다.
+# 실제로 쓰이는 사본은 humsleep/humsleep.github.io 저장소의 루트에 있다. 둘을 같이 고칠 것.
+#
+# App Store Connect의 "마케팅 URL"(개발자 웹사이트)은 경로 없이 https://humsleep.github.io 여야
+# AdMob이 이 파일을 찾는다.
+google.com, pub-4073994600346533, DIRECT, f08c47fec0942fa0
