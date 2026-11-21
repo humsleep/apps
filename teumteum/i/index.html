@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<!-- 카톡 미리보기에는 일반 문구만(초대 코드는 주소의 # 뒤라 서버·미리보기로 가지 않는다) -->
+<meta property="og:title" content="틈틈 가족 초대">
+<meta property="og:description" content="아이 하교 뒤 빈 시간을 같이 보는 가족 캘린더예요.">
+<title>틈틈 가족 초대</title>
+<style>
+  /* A2 초대 링크(v5 11/6). 카드·구독 안내 페이지와 같은 색·글씨 */
+  :root {
+    --bg: #F1F3F6; --card: #fff; --ink: #1B2130; --muted: #5B6475;
+    --primary: #4554D9; --on-primary: #fff; --ok: #1F7A4D;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10131A; --card: #1B2030; --ink: #EEF0F5; --muted: #A3ABBC;
+      --primary: #8D97F2; --on-primary: #10131A; --ok: #6FD3A0;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 18px/1.5 Pretendard, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  main { max-width: 560px; margin: 0 auto; padding: 24px 16px calc(32px + env(safe-area-inset-bottom)); }
+  h1 { font-size: 26px; line-height: 1.3; margin: 8px 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; }
+  .box { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+  .box h2 { font-size: 19px; margin: 0 0 6px; }
+  .box p { color: var(--muted); margin: 0 0 12px; font-size: 16px; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; width: 100%; min-height: 52px;
+    border-radius: 12px; border: 0; font: inherit; font-weight: 700; cursor: pointer; text-decoration: none;
+    background: var(--primary); color: var(--on-primary);
+  }
+  .ok { color: var(--ok); font-size: 16px; min-height: 24px; margin: 8px 0 0; }
+  .code { font: 700 34px/1.2 ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: 4px; text-align: center;
+    padding: 14px 0; margin: 0 0 12px; border-radius: 12px; background: var(--bg); user-select: all; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <h1>틈틈 가족 초대</h1>
+  <p class="sub">아이 하교 뒤 비는 시간을 가족이 같이 보고, 누가 맡을지 나눠요.</p>
+
+  <section class="box">
+    <h2>1. 앱 받기</h2>
+    <p id="store-note">App Store나 Play 스토어에서 "틈틈"을 검색해 설치해 주세요.</p>
+    <a id="store" class="btn" hidden>앱 받기</a>
+  </section>
+
+  <section class="box" id="code-box">
+    <h2>2. 초대 코드 넣기</h2>
+    <p>앱을 열고 로그인한 뒤 "초대받았어요"에 이 코드를 넣으면 같은 가족이 돼요. 7일 동안 한 번만 쓸 수 있어요.</p>
+    <div id="code" class="code"></div>
+    <button id="copy" class="btn" type="button">코드 복사</button>
+    <p id="copied" class="ok" role="status"></p>
+  </section>
+
+  <section class="box" id="no-code" hidden>
+    <h2>초대 코드가 없어요</h2>
+    <p>받은 초대 메시지를 앱의 "초대받았어요"에 그대로 붙여 넣어 주세요.</p>
+  </section>
+</main>
+<script>
+  // 스토어 주소는 앱 레코드가 생기면 채운다(docs/store/listing.md). 비어 있으면 검색 안내만.
+  const STORE = { ios: "", android: "" };
+  const ua = navigator.userAgent;
+  const os = /iPhone|iPad|iPod/.test(ua) ? "ios" : /Android/.test(ua) ? "android" : null;
+  if (os && STORE[os]) {
+    const a = document.getElementById("store");
+    a.href = STORE[os];
+    a.hidden = false;
+    document.getElementById("store-note").textContent =
+      os === "ios" ? "App Store에서 받아 주세요." : "Play 스토어에서 받아 주세요.";
+  }
+
+  // 11/21부터 8자 코드(7K3P-9QXM). 이전 43자 토큰도 받는다
+  const token = (new URLSearchParams(location.hash.slice(1)).get("t") || "").trim();
+  const ok = /^[2-9A-HJ-NP-Z]{4}-[2-9A-HJ-NP-Z]{4}$/.test(token) || /^[A-Za-z0-9_-]{43}$/.test(token);
+  document.getElementById("code").textContent = token;
+  if (!ok) {
+    document.getElementById("code-box").hidden = true;
+    document.getElementById("no-code").hidden = false;
+  }
+  // 앱 붙여넣기는 메시지 안의 43자 코드를 찾는다(lib/features/family/domain/membership.dart)
+  const text = token;
+  document.getElementById("copy").addEventListener("click", async () => {
+    const done = document.getElementById("copied");
+    try {
+      await navigator.clipboard.writeText(text);
+      done.textContent = "복사했어요. 앱에서 붙여 넣어 주세요.";
+    } catch (e) {
+      done.textContent = "복사하지 못했어요. 받은 메시지를 길게 눌러 복사해 주세요.";
+    }
+  });
+</script>
+</body>
+</html>
