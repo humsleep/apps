@@ -363,17 +363,17 @@ function A(e, t, n) {
 }
 //#endregion
 //#region ../../core/rng.ts
-function te(e) {
+function j(e) {
 	if (typeof e == "string") return D(n(e)).slice(0, 16);
 	if (e.length !== 16) throw RangeError("seed must be 16 bytes");
 	return e.slice();
 }
-var j = (e, t) => (e << t | e >>> 32 - t) >>> 0, ne = class e {
+var M = (e, t) => (e << t | e >>> 32 - t) >>> 0, te = class e {
 	constructor(e, t, n, r) {
 		if (A(this, "s0", void 0), A(this, "s1", void 0), A(this, "s2", void 0), A(this, "s3", void 0), this.s0 = e >>> 0, this.s1 = t >>> 0, this.s2 = n >>> 0, this.s3 = r >>> 0, (this.s0 | this.s1 | this.s2 | this.s3) === 0) throw RangeError("xoshiro state must not be all zero");
 	}
 	static from(t) {
-		let n = te(t), r = (e) => (n[e] | n[e + 1] << 8 | n[e + 2] << 16 | n[e + 3] << 24) >>> 0;
+		let n = j(t), r = (e) => (n[e] | n[e + 1] << 8 | n[e + 2] << 16 | n[e + 3] << 24) >>> 0;
 		return new e(r(0), r(4), r(8), r(12));
 	}
 	state() {
@@ -388,8 +388,8 @@ var j = (e, t) => (e << t | e >>> 32 - t) >>> 0, ne = class e {
 		return new e(this.s0, this.s1, this.s2, this.s3);
 	}
 	nextU32() {
-		let e = Math.imul(j(Math.imul(this.s1, 5) >>> 0, 7), 9) >>> 0, t = this.s1 << 9 >>> 0;
-		return this.s2 = (this.s2 ^ this.s0) >>> 0, this.s3 = (this.s3 ^ this.s1) >>> 0, this.s1 = (this.s1 ^ this.s2) >>> 0, this.s0 = (this.s0 ^ this.s3) >>> 0, this.s2 = (this.s2 ^ t) >>> 0, this.s3 = j(this.s3, 11), e;
+		let e = Math.imul(M(Math.imul(this.s1, 5) >>> 0, 7), 9) >>> 0, t = this.s1 << 9 >>> 0;
+		return this.s2 = (this.s2 ^ this.s0) >>> 0, this.s3 = (this.s3 ^ this.s1) >>> 0, this.s1 = (this.s1 ^ this.s2) >>> 0, this.s0 = (this.s0 ^ this.s3) >>> 0, this.s2 = (this.s2 ^ t) >>> 0, this.s3 = M(this.s3, 11), e;
 	}
 	nextInt(e) {
 		if (!Number.isInteger(e) || e < 1 || e > 4294967295) throw RangeError("nextInt: n out of range");
@@ -409,19 +409,19 @@ var j = (e, t) => (e << t | e >>> 32 - t) >>> 0, ne = class e {
 };
 //#endregion
 //#region ../../games/lanterns/solver.ts
-function M(e) {
+function N(e) {
 	return e -= e >>> 1 & 1431655765, e = (e & 858993459) + (e >>> 2 & 858993459), Math.imul(e + (e >>> 4) & 252645135, 16843009) >>> 24;
 }
-function N(e) {
+function P(e) {
 	return 31 - Math.clz32(e & -e);
 }
-var P = [
+var F = [
 	[1, 0],
 	[-1, 0],
 	[0, 1],
 	[0, -1]
 ];
-function re(e) {
+function ne(e) {
 	let t = Array(64).fill(0), n = Array(64).fill(0), r = d(e);
 	for (let r = 0; r < e.h; r++) for (let i = 0; i < e.w; i++) {
 		let s = a(i, r);
@@ -430,7 +430,7 @@ function re(e) {
 			e < 32 ? c = (c | 1 << e) >>> 0 : l = (l | 1 << e - 32) >>> 0;
 		};
 		u(s);
-		for (let [t, n] of P) {
+		for (let [t, n] of F) {
 			let s = i + t, c = r + n;
 			for (; s >= 0 && c >= 0 && s < e.w && c < e.h && !o(e.stones, a(s, c));) u(a(s, c)), s += t, c += n;
 		}
@@ -447,14 +447,14 @@ function re(e) {
 }
 //#endregion
 //#region ../../games/lanterns/generator.ts
-function F(e, t) {
+function I(e, t) {
 	let n = 0, r = 0;
 	for (let i = 30; i >= 0; i--) r = r << 1 | e >>> i & 1, r >= t && (r -= t, n |= 1 << i);
 	return n;
 }
-var ie = /^(\d{4})-(\d{2})-(\d{2})$/;
-function ae(e) {
-	let t = ie.exec(e);
+var re = /^(\d{4})-(\d{2})-(\d{2})$/;
+function ie(e) {
+	let t = re.exec(e);
 	if (!t) throw RangeError(`date must be YYYY-MM-DD, got ${e}`);
 	let n = parseInt(t[1], 10), r = parseInt(t[2], 10), i = parseInt(t[3], 10), a = [
 		31,
@@ -479,8 +479,8 @@ function ae(e) {
 }
 //#endregion
 //#region ../../games/lanterns-pips/solver.ts
-function I(e, t) {
-	let n = t ?? re(e), r = [], i = [], a = [], o = [];
+function L(e, t) {
+	let n = t ?? ne(e), r = [], i = [], a = [], o = [];
 	for (let t = 0; t < 64; t++) {
 		let s = e.clues[t];
 		if (s === 255) continue;
@@ -496,8 +496,8 @@ function I(e, t) {
 		adjHi: o
 	};
 }
-function oe(e, t = 2, n = 2e5, r, a) {
-	let o = r ?? I(e), s = o.r, c = s.floorLo, l = s.floorHi, u = o.clueCell.length, d = 0, f = 0, p = !1, m = !1, h = 0, g = 0, _ = (e, r, i, a, v, y) => {
+function ae(e, t = 2, n = 2e5, r, a) {
+	let o = r ?? L(e), s = o.r, c = s.floorLo, l = s.floorHi, u = o.clueCell.length, d = 0, f = 0, p = !1, m = !1, h = 0, g = 0, _ = (e, r, i, a, v, y) => {
 		if (++d > n) {
 			p = !0, m = !0;
 			return;
@@ -506,17 +506,17 @@ function oe(e, t = 2, n = 2e5, r, a) {
 		for (;;) {
 			let e = (c & ~S & ~w) >>> 0, t = (l & ~C & ~T) >>> 0, n = !1;
 			for (let r = 0; r < u && !n; r++) {
-				let i = o.clueVal[r], a = M((o.adjLo[r] & b) >>> 0) + M((o.adjHi[r] & x) >>> 0), c = (o.adjLo[r] & e) >>> 0, l = (o.adjHi[r] & t) >>> 0, u = M(c) + M(l);
+				let i = o.clueVal[r], a = N((o.adjLo[r] & b) >>> 0) + N((o.adjHi[r] & x) >>> 0), c = (o.adjLo[r] & e) >>> 0, l = (o.adjHi[r] & t) >>> 0, u = N(c) + N(l);
 				if (a > i || a + u < i) return;
 				if (u !== 0) {
 					if (a === i) w = (w | c) >>> 0, T = (T | l) >>> 0, n = !0;
 					else if (a + u === i) {
 						for (let e = c; e !== 0; e = (e & e - 1) >>> 0) {
-							let t = N(e);
+							let t = P(e);
 							S |= s.lo[t], C |= s.hi[t];
 						}
 						for (let e = l; e !== 0; e = (e & e - 1) >>> 0) {
-							let t = N(e) + 32;
+							let t = P(e) + 32;
 							S |= s.lo[t], C |= s.hi[t];
 						}
 						S >>>= 0, C >>>= 0, b = (b | c) >>> 0, x = (x | l) >>> 0, n = !0;
@@ -528,16 +528,16 @@ function oe(e, t = 2, n = 2e5, r, a) {
 			if ((r | i) === 0) break;
 			E = -1, D = 99;
 			for (let n = r; n !== 0 && D > 1; n = (n & n - 1) >>> 0) {
-				let r = N(n), i = M((s.lo[r] & e) >>> 0) + M((s.hi[r] & t) >>> 0);
+				let r = P(n), i = N((s.lo[r] & e) >>> 0) + N((s.hi[r] & t) >>> 0);
 				i < D && (E = r, D = i);
 			}
 			for (let n = i; n !== 0 && D > 1; n = (n & n - 1) >>> 0) {
-				let r = N(n) + 32, i = M((s.lo[r] & e) >>> 0) + M((s.hi[r] & t) >>> 0);
+				let r = P(n) + 32, i = N((s.lo[r] & e) >>> 0) + N((s.hi[r] & t) >>> 0);
 				i < D && (E = r, D = i);
 			}
 			if (D === 0) return;
 			if (D === 1) {
-				let n = (s.lo[E] & e) >>> 0, r = n === 0 ? N((s.hi[E] & t) >>> 0) + 32 : N(n);
+				let n = (s.lo[E] & e) >>> 0, r = n === 0 ? P((s.hi[E] & t) >>> 0) + 32 : P(n);
 				r < 32 ? b = (b | 1 << r) >>> 0 : x = (x | 1 << r - 32) >>> 0, S = (S | s.lo[r]) >>> 0, C = (C | s.hi[r]) >>> 0;
 			} else break;
 		}
@@ -545,13 +545,13 @@ function oe(e, t = 2, n = 2e5, r, a) {
 			f === 0 && (h = b, g = x), f++, f >= t && (p = !0);
 			return;
 		}
-		let O = (c & ~S & ~w) >>> 0, ee = (l & ~C & ~T) >>> 0, k = w, A = T, te = (s.lo[E] & O) >>> 0, j = (s.hi[E] & ee) >>> 0;
-		for (let e = te; e !== 0 && !p; e = (e & e - 1) >>> 0) {
-			let t = N(e);
+		let O = (c & ~S & ~w) >>> 0, ee = (l & ~C & ~T) >>> 0, k = w, A = T, j = (s.lo[E] & O) >>> 0, M = (s.hi[E] & ee) >>> 0;
+		for (let e = j; e !== 0 && !p; e = (e & e - 1) >>> 0) {
+			let t = P(e);
 			_((b | 1 << t) >>> 0, x, (S | s.lo[t]) >>> 0, (C | s.hi[t]) >>> 0, k, A), k = (k | 1 << t) >>> 0;
 		}
-		for (let e = j; e !== 0 && !p; e = (e & e - 1) >>> 0) {
-			let t = N(e) + 32;
+		for (let e = M; e !== 0 && !p; e = (e & e - 1) >>> 0) {
+			let t = P(e) + 32;
 			_(b, (x | 1 << t - 32) >>> 0, (S | s.lo[t]) >>> 0, (C | s.hi[t]) >>> 0, k, A), A = (A | 1 << t - 32) >>> 0;
 		}
 	};
@@ -559,7 +559,7 @@ function oe(e, t = 2, n = 2e5, r, a) {
 	else {
 		let e = 0, t = 0, n = (a.lo & ~c) === 0 && (a.hi & ~l) === 0;
 		for (let r = 0; r < 2 && n; r++) for (let i = r === 0 ? a.lo >>> 0 : a.hi >>> 0; i !== 0; i = (i & i - 1) >>> 0) {
-			let o = N(i) + (r << 5);
+			let o = P(i) + (r << 5);
 			(s.lo[o] & a.lo & ~(o < 32 ? 1 << o : 0)) >>> 0 | (s.hi[o] & a.hi & ~(o >= 32 ? 1 << o - 32 : 0)) >>> 0 && (n = !1), e = (e | s.lo[o]) >>> 0, t = (t | s.hi[o]) >>> 0;
 		}
 		n && _(a.lo >>> 0, a.hi >>> 0, e, t, 0, 0);
@@ -576,74 +576,74 @@ function oe(e, t = 2, n = 2e5, r, a) {
 }
 //#endregion
 //#region ../../games/lanterns-pips/deduce.ts
-var se = () => ({
+var R = () => ({
 	pLo: 0,
 	pHi: 0,
 	lLo: 0,
 	lHi: 0,
 	mLo: 0,
 	mHi: 0
-}), ce = (e) => ({ ...e });
-function L(e, t) {
+}), oe = (e) => ({ ...e });
+function z(e, t) {
 	let n = [];
-	for (let t = e >>> 0; t !== 0; t = (t & t - 1) >>> 0) n.push(N(t));
-	for (let e = t >>> 0; e !== 0; e = (e & e - 1) >>> 0) n.push(N(e) + 32);
+	for (let t = e >>> 0; t !== 0; t = (t & t - 1) >>> 0) n.push(P(t));
+	for (let e = t >>> 0; e !== 0; e = (e & e - 1) >>> 0) n.push(P(e) + 32);
 	return n;
 }
-function R(e, t, n) {
+function B(e, t, n) {
 	n < 32 ? t.pLo = (t.pLo | 1 << n) >>> 0 : t.pHi = (t.pHi | 1 << n - 32) >>> 0, t.lLo = (t.lLo | e.r.lo[n]) >>> 0, t.lHi = (t.lHi | e.r.hi[n]) >>> 0;
 }
-function z(e, t) {
+function se(e, t) {
 	t < 32 ? e.mLo = (e.mLo | 1 << t) >>> 0 : e.mHi = (e.mHi | 1 << t - 32) >>> 0;
 }
-function le(e, t, n) {
-	for (let r of n.place) R(e, t, r);
-	for (let e of n.mark) z(t, e);
+function ce(e, t, n) {
+	for (let r of n.place) B(e, t, r);
+	for (let e of n.mark) se(t, e);
 }
-function ue(e, t, n, r, i, a, o) {
+function le(e, t, n, r, i, a, o) {
 	let s = e.r, c = (s.floorLo & ~r & ~a) >>> 0, l = (s.floorHi & ~i & ~o) >>> 0;
 	for (let r = 0; r < e.clueCell.length; r++) {
-		let i = e.clueVal[r], a = M((e.adjLo[r] & t) >>> 0) + M((e.adjHi[r] & n) >>> 0), o = M((e.adjLo[r] & c) >>> 0) + M((e.adjHi[r] & l) >>> 0);
+		let i = e.clueVal[r], a = N((e.adjLo[r] & t) >>> 0) + N((e.adjHi[r] & n) >>> 0), o = N((e.adjLo[r] & c) >>> 0) + N((e.adjHi[r] & l) >>> 0);
 		if (a > i || a + o < i) return !0;
 	}
 	for (let e = (s.floorLo & ~r) >>> 0; e !== 0; e = (e & e - 1) >>> 0) {
-		let t = N(e);
+		let t = P(e);
 		if ((s.lo[t] & c | s.hi[t] & l) === 0) return !0;
 	}
 	for (let e = (s.floorHi & ~i) >>> 0; e !== 0; e = (e & e - 1) >>> 0) {
-		let t = N(e) + 32;
+		let t = P(e) + 32;
 		if ((s.lo[t] & c | s.hi[t] & l) === 0) return !0;
 	}
 	return !1;
 }
-function de(e, t) {
-	return ue(e, t.pLo, t.pHi, t.lLo, t.lHi, t.mLo, t.mHi);
+function ue(e, t) {
+	return le(e, t.pLo, t.pHi, t.lLo, t.lHi, t.mLo, t.mHi);
 }
-function fe(e, t) {
+function de(e, t) {
 	return (e.r.floorLo & ~t.lLo | e.r.floorHi & ~t.lHi) === 0;
 }
-function pe(e, t) {
+function fe(e, t) {
 	let n = [], r = (e.r.floorLo & ~t.lLo & ~t.mLo) >>> 0, i = (e.r.floorHi & ~t.lHi & ~t.mHi) >>> 0;
 	for (let a = 0; a < e.clueCell.length; a++) {
-		let o = e.clueVal[a], s = M((e.adjLo[a] & t.pLo) >>> 0) + M((e.adjHi[a] & t.pHi) >>> 0), c = (e.adjLo[a] & r) >>> 0, l = (e.adjHi[a] & i) >>> 0, u = M(c) + M(l);
+		let o = e.clueVal[a], s = N((e.adjLo[a] & t.pLo) >>> 0) + N((e.adjHi[a] & t.pHi) >>> 0), c = (e.adjLo[a] & r) >>> 0, l = (e.adjHi[a] & i) >>> 0, u = N(c) + N(l);
 		u !== 0 && (s === o ? n.push({
 			tier: 1,
 			place: [],
-			mark: L(c, l)
+			mark: z(c, l)
 		}) : s + u === o && n.push({
 			tier: 1,
-			place: L(c, l),
+			place: z(c, l),
 			mark: []
 		}));
 	}
 	return n;
 }
-function me(e, t) {
+function pe(e, t) {
 	let n = e.r, r = [], i = [], a = (n.floorLo & ~t.lLo & ~t.mLo) >>> 0, o = (n.floorHi & ~t.lHi & ~t.mHi) >>> 0;
-	for (let e of L((n.floorLo & ~t.lLo) >>> 0, (n.floorHi & ~t.lHi) >>> 0)) {
+	for (let e of z((n.floorLo & ~t.lLo) >>> 0, (n.floorHi & ~t.lHi) >>> 0)) {
 		let t = (n.lo[e] & a) >>> 0, s = (n.hi[e] & o) >>> 0;
-		if (M(t) + M(s) !== 1) continue;
-		let c = t === 0 ? N(s) + 32 : N(t);
+		if (N(t) + N(s) !== 1) continue;
+		let c = t === 0 ? P(s) + 32 : P(t);
 		i.includes(c) || (i.push(c), r.push({
 			tier: 2,
 			place: [c],
@@ -652,39 +652,39 @@ function me(e, t) {
 	}
 	return r;
 }
-function he(e, t, n) {
-	return ue(e, n < 32 ? (t.pLo | 1 << n) >>> 0 : t.pLo, n < 32 ? t.pHi : (t.pHi | 1 << n - 32) >>> 0, (t.lLo | e.r.lo[n]) >>> 0, (t.lHi | e.r.hi[n]) >>> 0, t.mLo, t.mHi);
+function me(e, t, n) {
+	return le(e, n < 32 ? (t.pLo | 1 << n) >>> 0 : t.pLo, n < 32 ? t.pHi : (t.pHi | 1 << n - 32) >>> 0, (t.lLo | e.r.lo[n]) >>> 0, (t.lHi | e.r.hi[n]) >>> 0, t.mLo, t.mHi);
+}
+function he(e, t) {
+	return z((e.r.floorLo & ~t.lLo & ~t.mLo) >>> 0, (e.r.floorHi & ~t.lHi & ~t.mHi) >>> 0);
 }
 function ge(e, t) {
-	return L((e.r.floorLo & ~t.lLo & ~t.mLo) >>> 0, (e.r.floorHi & ~t.lHi & ~t.mHi) >>> 0);
-}
-function _e(e, t) {
 	let n = (e.r.floorLo & ~t.lLo & ~t.mLo) >>> 0, r = (e.r.floorHi & ~t.lHi & ~t.mHi) >>> 0;
 	for (let i = 0; i < e.clueCell.length; i++) {
-		let a = e.clueVal[i], o = (e.adjLo[i] & n) >>> 0, s = (e.adjHi[i] & r) >>> 0, c = M(o) + M(s);
+		let a = e.clueVal[i], o = (e.adjLo[i] & n) >>> 0, s = (e.adjHi[i] & r) >>> 0, c = N(o) + N(s);
 		if (c === 0) continue;
-		let l = M((e.adjLo[i] & t.pLo) >>> 0) + M((e.adjHi[i] & t.pHi) >>> 0);
+		let l = N((e.adjLo[i] & t.pLo) >>> 0) + N((e.adjHi[i] & t.pHi) >>> 0);
 		if (l === a) return t.mLo = (t.mLo | o) >>> 0, t.mHi = (t.mHi | s) >>> 0, i;
 		if (l + c === a) {
-			for (let n = o; n !== 0; n = (n & n - 1) >>> 0) R(e, t, N(n));
-			for (let n = s; n !== 0; n = (n & n - 1) >>> 0) R(e, t, N(n) + 32);
+			for (let n = o; n !== 0; n = (n & n - 1) >>> 0) B(e, t, P(n));
+			for (let n = s; n !== 0; n = (n & n - 1) >>> 0) B(e, t, P(n) + 32);
 			return i;
 		}
 	}
 	return -1;
 }
-function ve(e, t) {
+function _e(e, t) {
 	let n = e.r, r = (n.floorLo & ~t.lLo & ~t.mLo) >>> 0, i = (n.floorHi & ~t.lHi & ~t.mHi) >>> 0;
 	for (let e = 0; e < 2; e++) for (let a = e === 0 ? (n.floorLo & ~t.lLo) >>> 0 : (n.floorHi & ~t.lHi) >>> 0; a !== 0; a = (a & a - 1) >>> 0) {
-		let t = N(a) + (e << 5), o = (n.lo[t] & r) >>> 0, s = (n.hi[t] & i) >>> 0;
-		if (M(o) + M(s) === 1) return t * 64 + (o === 0 ? N(s) + 32 : N(o));
+		let t = P(a) + (e << 5), o = (n.lo[t] & r) >>> 0, s = (n.hi[t] & i) >>> 0;
+		if (N(o) + N(s) === 1) return t * 64 + (o === 0 ? P(s) + 32 : P(o));
 	}
 	return -1;
 }
-function B(e, t = 3, n) {
-	let r = n ?? I(e), i = se(), a = 0, o = 0, s = 0, c = 0, l = 0, u = 0;
-	for (let e = 0; e < 512 && !de(r, i); e++) {
-		if (fe(r, i)) return {
+function ve(e, t = 3, n) {
+	let r = n ?? L(e), i = R(), a = 0, o = 0, s = 0, c = 0, l = 0, u = 0;
+	for (let e = 0; e < 512 && !ue(r, i); e++) {
+		if (de(r, i)) return {
 			solved: !0,
 			t1: a,
 			t2: o,
@@ -692,26 +692,26 @@ function B(e, t = 3, n) {
 			maxTierUsed: s > 0 ? 3 : o > 0 ? 2 : +(a > 0),
 			t2zero: c
 		};
-		let e = i.mLo, n = i.mHi, d = _e(r, i);
+		let e = i.mLo, n = i.mHi, d = ge(r, i);
 		if (d >= 0) {
 			r.clueVal[d] === 0 && (l = (l | i.mLo & ~e) >>> 0, u = (u | i.mHi & ~n) >>> 0), a++;
 			continue;
 		}
 		if (t < 2) break;
-		let f = ve(r, i);
+		let f = _e(r, i);
 		if (f >= 0) {
 			let e = f >> 6, t = f & 63;
-			(r.r.lo[e] & ~i.lLo & l & ~(t < 32 ? 1 << t : 0)) >>> 0 | (r.r.hi[e] & ~i.lHi & u & ~(t >= 32 ? 1 << t - 32 : 0)) >>> 0 && c++, R(r, i, t), o++;
+			(r.r.lo[e] & ~i.lLo & l & ~(t < 32 ? 1 << t : 0)) >>> 0 | (r.r.hi[e] & ~i.lHi & u & ~(t >= 32 ? 1 << t - 32 : 0)) >>> 0 && c++, B(r, i, t), o++;
 			continue;
 		}
 		if (t < 3) break;
 		let p = -1;
-		for (let e of ge(r, i)) if (he(r, i, e)) {
+		for (let e of he(r, i)) if (me(r, i, e)) {
 			p = e;
 			break;
 		}
 		if (p < 0) break;
-		z(i, p), s++;
+		se(i, p), s++;
 	}
 	return {
 		solved: !1,
@@ -735,8 +735,8 @@ function be(e) {
 	return e.placements * t.place + e.removals * t.remove + e.deadEnds * t.deadEnd + e.t2 * t.t2 + e.t3 * t.t3 + e.trials * t.trial;
 }
 function xe(e, t = {}, n) {
-	let r = n ?? I(e), i = r.r, a = t.rng ?? null, o = t.lapsePermille ?? 150, s = t.maxActions ?? 400, c = t.record ?? !0, l = [], u = se(), d = 0, f = 0, p = 0, m = 0, h = 0, g = 0, _ = 0, v = 0, y = null, b = (e) => e[a && e.length > 1 ? a.nextInt(e.length) : 0], x = (e) => {
-		R(r, u, e), d++, c && l.push({
+	let r = n ?? L(e), i = r.r, a = t.rng ?? null, o = t.lapsePermille ?? 150, s = t.maxActions ?? 400, c = t.record ?? !0, l = [], u = R(), d = 0, f = 0, p = 0, m = 0, h = 0, g = 0, _ = 0, v = 0, y = null, b = (e) => e[a && e.length > 1 ? a.nextInt(e.length) : 0], x = (e) => {
+		B(r, u, e), d++, c && l.push({
 			x: e & 7,
 			y: e >> 3
 		});
@@ -752,7 +752,7 @@ function xe(e, t = {}, n) {
 		trials: v,
 		moves: l
 	}), C = () => {
-		let e = y, t = L((u.pLo & ~e.snap.pLo) >>> 0, (u.pHi & ~e.snap.pHi) >>> 0);
+		let e = y, t = z((u.pLo & ~e.snap.pLo) >>> 0, (u.pHi & ~e.snap.pHi) >>> 0);
 		for (let e = t.length - 1; e >= 0; e--) {
 			let n = t[e];
 			f++, c && l.push({
@@ -760,55 +760,55 @@ function xe(e, t = {}, n) {
 				y: n >> 3
 			});
 		}
-		p++, u = ce(e.snap), z(u, e.cell), y = null;
+		p++, u = oe(e.snap), se(u, e.cell), y = null;
 	}, w = (e) => {
-		for (let t = 0; t < r.clueCell.length; t++) if ((e < 32 ? r.adjLo[t] >>> e & 1 : r.adjHi[t] >>> e - 32 & 1) && M((r.adjLo[t] & u.pLo) >>> 0) + M((r.adjHi[t] & u.pHi) >>> 0) + 1 > r.clueVal[t]) return !0;
+		for (let t = 0; t < r.clueCell.length; t++) if ((e < 32 ? r.adjLo[t] >>> e & 1 : r.adjHi[t] >>> e - 32 & 1) && N((r.adjLo[t] & u.pLo) >>> 0) + N((r.adjHi[t] & u.pHi) >>> 0) + 1 > r.clueVal[t]) return !0;
 		return !1;
 	}, T = () => {
 		let e = (i.floorLo & ~u.lLo & ~u.mLo) >>> 0, t = (i.floorHi & ~u.lHi & ~u.mHi) >>> 0, n = 99, r = [];
-		for (let a of L((i.floorLo & ~u.lLo) >>> 0, (i.floorHi & ~u.lHi) >>> 0)) {
-			let o = L((i.lo[a] & e) >>> 0, (i.hi[a] & t) >>> 0).filter((e) => !w(e));
+		for (let a of z((i.floorLo & ~u.lLo) >>> 0, (i.floorHi & ~u.lHi) >>> 0)) {
+			let o = z((i.lo[a] & e) >>> 0, (i.hi[a] & t) >>> 0).filter((e) => !w(e));
 			o.length !== 0 && o.length < n && (n = o.length, r = o);
 		}
 		if (r.length === 0) return !1;
 		let a = b(r);
 		return y = {
 			cell: a,
-			snap: ce(u)
+			snap: oe(u)
 		}, m++, x(a), !0;
 	};
 	for (; d + f < s;) {
-		if (de(r, u)) {
+		if (ue(r, u)) {
 			if (y === null) return S(!1);
 			C();
 			continue;
 		}
-		if (fe(r, u)) return S(!0);
-		let e = pe(r, u);
+		if (de(r, u)) return S(!0);
+		let e = fe(r, u);
 		if (e.length > 0) {
 			let t = b(e);
 			for (let e of t.place) x(e);
-			for (let e of t.mark) z(u, e);
+			for (let e of t.mark) se(u, e);
 			h++;
 		} else {
 			if (!(y === null && a !== null && a.nextInt(1e3) < o)) {
-				let e = me(r, u);
+				let e = pe(r, u);
 				if (e.length > 0) {
 					x(b(e).place[0]), g++;
 					continue;
 				}
-				let t = ge(r, u);
+				let t = he(r, u);
 				a && a.shuffle(t);
 				let n = -1;
 				for (let e of t) {
-					if (he(r, u, e)) {
+					if (me(r, u, e)) {
 						n = e;
 						break;
 					}
 					v++;
 				}
 				if (n >= 0) {
-					z(u, n), _++;
+					se(u, n), _++;
 					continue;
 				}
 			}
@@ -819,61 +819,61 @@ function xe(e, t = {}, n) {
 	return S(!1);
 }
 function Se(e) {
-	let t = se();
+	let t = R();
 	for (let n = 0; n < 256; n++) {
-		let n = pe(e, t);
+		let n = fe(e, t);
 		if (n.length === 0) return !1;
 		for (let r of n) {
 			if (r.place.length > 0) return !0;
-			le(e, t, r);
+			ce(e, t, r);
 		}
 	}
 	return !1;
 }
 function Ce(e, t) {
-	let n = t ?? I(e), r = se();
+	let n = t ?? L(e), r = R();
 	for (let e = 0; e < 256; e++) {
-		let e = pe(n, r);
+		let e = fe(n, r);
 		if (e.length === 0) break;
-		for (let t of e) le(n, r, t);
+		for (let t of e) ce(n, r, t);
 	}
-	return L(r.pLo, r.pHi);
+	return z(r.pLo, r.pHi);
 }
 function we(e, t) {
 	let n = e.r, r = (n.floorLo & ~t.lLo & ~t.mLo) >>> 0, i = (n.floorHi & ~t.lHi & ~t.mHi) >>> 0;
 	for (let n = 0; n < e.clueCell.length; n++) {
-		let a = e.clueVal[n], o = M((e.adjLo[n] & t.pLo) >>> 0) + M((e.adjHi[n] & t.pHi) >>> 0), s = M((e.adjLo[n] & r) >>> 0) + M((e.adjHi[n] & i) >>> 0);
+		let a = e.clueVal[n], o = N((e.adjLo[n] & t.pLo) >>> 0) + N((e.adjHi[n] & t.pHi) >>> 0), s = N((e.adjLo[n] & r) >>> 0) + N((e.adjHi[n] & i) >>> 0);
 		if (o > a || o + s < a) return {
 			at: e.clueCell[n],
 			kind: "number"
 		};
 	}
-	for (let e of L((n.floorLo & ~t.lLo) >>> 0, (n.floorHi & ~t.lHi) >>> 0)) if ((n.lo[e] & r | n.hi[e] & i) === 0) return {
+	for (let e of z((n.floorLo & ~t.lLo) >>> 0, (n.floorHi & ~t.lHi) >>> 0)) if ((n.lo[e] & r | n.hi[e] & i) === 0) return {
 		at: e,
 		kind: "cell"
 	};
 	return null;
 }
 function Te(e, t, n = 4) {
-	let r = se();
-	for (let n of L(t.lo & e.r.floorLo, t.hi & e.r.floorHi)) R(e, r, n);
+	let r = R();
+	for (let n of z(t.lo & e.r.floorLo, t.hi & e.r.floorHi)) B(e, r, n);
 	for (let t = 0;; t++) {
 		let i = we(e, r);
 		if (i !== null) return t === 0 ? null : {
 			...i,
 			rounds: t
 		};
-		if (t >= n || fe(e, r)) return null;
-		let a = [...pe(e, r), ...me(e, r)];
+		if (t >= n || de(e, r)) return null;
+		let a = [...fe(e, r), ...pe(e, r)];
 		if (a.length === 0) return null;
-		for (let e of a) for (let t of e.mark) z(r, t);
+		for (let e of a) for (let t of e.mark) se(r, t);
 		for (let n of a) for (let i of n.place) if (!Ee(r.pLo, r.pHi, i)) {
 			if (Ee(r.lLo, r.lHi, i) || Ee(r.mLo, r.mHi, i)) return {
 				at: i,
 				kind: "cell",
 				rounds: t + 1
 			};
-			R(e, r, i);
+			B(e, r, i);
 		}
 	}
 }
@@ -895,8 +895,8 @@ function Oe(e, t, n, r) {
 }
 function ke(e, t) {
 	let n = [];
-	for (let t = e >>> 0; t !== 0; t = (t & t - 1) >>> 0) n.push(N(t));
-	for (let e = t >>> 0; e !== 0; e = (e & e - 1) >>> 0) n.push(N(e) + 32);
+	for (let t = e >>> 0; t !== 0; t = (t & t - 1) >>> 0) n.push(P(t));
+	for (let e = t >>> 0; e !== 0; e = (e & e - 1) >>> 0) n.push(P(e) + 32);
 	return n;
 }
 var Ae = (e, t, n) => ((n < 32 ? e >>> n : t >>> n - 32) & 1) == 1;
@@ -906,19 +906,19 @@ function je(e, t, n, r, i) {
 	return `${s}-${c && l ? "mixed" : l ? "mark" : "light"}`;
 }
 function Me(e, t) {
-	let n = t ?? I(e), r = n.r, i = se(), a = [], o = [];
-	for (let t = 0; t < 512 && !(de(n, i) || fe(n, i)); t++) {
-		if (_e(n, i) >= 0) continue;
+	let n = t ?? L(e), r = n.r, i = R(), a = [], o = [];
+	for (let t = 0; t < 512 && !(ue(n, i) || de(n, i)); t++) {
+		if (ge(n, i) >= 0) continue;
 		let t = (r.floorLo & ~i.lLo & ~i.mLo) >>> 0, s = (r.floorHi & ~i.lHi & ~i.mHi) >>> 0, c = -1, l = -1;
 		for (let e of ke((r.floorLo & ~i.lLo) >>> 0, (r.floorHi & ~i.lHi) >>> 0)) {
 			let n = (r.lo[e] & t) >>> 0, i = (r.hi[e] & s) >>> 0;
-			if (M(n) + M(i) === 1) {
-				c = e, l = n === 0 ? N(i) + 32 : N(n);
+			if (N(n) + N(i) === 1) {
+				c = e, l = n === 0 ? P(i) + 32 : P(n);
 				break;
 			}
 		}
 		if (c < 0) break;
-		a.push(je(e, n, i, c, l)), o.push(l), R(n, i, l);
+		a.push(je(e, n, i, c, l)), o.push(l), B(n, i, l);
 	}
 	return Ne(a, o);
 }
@@ -960,7 +960,7 @@ function Le(e, t) {
 	return n < 2 ? "rot180" : n === 2 ? "mirror" : "none";
 }
 function Re(e, t, n) {
-	let r = F(e.w * e.h * (e.densityMin + t.nextInt(e.densityMax - e.densityMin + 1)) + 50, 100), o = [];
+	let r = I(e.w * e.h * (e.densityMin + t.nextInt(e.densityMax - e.densityMin + 1)) + 50, 100), o = [];
 	for (let t = 0; t < e.h; t++) for (let n = 0; n < e.w; n++) o.push(a(n, t));
 	t.shuffle(o);
 	let s = i, c = 0;
@@ -977,7 +977,7 @@ function ze(e) {
 	let t = {
 		lo: e.floorLo,
 		hi: e.floorHi
-	}, n = e.floorLo === 0 ? N(e.floorHi) + 32 : N(e.floorLo), r = Fe(i, n), a = [n];
+	}, n = e.floorLo === 0 ? P(e.floorHi) + 32 : P(e.floorLo), r = Fe(i, n), a = [n];
 	for (; a.length > 0;) {
 		let n = a.pop();
 		for (let i of g(e.w, e.h, n)) !V(r, i) && V(t, i) && (r = Fe(r, i), a.push(i));
@@ -985,7 +985,7 @@ function ze(e) {
 	return r.lo === e.floorLo && r.hi === e.floorHi;
 }
 function Be(e) {
-	for (let t = 0; t < 64; t++) if (M(e.lo[t]) + M(e.hi[t]) === 1) return !0;
+	for (let t = 0; t < 64; t++) if (N(e.lo[t]) + N(e.hi[t]) === 1) return !0;
 	return !1;
 }
 function Ve(e, t, n) {
@@ -1000,14 +1000,14 @@ function Ve(e, t, n) {
 	return r;
 }
 function He(e, t, n) {
-	let r = M(e), i = n < r ? e : t;
+	let r = N(e), i = n < r ? e : t;
 	for (let e = n < r ? n : n - r; e > 0; e--) i = (i & i - 1) >>> 0;
-	return N(i) + (n < r ? 0 : 32);
+	return P(i) + (n < r ? 0 : 32);
 }
 function Ue(e, t) {
 	let n = 0, r = 0, i = e.floorLo, a = e.floorHi;
 	for (; (i | a) !== 0;) {
-		let o = He(i, a, t.nextInt(M(i) + M(a))), s = (e.lo[o] & i) >>> 0, c = (e.hi[o] & a) >>> 0, l = He(s, c, t.nextInt(M(s) + M(c)));
+		let o = He(i, a, t.nextInt(N(i) + N(a))), s = (e.lo[o] & i) >>> 0, c = (e.hi[o] & a) >>> 0, l = He(s, c, t.nextInt(N(s) + N(c)));
 		l < 32 ? n = (n | 1 << l) >>> 0 : r = (r | 1 << l - 32) >>> 0, i = (i & ~e.lo[l]) >>> 0, a = (a & ~e.hi[l]) >>> 0;
 	}
 	return {
@@ -1060,10 +1060,10 @@ function Je(t, n) {
 	return e(Uint8Array.from(t)) % n;
 }
 function Ye(e, t, n, r, i) {
-	let a = i ?? I(e);
+	let a = i ?? L(e);
 	for (let i = 0; i < n; i++) {
 		let n = xe(e, {
-			rng: new ne(t.nextU32(), t.nextU32(), t.nextU32(), t.nextU32() | 1),
+			rng: new te(t.nextU32(), t.nextU32(), t.nextU32(), t.nextU32() | 1),
 			record: !1
 		}, a), i = n.completed ? be(n) : 300;
 		r.push(i < 300 ? i : 300);
@@ -1071,7 +1071,7 @@ function Ye(e, t, n, r, i) {
 	return r;
 }
 function Xe(e) {
-	let t = e.slice().sort((e, t) => e - t), n = (e) => t[F((t.length - 1) * e, 1e3)];
+	let t = e.slice().sort((e, t) => e - t), n = (e) => t[I((t.length - 1) * e, 1e3)];
 	return {
 		fast: n(200),
 		median: n(500),
@@ -1105,7 +1105,7 @@ function tt(e, t, n, r) {
 	return i;
 }
 function nt(e, t) {
-	let n = F(e * 4, t);
+	let n = I(e * 4, t);
 	return n < 4 ? n : 4;
 }
 function rt(e) {
@@ -1115,7 +1115,7 @@ function rt(e) {
 		stones: i,
 		clues: Array(64).fill(255)
 	});
-	let t = ne.from(e.seedKey), n = {
+	let t = te.from(e.seedKey), n = {
 		disconnected: 0,
 		isolated: 0,
 		openRoom: 0,
@@ -1129,14 +1129,14 @@ function rt(e) {
 		noStart: 0,
 		trick: 0,
 		singles: 0
-	}, r = F(e.w * e.h * 36, 100), a = e.search, o = (e) => a?.realT2 === !0 ? e.t2 - e.t2zero : e.t2, s = a === void 0 ? e.maxAttempts * 20 : e.maxAttempts * 2, c = null, l = 0, u = 0, d = 0, f = 0;
+	}, r = I(e.w * e.h * 36, 100), a = e.search, o = (e) => a?.realT2 === !0 ? e.t2 - e.t2zero : e.t2, s = a === void 0 ? e.maxAttempts * 20 : e.maxAttempts * 2, c = null, l = 0, u = 0, d = 0, f = 0;
 	for (; f < s && !(c !== null && f >= e.maxAttempts || c !== null && a?.afterFound !== void 0 && f >= u + a.afterFound); f++) {
 		a !== void 0 && c === null && (d = nt(f, e.maxAttempts), d === 1 && e.trick === void 0 && (d = 0));
 		let i = e.t2 === void 0 || d >= 4 ? 0 : d >= 3 && e.t2.lo > 0 ? e.t2.lo - 1 : e.t2.lo, s = d >= 4 ? void 0 : e.isolatedMax, p = d >= 1 ? void 0 : e.trick, m = e.opening === void 0 || d >= 4 ? void 0 : d >= 2 ? {
 			...e.opening,
 			mod: 1,
 			want: 0
-		} : e.opening, h = a?.zeroMax === void 0 || d >= 4 ? void 0 : a.zeroMax, _ = Le(e, t), v = Re(e, t, _), y = re({
+		} : e.opening, h = a?.zeroMax === void 0 || d >= 4 ? void 0 : a.zeroMax, _ = Le(e, t), v = Re(e, t, _), y = ne({
 			w: e.w,
 			h: e.h,
 			stones: v
@@ -1158,7 +1158,7 @@ function rt(e) {
 			let r = [b];
 			for (let n = 1; n < (e.solutionPicks ?? 1); n++) r.push(Ue(y, t));
 			let i = (t) => {
-				let n = M(t.lo) + M(t.hi), r = a.score === "lanterns" ? 0 : tt(e.w, e.h, v, t);
+				let n = N(t.lo) + N(t.hi), r = a.score === "lanterns" ? 0 : tt(e.w, e.h, v, t);
 				if (a.score === "free") return r * 64 + n;
 				if (a.score !== "sumNoZero") return (r + n) * 64 + n;
 				let i = 0;
@@ -1175,7 +1175,7 @@ function rt(e) {
 					h: e.h,
 					stones: v,
 					clues: n
-				}, i = B(r, e.tierCap, I(r, y));
+				}, i = ve(r, e.tierCap, L(r, y));
 				if (i.solved) {
 					if (e.t2 !== void 0 && o(i) > e.t2.hi || a.t2Total !== void 0 && i.t2 > a.t2Total.hi) l = "t2Range";
 					else {
@@ -1200,7 +1200,7 @@ function rt(e) {
 		} else {
 			for (let n = 1; n < (e.solutionPicks ?? 1); n++) {
 				let e = Ue(y, t);
-				M(e.lo) + M(e.hi) > M(b.lo) + M(b.hi) && (b = e);
+				N(e.lo) + N(e.hi) > N(b.lo) + N(b.hi) && (b = e);
 			}
 			S = We(e.w, e.h, v, b), x = {
 				w: e.w,
@@ -1208,9 +1208,9 @@ function rt(e) {
 				stones: v,
 				clues: S
 			};
-			let r = B(x, e.tierCap, I(x, y));
+			let r = ve(x, e.tierCap, L(x, y));
 			if (!r.solved) {
-				let e = oe(x, 2);
+				let e = ae(x, 2);
 				e.aborted ? n.solverLimit++ : e.count === 1 ? n.tooDeep++ : n.notUnique++;
 				continue;
 			}
@@ -1247,13 +1247,13 @@ function rt(e) {
 					h: e.h,
 					stones: v,
 					clues: n.slice()
-				}, s = I(i, y), c = B(i, e.tierCap, s);
+				}, s = L(i, y), c = ve(i, e.tierCap, s);
 				(!c.solved || e.t2 !== void 0 && o(c) > e.t2.hi || a?.t2Total !== void 0 && c.t2 > a.t2Total.hi || a !== void 0 && e.opening?.nonEmpty === !0 && !Se(s)) && (n[r] = t);
 			}
 			return n;
 		}, T = w(C);
 		if (a?.orders !== void 0 && a.orders > 1 && e.t2 !== void 0) {
-			let n = (t) => h !== void 0 && t.filter((e) => e === 0).length > h ? -1 : o(B({
+			let n = (t) => h !== void 0 && t.filter((e) => e === 0).length > h ? -1 : o(ve({
 				w: e.w,
 				h: e.h,
 				stones: v,
@@ -1272,13 +1272,13 @@ function rt(e) {
 			stones: v,
 			clues: T
 		};
-		let E = oe(x, 2, Qe);
+		let E = ae(x, 2, Qe);
 		if (E.aborted || E.count !== 1) {
 			E.aborted ? n.solverLimit++ : n.notUnique++;
 			continue;
 		}
 		let D = b;
-		if (e.requireT3 === !0 && B(x, 2).solved) {
+		if (e.requireT3 === !0 && ve(x, 2).solved) {
 			n.tooShallow++;
 			continue;
 		}
@@ -1291,7 +1291,7 @@ function rt(e) {
 			continue;
 		}
 		let O = 0, ee = Ce(x), k = "", A = -1;
-		if (a !== void 0 && e.t2 !== void 0 && e.tierCap === 2 && o(B(x, 2)) + 2 < i) {
+		if (a !== void 0 && e.t2 !== void 0 && e.tierCap === 2 && o(ve(x, 2)) + 2 < i) {
 			n.t2Range++;
 			continue;
 		}
@@ -1299,12 +1299,12 @@ function rt(e) {
 			O = -1;
 			let t = !1, r = !1, c = !1;
 			for (let n = 0; n < 8 && O < 0; n++) {
-				let l = qe(x, n), u = I(l), f = n === 0 ? ee : Ce(l, u);
+				let l = qe(x, n), u = L(l), f = n === 0 ? ee : Ce(l, u);
 				if (m !== void 0 && (m.nonEmpty && f.length === 0 || Je(f, m.mod) !== m.want % m.mod)) continue;
 				t = !0;
 				let h = Me(l, u);
 				if (a !== void 0 && e.t2 !== void 0 && e.tierCap === 2) {
-					let t = a.realT2 === !0 ? o(B(l, 2, u)) : h.kinds.length;
+					let t = a.realT2 === !0 ? o(ve(l, 2, u)) : h.kinds.length;
 					if (t < i || t > e.t2.hi) continue;
 					let n = a.t2Total;
 					if (n !== void 0 && d < 4 && (h.kinds.length < n.lo || h.kinds.length > n.hi)) continue;
@@ -1320,28 +1320,32 @@ function rt(e) {
 			}
 			x = qe(x, O), D = Ke(e.w, b, O);
 		}
+		if (e.openingMaxPct !== void 0 && d < 4 && ee.length * 100 > e.openingMaxPct * (N(b.lo) + N(b.hi))) {
+			n.opening++;
+			continue;
+		}
 		if (A < 0) {
 			let e = Me(x);
 			k = e.signature, A = Pe(x, e).length;
 		}
-		let te = I(x), j = B(x, e.tierCap, te), ne = a?.t2Total;
-		if (e.t2 !== void 0 && (o(j) < i || o(j) > e.t2.hi) || ne !== void 0 && d < 4 && (j.t2 < ne.lo || j.t2 > ne.hi)) {
+		let j = L(x), M = ve(x, e.tierCap, j), te = a?.t2Total;
+		if (e.t2 !== void 0 && (o(M) < i || o(M) > e.t2.hi) || te !== void 0 && d < 4 && (M.t2 < te.lo || M.t2 > te.hi)) {
 			n.t2Range++;
 			continue;
 		}
-		let N = Ye(x, t, 8, [], te), P = Xe(N), F = Ze(P, e.target, e.tailMax);
-		(F === 0 || c === null || F < c.dist) && (P = Xe(Ye(x, t, 24, N, te)), F = Ze(P, e.target, e.tailMax));
-		let ie = 0;
-		for (let e = 0; e < 64; e++) T[e] !== 255 && ie++;
-		let ae = {
+		let P = Ye(x, t, 8, [], j), F = Xe(P), I = Ze(F, e.target, e.tailMax);
+		(I === 0 || c === null || I < c.dist) && (F = Xe(Ye(x, t, 24, P, j)), I = Ze(F, e.target, e.tailMax));
+		let re = 0;
+		for (let e = 0; e < 64; e++) T[e] !== 255 && re++;
+		let ie = {
 			solution: D,
-			lanterns: M(b.lo) + M(b.hi),
-			stones: M(v.lo) + M(v.hi),
-			clues: ie,
-			grade: j,
-			difficultyFast: P.fast,
-			difficulty: P.median,
-			difficultyTail: P.tail,
+			lanterns: N(b.lo) + N(b.hi),
+			stones: N(v.lo) + N(v.hi),
+			clues: re,
+			grade: M,
+			difficultyFast: F.fast,
+			difficulty: F.median,
+			difficultyTail: F.tail,
 			symmetry: _,
 			opening: ee,
 			transform: O,
@@ -1349,11 +1353,11 @@ function rt(e) {
 			singles: A,
 			...a === void 0 ? {} : { relaxed: d }
 		};
-		if (c === null && (u = f), (c === null || F < c.dist) && (c = {
+		if (c === null && (u = f), (c === null || I < c.dist) && (c = {
 			level: x,
-			meta: ae,
-			dist: F
-		}), F === 0) break;
+			meta: ie,
+			dist: I
+		}), I === 0) break;
 		if (l++, a !== void 0 && l >= a.scoredMax) {
 			f++;
 			break;
@@ -1361,7 +1365,7 @@ function rt(e) {
 	}
 	if (c === null) throw Error(`pips generator: no valid level for ${e.seedKey}`);
 	v(c.level);
-	let p = oe(c.level, 2, Qe);
+	let p = ae(c.level, 2, Qe);
 	if (p.aborted || p.count !== 1) throw Error(`pips generator: non-unique board for ${e.seedKey}`);
 	return {
 		seedKey: e.seedKey,
@@ -1407,7 +1411,7 @@ function ot(e, t, n) {
 		273,
 		304,
 		334
-	], i = e % 4 == 0 && e % 100 != 0 || e % 400 == 0, a = (e) => F(e, 4) - F(e, 100) + F(e, 400), o = a(e - 1) - a(1999);
+	], i = e % 4 == 0 && e % 100 != 0 || e % 400 == 0, a = (e) => I(e, 4) - I(e, 100) + I(e, 400), o = a(e - 1) - a(1999);
 	return (e - 2e3) * 365 + o + r[t - 1] + (i && t > 2 ? 1 : 0) + n - 1;
 }
 function st(e) {
@@ -1424,7 +1428,7 @@ var ct = {
 	}
 };
 function lt(e) {
-	let { y: t, m: n, d: r } = ae(e), i = ot(t, n, r), a = st(i) === 0, o = it[6];
+	let { y: t, m: n, d: r } = ie(e), i = ot(t, n, r), a = st(i) === 0, o = it[6];
 	return {
 		seedKey: `lanterns-pips:daily:g3:${e}`,
 		levelId: t * 1e4 + n * 100 + r,
@@ -1467,14 +1471,14 @@ var ut = 33554432, dt = {
 	hi: 28
 };
 function pt(e) {
-	return ae(e), `lanterns-pips:daily-deep:g1:${e}`;
+	return ie(e), `lanterns-pips:daily-deep:g1:${e}`;
 }
 function mt(e) {
-	let { y: t, m: n, d: r } = ae(e);
+	let { y: t, m: n, d: r } = ie(e);
 	return (ut | ot(t, n, r)) >>> 0;
 }
 function ht(e) {
-	let { y: t, m: n, d: r } = ae(e), i = ot(t, n, r), a = st(i) === 0, o = a ? 8 : 7;
+	let { y: t, m: n, d: r } = ie(e), i = ot(t, n, r), a = st(i) === 0, o = a ? 8 : 7;
 	return {
 		seedKey: pt(e),
 		levelId: mt(e),
@@ -1525,22 +1529,22 @@ function St(e) {
 var Ct = (e, t, n) => ((n < 32 ? e >>> n : t >>> n - 32) & 1) == 1;
 function wt(e, t) {
 	let n = [];
-	for (let t = e >>> 0; t !== 0; t = (t & t - 1) >>> 0) n.push(N(t));
-	for (let e = t >>> 0; e !== 0; e = (e & e - 1) >>> 0) n.push(N(e) + 32);
+	for (let t = e >>> 0; t !== 0; t = (t & t - 1) >>> 0) n.push(P(t));
+	for (let e = t >>> 0; e !== 0; e = (e & e - 1) >>> 0) n.push(P(e) + 32);
 	return n;
 }
 function Tt(e, t) {
 	return Et(e, t).a;
 }
 function Et(e, t) {
-	let n = re(e), r = wt((t.lanterns.lo & n.floorLo) >>> 0, (t.lanterns.hi & n.floorHi) >>> 0), i = /* @__PURE__ */ new Uint8Array(64), a = 0, s = 0;
+	let n = ne(e), r = wt((t.lanterns.lo & n.floorLo) >>> 0, (t.lanterns.hi & n.floorHi) >>> 0), i = /* @__PURE__ */ new Uint8Array(64), a = 0, s = 0;
 	for (let e of r) {
 		a = (a | n.lo[e]) >>> 0, s = (s | n.hi[e]) >>> 0;
 		for (let t of wt(n.lo[e], n.hi[e])) i[t] = i[t] + 1;
 	}
 	let c = /* @__PURE__ */ new Uint8Array(64), l = wt((a & n.floorLo) >>> 0, (s & n.floorHi) >>> 0);
 	for (let e of l) c[e] = 1;
-	let u = M(n.floorLo) + M(n.floorHi), d = [];
+	let u = N(n.floorLo) + N(n.floorHi), d = [];
 	for (let e = 0; e < r.length; e++) {
 		let t = r[e];
 		for (let i = e + 1; i < r.length; i++) {
@@ -1621,13 +1625,13 @@ function Et(e, t) {
 var Dt = /* @__PURE__ */ new WeakMap();
 function Ot(e) {
 	if (Dt.has(e)) return Dt.get(e);
-	let t = oe(e, 1, Qe), n = t.count > 0 ? t.solution : null;
+	let t = ae(e, 1, Qe), n = t.count > 0 ? t.solution : null;
 	return Dt.set(e, n), n;
 }
 var kt = /* @__PURE__ */ new WeakMap();
 function At(e) {
 	let t = kt.get(e);
-	return t === void 0 && (t = I(e), kt.set(e, t)), t;
+	return t === void 0 && (t = L(e), kt.set(e, t)), t;
 }
 var jt = /* @__PURE__ */ new WeakMap(), Mt = 512;
 function Nt(e, t) {
@@ -1635,7 +1639,7 @@ function Nt(e, t) {
 	n === void 0 && (n = /* @__PURE__ */ new Map(), jt.set(e, n));
 	let r = `${t.lo >>> 0}:${t.hi >>> 0}`, i = n.get(r);
 	if (i !== void 0) return i;
-	let a = oe(e, 1, Qe, At(e), t).count > 0;
+	let a = ae(e, 1, Qe, At(e), t).count > 0;
 	return n.size >= Mt && n.delete(n.keys().next().value), n.set(r, a), a;
 }
 function Pt(e, t, n) {
@@ -1687,7 +1691,7 @@ function Bt(e, t) {
 	for (let n of t) e.includes(n) || e.push(n);
 }
 function Vt(e, t, n) {
-	let { a: r, x: i } = Et(e, t), a = i.lanterns.length > 0 && (r.blocked.length > 0 || r.stones.some((e) => e.status === "over" || e.status === "blocked")) ? Ot(e) : null, s = (e) => a !== null && !zt(a, e), c = (t) => g(e.w, e.h, t).filter((e) => i.lanterns.includes(e)), l = re(e), u = r.blocked.map((e) => {
+	let { a: r, x: i } = Et(e, t), a = i.lanterns.length > 0 && (r.blocked.length > 0 || r.stones.some((e) => e.status === "over" || e.status === "blocked")) ? Ot(e) : null, s = (e) => a !== null && !zt(a, e), c = (t) => g(e.w, e.h, t).filter((e) => i.lanterns.includes(e)), l = ne(e), u = r.blocked.map((e) => {
 		let t = [];
 		for (let n of wt(l.lo[e.cell], l.hi[e.cell])) {
 			Bt(t, i.lightFrom[n]);
@@ -1739,7 +1743,7 @@ function Ut(e) {
 	let t = Ht.get(e);
 	if (t !== void 0) return t;
 	let n = {
-		m: I(e),
+		m: L(e),
 		sol: Ot(e)
 	};
 	return Ht.set(e, n), n;
@@ -1750,8 +1754,8 @@ function Wt(e) {
 var Gt = (e, t, n) => ((n < 32 ? e >>> n : t >>> n - 32) & 1) == 1;
 function Kt(e, t) {
 	let n = [];
-	for (let t = e >>> 0; t !== 0; t = (t & t - 1) >>> 0) n.push(N(t));
-	for (let e = t >>> 0; e !== 0; e = (e & e - 1) >>> 0) n.push(N(e) + 32);
+	for (let t = e >>> 0; t !== 0; t = (t & t - 1) >>> 0) n.push(P(t));
+	for (let e = t >>> 0; e !== 0; e = (e & e - 1) >>> 0) n.push(P(e) + 32);
 	return n;
 }
 function qt(e, t) {
@@ -1762,7 +1766,7 @@ function Jt(e, t) {
 	for (let n = 0; n < 64; n++) {
 		let n = !1, r = (e.r.floorLo & ~t.lLo & ~t.mLo) >>> 0, i = (e.r.floorHi & ~t.lHi & ~t.mHi) >>> 0;
 		for (let a = 0; a < e.clueCell.length; a++) {
-			let o = M((e.adjLo[a] & t.pLo) >>> 0) + M((e.adjHi[a] & t.pHi) >>> 0), s = (e.adjLo[a] & r) >>> 0, c = (e.adjHi[a] & i) >>> 0;
+			let o = N((e.adjLo[a] & t.pLo) >>> 0) + N((e.adjHi[a] & t.pHi) >>> 0), s = (e.adjLo[a] & r) >>> 0, c = (e.adjHi[a] & i) >>> 0;
 			(s | c) !== 0 && o === e.clueVal[a] && (t.mLo = (t.mLo | s) >>> 0, t.mHi = (t.mHi | c) >>> 0, n = !0);
 		}
 		if (!n) return;
@@ -1771,7 +1775,7 @@ function Jt(e, t) {
 function Yt(e, t) {
 	let n = [], r = (e.r.floorLo & ~t.lLo & ~t.mLo) >>> 0, i = (e.r.floorHi & ~t.lHi & ~t.mHi) >>> 0;
 	for (let a = 0; a < e.clueCell.length; a++) {
-		let o = M((e.adjLo[a] & t.pLo) >>> 0) + M((e.adjHi[a] & t.pHi) >>> 0), s = (e.adjLo[a] & r) >>> 0, c = (e.adjHi[a] & i) >>> 0, l = M(s) + M(c);
+		let o = N((e.adjLo[a] & t.pLo) >>> 0) + N((e.adjHi[a] & t.pHi) >>> 0), s = (e.adjLo[a] & r) >>> 0, c = (e.adjHi[a] & i) >>> 0, l = N(s) + N(c);
 		if (l !== 0 && o + l === e.clueVal[a]) for (let t of Kt(s, c)) n.push({
 			cell: t,
 			anchor: e.clueCell[a]
@@ -1783,8 +1787,8 @@ function Xt(e, t) {
 	let n = e.r, r = [], i = (n.floorLo & ~t.lLo & ~t.mLo) >>> 0, a = (n.floorHi & ~t.lHi & ~t.mHi) >>> 0;
 	for (let e of Kt((n.floorLo & ~t.lLo) >>> 0, (n.floorHi & ~t.lHi) >>> 0)) {
 		let t = (n.lo[e] & i) >>> 0, o = (n.hi[e] & a) >>> 0;
-		M(t) + M(o) === 1 && r.push({
-			cell: t === 0 ? N(o) + 32 : N(t),
+		N(t) + N(o) === 1 && r.push({
+			cell: t === 0 ? P(o) + 32 : P(t),
 			anchor: e
 		});
 	}
@@ -1839,8 +1843,8 @@ function en(e, t, n, r) {
 		},
 		tier: -1
 	};
-	let p = Zt(e, f), m = se();
-	for (let e of Kt(c, l)) R(a, m, e);
+	let p = Zt(e, f), m = R();
+	for (let e of Kt(c, l)) B(a, m, e);
 	let h = (e) => Gt(o.lo, o.hi, e.cell) && !Gt(m.lLo, m.lHi, e.cell), _ = [];
 	for (let t = 0; t < 128; t++) {
 		Jt(a, m);
@@ -1868,9 +1872,9 @@ function en(e, t, n, r) {
 				tier: 3
 			};
 		}
-		let r = Kt((s.floorLo & ~m.lLo & ~m.mLo) >>> 0, (s.floorHi & ~m.lHi & ~m.mHi) >>> 0).filter((e) => he(a, m, e));
+		let r = Kt((s.floorLo & ~m.lLo & ~m.mLo) >>> 0, (s.floorHi & ~m.lHi & ~m.mHi) >>> 0).filter((e) => me(a, m, e));
 		if (r.length === 0) break;
-		for (let e of r) z(m, e), _.push(e);
+		for (let e of r) se(m, e), _.push(e);
 	}
 	let v = Kt((o.lo & ~c) >>> 0, (o.hi & ~l) >>> 0).map((e) => ({
 		cell: e,
@@ -1879,7 +1883,7 @@ function en(e, t, n, r) {
 	if (v.length === 0) return i;
 	let y = Qt(v, d, p), b = y.cell, x = 99, C = (s.floorLo & ~m.lLo) >>> 0, w = (s.floorHi & ~m.lHi) >>> 0;
 	for (let e of Kt((s.lo[y.cell] & C) >>> 0, (s.hi[y.cell] & w) >>> 0)) {
-		let t = M((s.lo[e] & C) >>> 0) + M((s.hi[e] & w) >>> 0);
+		let t = N((s.lo[e] & C) >>> 0) + N((s.hi[e] & w) >>> 0);
 		t < x && ([x, b] = [t, e]);
 	}
 	return {
@@ -1898,9 +1902,9 @@ function tn(e, t, n, r) {
 }
 //#endregion
 //#region ../../games/lanterns-pips/share.ts
-var nn = "Duskwick", rn = "2026-11-01";
+var nn = "Wickhollow", rn = "2026-11-01";
 function an(e) {
-	let { y: t, m: n, d: r } = ae(e);
+	let { y: t, m: n, d: r } = ie(e);
 	return ot(t, n, r);
 }
 function on(e) {
@@ -1917,13 +1921,13 @@ var sn = 295306, cn = 57597, ln = [
 	"🌘"
 ];
 function un(e) {
-	return F((an(e) * 1e4 + 5e3 + sn - cn) % sn * 8 + 147653, sn) % 8;
+	return I((an(e) * 1e4 + 5e3 + sn - cn) % sn * 8 + 147653, sn) % 8;
 }
 function dn(e, t) {
 	return !Number.isFinite(e) || e <= 0 ? 0 : e > t ? t : e | 0;
 }
 function fn(e) {
-	let t = dn(e, 35999), n = F(t, 60), r = t - n * 60;
+	let t = dn(e, 35999), n = I(t, 60), r = t - n * 60;
 	return `${n}:${r < 10 ? "0" : ""}${r}`;
 }
 var pn = "https://humsleep.github.io/apps/duskwick/", mn = "share";
@@ -1978,28 +1982,28 @@ var Cn = (e, t) => ((t < 32 ? e.pLo >>> t : e.pHi >>> t - 32) & 1) == 1;
 function wn(e, t, n, r) {
 	for (let i = 0; i < 512; i++) {
 		if (Cn(t, n)) return !0;
-		if (_e(e, t) >= 0) continue;
+		if (ge(e, t) >= 0) continue;
 		if (r < 2) return !1;
-		let i = ve(e, t);
+		let i = _e(e, t);
 		if (i >= 0) {
-			R(e, t, i & 63);
+			B(e, t, i & 63);
 			continue;
 		}
 		if (r < 3) return !1;
 		let a = -1;
-		for (let n of ge(e, t)) if (he(e, t, n)) {
+		for (let n of he(e, t)) if (me(e, t, n)) {
 			a = n;
 			break;
 		}
 		if (a < 0) return !1;
-		z(t, a);
+		se(t, a);
 	}
 	return Cn(t, n);
 }
 function Tn(e, t, n, r, i) {
 	if (!o(r, n) || (t.lo & ~r.lo | t.hi & ~r.hi) !== 0) return 0;
-	let a = i ?? I(e), s = se();
-	for (let e = 0; e < 64; e++) o(t, e) && R(a, s, e);
+	let a = i ?? L(e), s = R();
+	for (let e = 0; e < 64; e++) o(t, e) && B(a, s, e);
 	for (let e of [1, 2]) if (wn(a, { ...s }, n, e)) return e;
 	return 3;
 }
@@ -2017,7 +2021,7 @@ var Dn = [
 function On(e, t) {
 	let n = Wt(e);
 	if (!n) return "";
-	let r = I(e), i = yn.init("strip", e), a = 0, s = 0, c = /* @__PURE__ */ new Map(), l = /* @__PURE__ */ new Map();
+	let r = L(e), i = yn.init("strip", e), a = 0, s = 0, c = /* @__PURE__ */ new Map(), l = /* @__PURE__ */ new Map();
 	return t.forEach((t, u) => {
 		if (!Number.isInteger(t) || t < 0 || t > 63) return;
 		let d = yn.apply(i, {
@@ -3889,6 +3893,169 @@ var Jn = {
 for (let e of H) Object.assign(U[e], Jn[e]);
 var Yn = {
 	en: {
+		"map.capRank": "#{n}",
+		"map.labelRank": "Lantern map: {country} is #{n} this week",
+		"map.labelLit": "Lantern map: a lantern lit for {country}",
+		"map.title": "This week's lantern map",
+		"map.textRank": "{flag} {country}: #{n} this week\n{avg} per player · #1 {top}",
+		"map.textWorld": "{lit} lanterns lit this week. Today's: {flag} {country}",
+		"map.close": "Close",
+		"map.mine": "You: {mine} lanterns · #{rank} of {of} in {country}",
+		"map.gap": "{gap} per player to #1 · ends in {days}d",
+		"map.lead": "Holding #1 · ends in {days}d",
+		"map.disc": "Map",
+		"map.recapTitle": "Last week's lantern map",
+		"map.recapRank": "{flag} {country} finished #{n}\nYou lit {mine} lanterns",
+		"map.recapWorld": "{lit} lanterns in all\n{mine} were yours, {flag} {country}"
+	},
+	ko: {
+		"map.capRank": "{n}위",
+		"map.labelRank": "등불 지도: {country} 이번 주 {n}위",
+		"map.labelLit": "등불 지도: {country}에 등불 하나를 밝혔어요",
+		"map.title": "이번 주 등불 지도",
+		"map.textRank": "{flag} {country} 이번 주 {n}위\n1인당 등불 {avg}개 · 1위 {top}",
+		"map.textWorld": "이번 주 세계에 등불 {lit}개. 오늘 하나는 {flag} {country}에서",
+		"map.close": "닫기",
+		"map.mine": "내 등불 {mine}개 · {country} {of}명 중 {rank}위",
+		"map.gap": "1위까지 1인당 {gap}개 · 마감까지 {days}일",
+		"map.lead": "1위를 지키는 중 · 마감까지 {days}일",
+		"map.disc": "지도",
+		"map.recapTitle": "지난주 등불 지도",
+		"map.recapRank": "{flag} {country} 지난주 {n}위\n내가 밝힌 등불 {mine}개",
+		"map.recapWorld": "지난주 세계에 등불 {lit}개\n{flag} {country}에 내가 {mine}개를 보탰어요"
+	},
+	ja: {
+		"map.capRank": "{n}位",
+		"map.labelRank": "ランタン地図：{country}は今週{n}位",
+		"map.labelLit": "ランタン地図：{country}にランタンをひとつ",
+		"map.title": "今週のランタン地図",
+		"map.textRank": "{flag} {country}は今週{n}位\nひとりあたり{avg}個・1位は{top}",
+		"map.textWorld": "今週、世界で{lit}個のランタン。今日のひとつは{flag} {country}から",
+		"map.close": "閉じる",
+		"map.mine": "あなた：{mine}個・{country}の{of}人中{rank}位",
+		"map.gap": "1位まで1人あたり{gap}個・締め切りまで{days}日",
+		"map.lead": "1位をキープ中・締め切りまで{days}日",
+		"map.disc": "地図",
+		"map.recapTitle": "先週のランタン地図",
+		"map.recapRank": "{flag} {country}は先週{n}位\nあなたは{mine}個灯しました",
+		"map.recapWorld": "先週、世界で{lit}個のランタン\n{flag} {country}にあなたが{mine}個"
+	},
+	de: {
+		"map.capRank": "Platz {n}",
+		"map.labelRank": "Laternenkarte: {country} diese Woche Platz {n}",
+		"map.labelLit": "Laternenkarte: eine Laterne für {country}",
+		"map.title": "Laternenkarte dieser Woche",
+		"map.textRank": "{flag} {country}: Platz {n}\n{avg} pro Person · Vorn: {top}",
+		"map.textWorld": "{lit} Laternen diese Woche. Heute: {flag} {country}",
+		"map.close": "Schließen",
+		"map.mine": "Du: {mine} Laternen · Platz {rank} von {of} in {country}",
+		"map.gap": "{gap} pro Person bis Platz 1 · Ende in {days} T.",
+		"map.lead": "Auf Platz 1 · Ende in {days} T.",
+		"map.disc": "Karte",
+		"map.recapTitle": "Laternenkarte der letzten Woche",
+		"map.recapRank": "{flag} {country}: Platz {n}\nDu: {mine} Laternen",
+		"map.recapWorld": "{lit} Laternen letzte Woche\n{mine} von dir, {flag} {country}"
+	},
+	fr: {
+		"map.capRank": "{n}ᵉ",
+		"map.labelRank": "Carte des lanternes\xA0: {country} {n}ᵉ cette semaine",
+		"map.labelLit": "Carte des lanternes\xA0: une lanterne pour {country}",
+		"map.title": "Carte des lanternes de la semaine",
+		"map.textRank": "{flag} {country}\xA0: {n}ᵉ\n{avg} par joueur · En tête\xA0: {top}",
+		"map.textWorld": "{lit} lanternes cette semaine. Ce jour\xA0: {flag} {country}",
+		"map.close": "Fermer",
+		"map.mine": "Vous\xA0: {mine} lanternes · {rank}ᵉ sur {of} ({country})",
+		"map.gap": "{gap} par joueur jusqu’à la 1re place · {days} j",
+		"map.lead": "En tête · encore {days} j",
+		"map.disc": "Carte",
+		"map.recapTitle": "La carte de la semaine passée",
+		"map.recapRank": "{flag} {country}\xA0: {n}ᵉ\nVous avez allumé {mine} lanternes",
+		"map.recapWorld": "{lit} lanternes en tout\n{mine} de vous, {flag} {country}"
+	},
+	es: {
+		"map.capRank": "N.º {n}",
+		"map.labelRank": "Mapa de faroles: {country}, n.º {n} esta semana",
+		"map.labelLit": "Mapa de faroles: un farol para {country}",
+		"map.title": "Mapa de faroles de la semana",
+		"map.textRank": "{flag} {country}: n.º {n}\n{avg} por jugador · N.º 1: {top}",
+		"map.textWorld": "{lit} faroles esta semana. Hoy: {flag} {country}",
+		"map.close": "Cerrar",
+		"map.mine": "Tú: {mine} faroles · n.º {rank} de {of} en {country}",
+		"map.gap": "{gap} por jugador hasta el n.º 1 · cierra en {days} d",
+		"map.lead": "Vas n.º 1 · cierra en {days} d",
+		"map.disc": "Mapa",
+		"map.recapTitle": "El mapa de la semana pasada",
+		"map.recapRank": "{flag} {country} quedó n.º {n}\nEncendiste {mine} faroles",
+		"map.recapWorld": "{lit} faroles en total\n{mine} tuyos, {flag} {country}"
+	},
+	"pt-BR": {
+		"map.capRank": "{n}º",
+		"map.labelRank": "Mapa de lanternas: {country} em {n}º nesta semana",
+		"map.labelLit": "Mapa de lanternas: uma lanterna para {country}",
+		"map.title": "Mapa de lanternas da semana",
+		"map.textRank": "{flag} {country}: {n}º\n{avg} por jogador · 1º: {top}",
+		"map.textWorld": "{lit} lanternas nesta semana. Hoje: {flag} {country}",
+		"map.close": "Fechar",
+		"map.mine": "Você: {mine} lanternas · {rank}º de {of} em {country}",
+		"map.gap": "{gap} por jogador até o 1º · fecha em {days} d",
+		"map.lead": "Em 1º lugar · fecha em {days} d",
+		"map.disc": "Mapa",
+		"map.recapTitle": "O mapa da semana passada",
+		"map.recapRank": "{flag} {country} ficou em {n}º\nVocê acendeu {mine} lanternas",
+		"map.recapWorld": "{lit} lanternas no total\n{mine} suas, {flag} {country}"
+	},
+	it: {
+		"map.capRank": "{n}º",
+		"map.labelRank": "Mappa delle lanterne: {country} {n}º questa settimana",
+		"map.labelLit": "Mappa delle lanterne: una lanterna per {country}",
+		"map.title": "Mappa delle lanterne della settimana",
+		"map.textRank": "{flag} {country}: {n}º\n{avg} a giocatore · Primo: {top}",
+		"map.textWorld": "{lit} lanterne questa settimana. Oggi: {flag} {country}",
+		"map.close": "Chiudi",
+		"map.mine": "Tu: {mine} lanterne · {rank}º su {of} in {country}",
+		"map.gap": "{gap} a giocatore dal primo posto · chiude in {days} g",
+		"map.lead": "Primo posto · chiude in {days} g",
+		"map.disc": "Mappa",
+		"map.recapTitle": "La mappa della settimana scorsa",
+		"map.recapRank": "{flag} {country}: {n}º\nHai acceso {mine} lanterne",
+		"map.recapWorld": "{lit} lanterne in tutto\n{mine} tue, {flag} {country}"
+	},
+	"zh-Hans": {
+		"map.capRank": "第 {n} 名",
+		"map.labelRank": "灯笼地图：{country} 本周第 {n} 名",
+		"map.labelLit": "灯笼地图：为 {country} 点亮一盏灯笼",
+		"map.title": "本周灯笼地图",
+		"map.textRank": "{flag} {country} 本周第 {n} 名\n人均 {avg} 盏 · 第一名：{top}",
+		"map.textWorld": "本周全世界点亮 {lit} 盏灯笼。今天这一盏来自 {flag} {country}",
+		"map.close": "关闭",
+		"map.mine": "你：{mine} 盏 · {country} {of} 人中第 {rank} 名",
+		"map.gap": "距第一名人均 {gap} 盏 · 还剩 {days} 天",
+		"map.lead": "保持第一名 · 还剩 {days} 天",
+		"map.disc": "地图",
+		"map.recapTitle": "上周灯笼地图",
+		"map.recapRank": "{flag} {country} 上周第 {n} 名\n你点亮了 {mine} 盏灯笼",
+		"map.recapWorld": "上周全世界点亮 {lit} 盏灯笼\n你为 {flag} {country} 点亮了 {mine} 盏"
+	},
+	"zh-Hant": {
+		"map.capRank": "排名第 {n}",
+		"map.labelRank": "燈籠地圖：{country} 本週第 {n} 名",
+		"map.labelLit": "燈籠地圖：為 {country} 點亮一盞燈籠",
+		"map.title": "本週燈籠地圖",
+		"map.textRank": "{flag} {country} 本週第 {n} 名\n人均 {avg} 盞 · 第一名：{top}",
+		"map.textWorld": "本週全世界點亮 {lit} 盞燈籠。今天這一盞來自 {flag} {country}",
+		"map.close": "關閉",
+		"map.mine": "你：{mine} 盞 · {country} {of} 人中第 {rank} 名",
+		"map.gap": "距第一名人均 {gap} 盞 · 還剩 {days} 天",
+		"map.lead": "保持第一名 · 還剩 {days} 天",
+		"map.disc": "地圖",
+		"map.recapTitle": "上週燈籠地圖",
+		"map.recapRank": "{flag} {country} 上週第 {n} 名\n你點亮了 {mine} 盞燈籠",
+		"map.recapWorld": "上週全世界點亮 {lit} 盞燈籠\n你為 {flag} {country} 點亮了 {mine} 盞"
+	}
+};
+for (let e of H) Object.assign(U[e], Yn[e]);
+var Xn = {
+	en: {
 		"ann.visitor": "{name} came to watch.",
 		"ann.aha": "Lantern placed. Nicely reasoned.",
 		"stamp.clean": "No take-backs",
@@ -3969,8 +4136,8 @@ var Yn = {
 		"res.melody": "再聽一次你的旋律"
 	}
 };
-for (let e of H) Object.assign(U[e], Yn[e]);
-var Xn = {
+for (let e of H) Object.assign(U[e], Xn[e]);
+var Zn = {
 	en: {
 		"cap.diag": "Export diagnostics",
 		diag: "Export diagnostics, opens the share sheet"
@@ -4012,8 +4179,8 @@ var Xn = {
 		diag: "匯出診斷資料，將開啟分享選單"
 	}
 };
-for (let e of H) Object.assign(U[e], Xn[e]);
-var Zn = {
+for (let e of H) Object.assign(U[e], Zn[e]);
+var Qn = {
 	en: {
 		"next.bell": "Remind me tomorrow at {time}?",
 		"next.bellA": "Remind me tomorrow at {time}?",
@@ -4205,8 +4372,8 @@ var Zn = {
 		"arch.practice": "{date}：謎題 #{n}，練習"
 	}
 };
-for (let e of H) Object.assign(U[e], Zn[e]);
-var Qn = {
+for (let e of H) Object.assign(U[e], Qn[e]);
+var $n = {
 	en: {
 		"cap.deep": "Deep night",
 		deep: "Deep night: one more puzzle tonight",
@@ -4268,8 +4435,8 @@ var Qn = {
 		postcardDeep: "明信片：點亮的今晚深夜謎題和小燭的郵票"
 	}
 };
-for (let e of H) Object.assign(U[e], Qn[e]);
-var $n = {
+for (let e of H) Object.assign(U[e], $n[e]);
+var er = {
 	en: {
 		villageNew: "Village, something new",
 		"res.bestA": "Streak {n}, best {best}"
@@ -4311,8 +4478,8 @@ var $n = {
 		"res.bestA": "連續紀錄 {n}，最佳 {best}"
 	}
 };
-for (let e of H) Object.assign(U[e], $n[e]);
-var er = {
+for (let e of H) Object.assign(U[e], er[e]);
+var tr = {
 	en: {
 		"res.stickerA": "{name}: “{word}”",
 		"res.timeA": "Time {t}",
@@ -4484,8 +4651,8 @@ var er = {
 		"res.refundLine": "護盾回來了。"
 	}
 };
-for (let e of H) Object.assign(U[e], er[e]);
-var tr = {
+for (let e of H) Object.assign(U[e], tr[e]);
+var nr = {
 	en: {
 		"err.stuckFar": "This {n} can't be finished from here.",
 		"err.stuckFarCell": "This tile can't be lit from here.",
@@ -4826,7 +4993,7 @@ var tr = {
 		"hint.why.contradiction": "放在別處，都會走進死胡同。",
 		"tut.t5wrong": "這一格就在 0 的旁邊。"
 	}
-}, nr = {
+}, rr = {
 	en: {
 		"cap.dot": "Mark",
 		"cap.dotOn": "Marking",
@@ -4937,7 +5104,7 @@ var tr = {
 		"stuck.take": "先把閃爍的燈籠拿掉試試。",
 		"cozy.rewardA": "小屋的溫馨裡有新燈籠：{name}"
 	}
-}, rr = {
+}, ir = {
 	en: {
 		"plus.title": "Lamplighter",
 		"plus.get1": "Play without ads",
@@ -4973,7 +5140,83 @@ var tr = {
 		"plus.breakLine": "Without ads · Lamplighter",
 		"plus.glowA": "Lantern glow: {name}",
 		"plus.iconA": "App icon: {name}",
-		"plus.frameA": "Postcard frame: {name}"
+		"plus.frameA": "Postcard frame: {name}",
+		"plus.unavailableT": "Toss payments can't be reached right now.",
+		"plus.buyingT": "Opening Toss payments…",
+		"tip.title": "A lantern for Wick",
+		"tip.buy": "Give a lantern · {price}",
+		"tip.note": "It unlocks nothing — it just says thank you.",
+		"tip.thanks1": "Thank you. Tonight is a little brighter.",
+		"tip.thanks": "Thank you.",
+		"tip.failed": "It didn't go through. Nothing changed.",
+		"sync.offT": "Saved in Toss on this phone",
+		"sync.offWhyT": "Kept in Toss on this phone. Deleting Toss deletes it.",
+		rankT: "Rankings: longest streak (Toss game center)",
+		"plus.freeT": "Daily, the last two days, story and accessibility stay free",
+		"tip.again": "You gave one today already. Give another?",
+		"tip.buyAgain": "Give another · {price}",
+		"hist.show": "Purchase history",
+		"hist.none": "No purchases.",
+		"hist.error": "Purchase history can't be loaded right now.",
+		"hist.loading": "Loading…",
+		"plus.pendingT": "Toss is confirming the payment. It's yours once it's done.",
+		"plus.chargedT": "If charged, it still arrives. See your Toss purchases.",
+		"plus.updateT": "Update the Toss app to buy this.",
+		"plus.refundT": "Charged but nothing arrived? Ask for a refund in Toss.",
+		"plus.failedT": "We couldn't confirm the payment. Check again in a moment.",
+		"tip.failedT": "We couldn't confirm it. Check again in a moment.",
+		"hist.refunded": "Refunded",
+		"hist.line": "{name} · {date}",
+		"pond.title": "Waterside set",
+		"pond.desc": "Four lanterns and two boards for your Cozy panel.",
+		"pond.free": "Your lanterns and boards stay free.",
+		"pond.where": "Pick them in the cottage's Cozy panel.",
+		"arch.ad": "{date}: open as practice with one ad",
+		"ask.archiveAd": "Watch one ad to open {date} as practice.",
+		"ask.archiveYes": "Watch ad",
+		"ask.archiveNo": "Not now",
+		"ask.archiveNone": "No ad is ready right now. Try again soon.",
+		"pack.board": "{name} · {i}",
+		"pack.boardSay": "{name}, board {i} of {m}",
+		"pack.solved": "Board {i} is lit. {left} to go.",
+		"pack.lit": "Board {i} is lit.",
+		"pack.previewEnd": "You lit the first three boards of {name}.",
+		"plus.getT": "{name} pack, and old dailies with no ad",
+		"plus.getT2": "Old dailies with no ad (you own {name})",
+		"pack.finaleNext": "All 50 boards are lit. {who}'s own board is next.",
+		"pack.finaleBoard": "{who}'s own board",
+		"packs.contents": "{m} boards + {name}'s own board",
+		"packs.again": "Play again from board 1",
+		"pack.doneAll": "{name}: every board is lit.",
+		"pack.next": "Next board",
+		"pack.back": "Back",
+		"pack.stay": "Stay here",
+		"pack.leave": "Back, leave the garden pack",
+		"packs.caption": "Packs",
+		"packs.title": "Garden packs",
+		"packs.free": "Free",
+		"packs.preview": "First three boards free",
+		"packs.play": "Continue · {i}",
+		"packs.playSay": "Continue, board {i} of {m}",
+		"packs.playFinaleSay": "Continue, {who}'s own board",
+		"packs.start": "Start",
+		"packs.done": "Every board lit",
+		"packs.progress": "{n} of {m} boards lit",
+		"packs.desc1": "Stones laid out the same when turned halfway. 7×7, gentle.",
+		"packs.desc2": "Wide 8×8 boards with few stones. Gentle.",
+		"packs.plus": "Included with Lamplighter",
+		"packs.withPlus": "Also comes with Lamplighter",
+		"shelf.title": "On the shelf",
+		"music.title": "Music box voices",
+		"music.desc": "Hear your melody on celesta, kalimba or wooden xylophone.",
+		"music.free": "Number-stone, chord and clue sounds stay the same.",
+		"music.preview": "Listen first",
+		"voice.cap": "Melody voice",
+		"voice.usual": "Usual",
+		"voice.celesta": "Celesta",
+		"voice.kalimba": "Kalimba",
+		"voice.xylophone": "Xylophone",
+		"voice.a": "Melody voice: {name}"
 	},
 	ko: {
 		"plus.title": "등불지기",
@@ -5010,7 +5253,83 @@ var tr = {
 		"plus.breakLine": "광고 없이 · 등불지기",
 		"plus.glowA": "등불 빛깔: {name}",
 		"plus.iconA": "앱 아이콘: {name}",
-		"plus.frameA": "엽서 테두리: {name}"
+		"plus.frameA": "엽서 테두리: {name}",
+		"plus.unavailableT": "지금은 토스 결제에 연결할 수 없어요.",
+		"plus.buyingT": "토스 결제를 여는 중…",
+		"tip.title": "윅에게 등불 하나",
+		"tip.buy": "등불 건네기 · {price}",
+		"tip.note": "아무것도 열리지 않아요. 고마운 마음만 전해요.",
+		"tip.thanks1": "고마워요. 오늘 밤은 조금 더 밝네요.",
+		"tip.thanks": "고마워요.",
+		"tip.failed": "결제가 끝나지 않았어요. 달라진 건 없어요.",
+		"sync.offT": "이 기기의 토스에 저장됨",
+		"sync.offWhyT": "토스 안에 저장돼요. 토스를 지우면 함께 지워져요.",
+		rankT: "순위: 가장 긴 연속 기록 (토스 게임센터)",
+		"plus.freeT": "데일리·어제와 그제 판·이야기·접근성은 모두 무료예요",
+		"tip.again": "오늘 이미 등불을 건넸어요. 한 번 더 건넬까요?",
+		"tip.buyAgain": "한 번 더 건네기 · {price}",
+		"hist.show": "결제 내역",
+		"hist.none": "결제 내역이 없어요.",
+		"hist.error": "지금은 결제 내역을 불러올 수 없어요.",
+		"hist.loading": "불러오는 중…",
+		"plus.pendingT": "토스에서 결제를 확인하고 있어요. 확인되면 바로 열려요.",
+		"plus.chargedT": "결제됐다면 곧 저절로 반영돼요. 토스 결제 내역에도 남아 있어요.",
+		"plus.updateT": "토스 앱을 업데이트하면 살 수 있어요.",
+		"plus.refundT": "결제됐는데 반영되지 않았다면 토스 결제 내역에서 환불을 요청해 주세요.",
+		"plus.failedT": "결제를 확인하지 못했어요. 잠시 뒤 이 화면을 다시 열어 봐 주세요.",
+		"tip.failedT": "확인하지 못했어요. 잠시 뒤 이 화면을 다시 열어 봐 주세요.",
+		"hist.refunded": "환불됨",
+		"hist.line": "{name} · {date}",
+		"pond.title": "연못가 꾸밈 상자",
+		"pond.desc": "아늑함 화면에 쓸 새 등불 네 가지와 판 두 가지예요.",
+		"pond.free": "지금의 등불과 판은 그대로 무료예요.",
+		"pond.where": "오두막 아늑함 화면에서 골라요.",
+		"arch.ad": "{date}: 광고 한 편 보고 연습으로 열기",
+		"ask.archiveAd": "광고를 한 편 보면 {date} 판을 연습으로 열어요.",
+		"ask.archiveYes": "광고 보기",
+		"ask.archiveNo": "다음에",
+		"ask.archiveNone": "지금은 광고를 불러올 수 없어요. 조금 뒤에 다시 해 봐요.",
+		"pack.board": "{name} · {i}",
+		"pack.boardSay": "{name}, {m}판 중 {i}번째 판",
+		"pack.solved": "{i}번째 판을 밝혔어요. {left}판 남았어요.",
+		"pack.lit": "{i}번째 판을 밝혔어요.",
+		"pack.previewEnd": "{name}의 앞 세 판을 다 밝혔어요.",
+		"plus.getT": "정원 팩 「{name}」, 광고 없는 지난 데일리",
+		"plus.getT2": "광고 없는 지난 데일리 (「{name}」 팩은 이미 갖고 있어요)",
+		"pack.finaleNext": "50판을 모두 밝혔어요. 이제 {who}의 마무리 판이에요.",
+		"pack.finaleBoard": "{who}의 마무리 판",
+		"packs.contents": "{m}판 + {name}의 마무리 판",
+		"packs.again": "처음부터 다시 풀기",
+		"pack.doneAll": "{name}의 모든 판을 밝혔어요.",
+		"pack.next": "다음 판",
+		"pack.back": "돌아가기",
+		"pack.stay": "그대로 보기",
+		"pack.leave": "돌아가기, 정원 팩 나가기",
+		"packs.caption": "정원 팩",
+		"packs.title": "정원 팩",
+		"packs.free": "무료",
+		"packs.preview": "앞 세 판 무료",
+		"packs.play": "이어서 풀기 · {i}",
+		"packs.playSay": "이어서 풀기, {m}판 중 {i}번째 판",
+		"packs.playFinaleSay": "이어서 풀기, {who}의 마무리 판",
+		"packs.start": "시작",
+		"packs.done": "모든 판을 밝혔어요",
+		"packs.progress": "{m}판 중 {n}판 밝힘",
+		"packs.desc1": "반 바퀴 돌려도 돌 배치가 같은 판들이에요. 7×7, 쉬움.",
+		"packs.desc2": "돌이 적은 넓은 8×8 판이에요. 쉬움.",
+		"packs.plus": "등불지기에 포함돼 있어요",
+		"packs.withPlus": "등불지기에도 들어 있어요",
+		"shelf.title": "책장",
+		"music.title": "오르골 음색 상자",
+		"music.desc": "내 멜로디를 첼레스타·칼림바·나무 실로폰으로 들어요.",
+		"music.free": "숫자 돌·완성 화음·단서 소리는 그대로예요.",
+		"music.preview": "미리 듣기",
+		"voice.cap": "멜로디 음색",
+		"voice.usual": "기본",
+		"voice.celesta": "첼레스타",
+		"voice.kalimba": "칼림바",
+		"voice.xylophone": "나무 실로폰",
+		"voice.a": "멜로디 음색: {name}"
 	},
 	ja: {
 		"plus.title": "灯り守",
@@ -5308,7 +5627,7 @@ var tr = {
 		"plus.iconA": "App 圖示：{name}",
 		"plus.frameA": "明信片邊框：{name}"
 	}
-}, ir = {
+}, ar = {
 	see: [
 		"err.conflict",
 		"tut.t3a",
@@ -5319,12 +5638,12 @@ var tr = {
 };
 for (let e of H) {
 	let t = U[e];
-	Object.assign(t, tr[e], nr[e], rr[e]);
-	for (let e of Object.values(ir)) for (let n of e.slice(1)) t[n] = t[e[0]];
+	Object.assign(t, nr[e], rr[e], ir[e]);
+	for (let e of Object.values(ar)) for (let n of e.slice(1)) t[n] = t[e[0]];
 	t["res.rankCap"] = t["cap.rank"], t["next.bellA"] = t["next.bell"];
 }
-var ar = U;
-function or(e) {
+var or = U;
+function sr(e) {
 	if (!e) return null;
 	let t = e.trim().replace(/_/g, "-").toLowerCase().split("-").filter(Boolean), n = t[0];
 	if (!n) return null;
@@ -5334,23 +5653,23 @@ function or(e) {
 	}
 	return n === "pt" ? "pt-BR" : H.find((e) => e === n) ?? null;
 }
-function sr(e) {
+function cr(e) {
 	for (let t of e) {
-		let e = or(t);
+		let e = sr(t);
 		if (e) return e;
 	}
 	return "en";
 }
-function cr(e) {
+function lr(e) {
 	return e === "ja" ? "、" : e === "zh-Hans" || e === "zh-Hant" ? "，" : ", ";
 }
-var lr = (e) => {
+var ur = (e) => {
 	let t = (e.codePointAt(0) ?? 0) - 44032;
 	return t < 0 || t > 11171 ? "이(가)" : t % 28 ? "이" : "가";
 };
-function ur(e, t, n) {
-	let r = ar[e][t] ?? An[t] ?? t;
-	return n ? r.replace(/\{(\w+)\}/g, (e, t) => t in n ? String(n[t]) : e).replace(/(.)\{이가\}/gu, (e, t) => t + lr(t)) : r;
+function dr(e, t, n) {
+	let r = t, i = or[e][r] ?? An[r] ?? r;
+	return n ? i.replace(/\{(\w+)\}/g, (e, t) => t in n ? String(n[t]) : e).replace(/(.)\{이가\}/gu, (e, t) => t + ur(t)) : i;
 }
 //#endregion
 //#region src/render/palette.ts
@@ -5404,7 +5723,7 @@ var W = {
 	basket: "#7A5538",
 	basketHi: "#A57850",
 	basketLo: "#4E3423"
-}, dr = {
+}, fr = {
 	ink: "#3B2C45",
 	inkSoft: "#6A5A76",
 	paper: "#FFF3DE",
@@ -5415,16 +5734,16 @@ var W = {
 	okRing: "#FFC864",
 	okRingEdge: "#8A5A1C"
 };
-function fr(e) {
+function pr(e) {
 	return parseInt(e.slice(1), 16);
 }
 function G(e, t) {
-	let n = fr(e);
+	let n = pr(e);
 	return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${t})`;
 }
 //#endregion
 //#region src/render/rng.ts
-function pr(e) {
+function mr(e) {
 	let t = 2166136261;
 	for (let n = 0; n < e.length; n++) t = Math.imul(t ^ e.charCodeAt(n), 16777619);
 	return t >>> 0;
@@ -5439,14 +5758,14 @@ function K(e) {
 }
 //#endregion
 //#region src/render/vis.ts
-var mr = (e) => {
+var hr = (e) => {
 	try {
 		return window.matchMedia(e);
 	} catch {
 		return null;
 	}
 };
-function hr() {
+function gr() {
 	try {
 		let e = document.createElement("div");
 		e.style.cssText = "position:fixed;left:-99px;top:0;visibility:hidden;font:-apple-system-body", document.body.appendChild(e);
@@ -5456,14 +5775,14 @@ function hr() {
 		return 1;
 	}
 }
-var gr = mr("(prefers-reduced-motion: reduce)"), _r = mr("(prefers-contrast: more)"), vr = !1, q = {
-	fontScale: typeof document < "u" && document.body ? hr() : 1,
+var _r = hr("(prefers-reduced-motion: reduce)"), vr = hr("(prefers-contrast: more)"), yr = !1, q = {
+	fontScale: typeof document < "u" && document.body ? gr() : 1,
 	boldText: !1,
-	increaseContrast: _r?.matches ?? !1,
-	reduceMotion: gr?.matches ?? !1,
+	increaseContrast: vr?.matches ?? !1,
+	reduceMotion: _r?.matches ?? !1,
 	voiceOver: !1
-}, yr = /* @__PURE__ */ new Set();
-function br(e) {
+}, br = /* @__PURE__ */ new Set();
+function xr(e) {
 	let t = {
 		...q,
 		...e
@@ -5471,18 +5790,18 @@ function br(e) {
 	if (t.fontScale === q.fontScale && t.boldText === q.boldText && t.increaseContrast === q.increaseContrast && t.reduceMotion === q.reduceMotion && t.voiceOver === q.voiceOver) return;
 	let n = q;
 	q = t;
-	for (let e of yr) try {
+	for (let e of br) try {
 		e(q, n);
 	} catch (e) {
 		console.warn("[vis] listener", e);
 	}
 }
-gr?.addEventListener("change", (e) => {
-	vr || br({ reduceMotion: e.matches });
-}), _r?.addEventListener("change", (e) => {
-	vr || br({ increaseContrast: e.matches });
+_r?.addEventListener("change", (e) => {
+	yr || xr({ reduceMotion: e.matches });
+}), vr?.addEventListener("change", (e) => {
+	yr || xr({ increaseContrast: e.matches });
 });
-var xr = {
+var Sr = {
 	get p() {
 		return q;
 	},
@@ -5493,28 +5812,28 @@ var xr = {
 		return q.boldText ? "800" : "700";
 	},
 	onChange(e) {
-		return yr.add(e), () => yr.delete(e);
+		return br.add(e), () => br.delete(e);
 	},
 	attach(e) {
-		vr = !0;
+		yr = !0;
 		try {
-			let { fontScale: t, boldText: n, ...r } = Sr(e.prefs());
-			br(r), e.onChange((e) => br(Sr(e)));
+			let { fontScale: t, boldText: n, ...r } = Cr(e.prefs());
+			xr(r), e.onChange((e) => xr(Cr(e)));
 		} catch (e) {
 			console.warn("[vis] a11y attach failed", e);
 		}
 	},
 	devSet(e) {
-		br(e);
+		xr(e);
 	}
 };
-function Sr(e) {
+function Cr(e) {
 	let t = {};
 	return typeof e.fontScale == "number" && Number.isFinite(e.fontScale) && (t.fontScale = Math.max(1, Math.min(3.2, e.fontScale))), typeof e.boldText == "boolean" && (t.boldText = e.boldText), typeof e.increaseContrast == "boolean" && (t.increaseContrast = e.increaseContrast), typeof e.reduceMotion == "boolean" && (t.reduceMotion = e.reduceMotion), typeof e.voiceOver == "boolean" && (t.voiceOver = e.voiceOver), t;
 }
 //#endregion
 //#region src/render/glyphs.ts
-var Cr = {
+var wr = {
 	0: {
 		d: "M30 4 C45 4 53 21 53 50 C53 79 45 96 30 96 C15 96 7 79 7 50 C7 21 15 4 30 4 Z",
 		adv: 60
@@ -5563,26 +5882,26 @@ var Cr = {
 		d: "M24 14 L17 88 M45 14 L38 88 M7 36 L56 36 M5 66 L54 66",
 		adv: 62
 	}
-}, wr = /* @__PURE__ */ new Map();
-function Tr(e) {
-	let t = Cr[e];
+}, Tr = /* @__PURE__ */ new Map();
+function Er(e) {
+	let t = wr[e];
 	if (!t) return null;
-	let n = wr.get(e);
-	return n || (n = new Path2D(t.d), wr.set(e, n)), n;
+	let n = Tr.get(e);
+	return n || (n = new Path2D(t.d), Tr.set(e, n)), n;
 }
-function Er(e, t, n = 1) {
+function Dr(e, t, n = 1) {
 	let r = 0;
-	for (let n of e) r += ((Cr[n]?.adv ?? 40) + 4) * (t / 100);
+	for (let n of e) r += ((wr[n]?.adv ?? 40) + 4) * (t / 100);
 	return r - t / 100 * 4 + 15 * n * (t / 100);
 }
-function Dr(e, t, n, r, i, a, o = 1) {
-	let s = i / 100, c = n - (Er(t, i, o) - 15 * o * s) / 2, l = r - i / 2;
+function Or(e, t, n, r, i, a, o = 1) {
+	let s = i / 100, c = n - (Dr(t, i, o) - 15 * o * s) / 2, l = r - i / 2;
 	e.save(), e.lineCap = "round", e.lineJoin = "round";
 	for (let n of a) {
 		e.save(), e.globalAlpha *= n.alpha ?? 1, e.strokeStyle = n.style, n.glow && (e.shadowColor = n.glow.color, e.shadowBlur = n.glow.blur);
 		let r = c;
 		for (let i of t) {
-			let t = Cr[i], a = Tr(i);
+			let t = wr[i], a = Er(i);
 			t && a && (e.save(), e.translate(r + (n.dx ?? 0), l + (n.dy ?? 0)), e.scale(s, s), e.lineWidth = 15 * o * (n.widthK ?? 1), e.stroke(a), e.restore()), r += ((t?.adv ?? 40) + 4) * s;
 		}
 		e.restore();
@@ -5591,7 +5910,7 @@ function Dr(e, t, n, r, i, a, o = 1) {
 }
 //#endregion
 //#region src/render/lantern.ts
-var Or = 272, J = {
+var kr = 272, J = {
 	x: 430.4,
 	y: 332.6,
 	w: 163.2,
@@ -5599,14 +5918,14 @@ var Or = 272, J = {
 	rx: 73.4,
 	ry: 54.4
 };
-function kr(e, t = 0) {
+function Ar(e, t = 0) {
 	let { x: n, y: r, w: i, h: a } = J, o = J.rx + t, s = J.ry + t, c = n - t, l = r - t, u = n + i + t, d = r + a + t;
 	e.beginPath(), e.moveTo(c + o, l), e.lineTo(u - o, l), e.ellipse(u - o, l + s, o, s, 0, -Math.PI / 2, 0), e.lineTo(u, d - s), e.ellipse(u - o, d - s, o, s, 0, 0, Math.PI / 2), e.lineTo(c + o, d), e.ellipse(c + o, d - s, o, s, 0, Math.PI / 2, Math.PI), e.lineTo(c, l + s), e.ellipse(c + o, l + s, o, s, 0, Math.PI, Math.PI * 1.5), e.closePath();
 }
-function Ar(e, t, n, r, i, a) {
+function jr(e, t, n, r, i, a) {
 	e.beginPath(), e.moveTo(t + a, n), e.arcTo(t + r, n, t + r, n + i, a), e.arcTo(t + r, n + i, t, n + i, a), e.arcTo(t, n + i, t, n, a), e.arcTo(t, n, t + r, n, a), e.closePath();
 }
-var jr = {
+var Mr = {
 	wick: [
 		"#FFF3DA",
 		"#FFEECB",
@@ -5676,26 +5995,54 @@ var jr = {
 		"#FFDD94",
 		"#FFC864",
 		"#E8B05A"
+	],
+	lotus: [
+		"#FBFFF6",
+		"#EEF8EA",
+		"#D6EDD2",
+		"#B5DABA",
+		"#8FBF9C"
+	],
+	shell: [
+		"#FFFAF3",
+		"#FBF1E6",
+		"#F3DFCF",
+		"#E6C6B3",
+		"#CFA895"
+	],
+	crane: [
+		"#FFF3DA",
+		"#FFEECB",
+		"#FFDD94",
+		"#FFC864",
+		"#E8B05A"
+	],
+	konpeito: [
+		"#FFF3DA",
+		"#FFEECB",
+		"#FFDD94",
+		"#FFC864",
+		"#E8B05A"
 	]
 };
-function Mr(e, t, n, r = "wick") {
-	let i = jr[r], a = t / Or;
+function Nr(e, t, n, r = "wick") {
+	let i = Mr[r], a = t / kr;
 	e.save(), e.scale(a, a), e.translate(-403.2, -264.67999999999995);
 	let o = "#3E2A22", s = "#6E4C38";
 	e.strokeStyle = o, e.lineWidth = 13.6, e.lineCap = "round", e.beginPath(), e.arc(512, 314.9, 46.2, Math.PI, 0), e.stroke();
 	let c = e.createRadialGradient(512, 408.8, 0, 512, 408.8, 108.8);
-	c.addColorStop(0, Y("#D9CDB0", i[0], n)), c.addColorStop(.3, Y("#CDBE9C", i[1], n)), c.addColorStop(.6, Y("#B9A47E", i[2], n)), c.addColorStop(.9, Y("#9C8462", i[3], n)), c.addColorStop(1, Y("#7E6A50", i[4], n)), kr(e), e.fillStyle = c, e.fill(), e.save(), kr(e), e.clip();
+	c.addColorStop(0, Y("#D9CDB0", i[0], n)), c.addColorStop(.3, Y("#CDBE9C", i[1], n)), c.addColorStop(.6, Y("#B9A47E", i[2], n)), c.addColorStop(.9, Y("#9C8462", i[3], n)), c.addColorStop(1, Y("#7E6A50", i[4], n)), Ar(e), e.fillStyle = c, e.fill(), e.save(), Ar(e), e.clip();
 	let l = e.createLinearGradient(J.x, 0, J.x + J.w, 0);
 	l.addColorStop(0, "rgba(122,74,28,0.22)"), l.addColorStop(.3, "rgba(122,74,28,0)"), l.addColorStop(.7, "rgba(122,74,28,0)"), l.addColorStop(1, "rgba(122,74,28,0.32)"), e.fillStyle = l, e.fillRect(J.x, J.y, J.w, J.h), e.strokeStyle = `rgba(122,74,28,${.16 + .06 * (1 - n)})`, e.lineWidth = 3.2;
 	for (let t of [388, 446]) e.beginPath(), e.moveTo(J.x, t), e.quadraticCurveTo(512, t + 7, J.x + J.w, t), e.stroke();
-	e.restore(), kr(e), e.strokeStyle = "rgba(90,58,28,0.5)", e.lineWidth = 5.4, e.stroke();
-	for (let t of [422.2, 588.2]) Ar(e, t, 324.4, 13.6, 179.5, 6.8), e.fillStyle = o, e.fill(), e.fillStyle = `rgba(255,200,120,${.35 * n})`, e.fillRect(t < 500 ? t + 9.5 : t + .5, 340, 3.6, 150);
+	e.restore(), Ar(e), e.strokeStyle = "rgba(90,58,28,0.5)", e.lineWidth = 5.4, e.stroke();
+	for (let t of [422.2, 588.2]) jr(e, t, 324.4, 13.6, 179.5, 6.8), e.fillStyle = o, e.fill(), e.fillStyle = `rgba(255,200,120,${.35 * n})`, e.fillRect(t < 500 ? t + 9.5 : t + .5, 340, 3.6, 150);
 	let u = e.createLinearGradient(0, 305.4, 0, 335.3);
 	u.addColorStop(0, s), u.addColorStop(1, o), e.beginPath(), e.moveTo(430.6, 312.6), e.quadraticCurveTo(435.8, 305.4, 444.8, 305.4), e.lineTo(579.2, 305.4), e.quadraticCurveTo(588.2, 305.4, 593.4, 312.6), e.lineTo(604.6, 328.1), e.quadraticCurveTo(609.9, 335.3, 600.9, 335.3), e.lineTo(423.1, 335.3), e.quadraticCurveTo(414.1, 335.3, 419.4, 328.1), e.closePath(), e.fillStyle = u, e.fill(), e.fillStyle = "rgba(255,230,190,0.18)", e.fillRect(440, 306.5, 144, 3);
 	let d = e.createLinearGradient(0, 493.1, 0, 520.3);
-	d.addColorStop(0, s), d.addColorStop(1, o), Ar(e, 416.8, 493.1, 190.4, 27.2, 8.2), e.fillStyle = d, e.fill(), e.fillStyle = `rgba(255,214,140,${.4 * n})`, e.fillRect(432, 493.6, 160, 2.6), r !== "wick" && Nr(e, r), e.restore();
+	d.addColorStop(0, s), d.addColorStop(1, o), jr(e, 416.8, 493.1, 190.4, 27.2, 8.2), e.fillStyle = d, e.fill(), e.fillStyle = `rgba(255,214,140,${.4 * n})`, e.fillRect(432, 493.6, 160, 2.6), r !== "wick" && Pr(e, r), e.restore();
 }
-function Nr(e, t) {
+function Pr(e, t) {
 	let n = "rgba(59,44,69,0.55)";
 	if (e.lineWidth = 3, e.strokeStyle = n, t === "momo") {
 		for (let t = 0; t < 5; t++) {
@@ -5716,7 +6063,7 @@ function Nr(e, t) {
 		for (let t of [-1, 1]) e.beginPath(), e.moveTo(512, 269), e.lineTo(512 + t * 22, 257), e.lineTo(512 + t * 22, 281), e.closePath(), e.fill(), e.stroke();
 		e.beginPath(), e.arc(512, 269, 6, 0, Math.PI * 2), e.fill(), e.stroke();
 	} else if (t === "kuri") {
-		e.save(), kr(e, 3), e.clip(), e.fillStyle = "#C8553D", e.fillRect(400, 456, 230, 22), e.fillStyle = "rgba(255,243,222,0.85)";
+		e.save(), Ar(e, 3), e.clip(), e.fillStyle = "#C8553D", e.fillRect(400, 456, 230, 22), e.fillStyle = "rgba(255,243,222,0.85)";
 		for (let t = 436; t < 596; t += 16) e.beginPath(), e.moveTo(t, 461), e.lineTo(t + 5, 467), e.lineTo(t + 10, 461), e.lineTo(t + 5, 473), e.closePath(), e.fill();
 		e.restore();
 	} else if (t === "yuki") e.beginPath(), e.moveTo(424, 312), e.quadraticCurveTo(430, 294, 456, 297), e.quadraticCurveTo(476, 286, 500, 296), e.quadraticCurveTo(526, 284, 552, 296), e.quadraticCurveTo(580, 290, 598, 308), e.quadraticCurveTo(604, 318, 592, 316), e.quadraticCurveTo(586, 326, 578, 316), e.lineTo(450, 316), e.quadraticCurveTo(440, 326, 434, 316), e.quadraticCurveTo(418, 320, 424, 312), e.closePath(), e.fillStyle = "#F4FAFF", e.fill(), e.strokeStyle = "rgba(120,150,190,0.6)", e.stroke();
@@ -5724,7 +6071,61 @@ function Nr(e, t) {
 	else if (t === "crescent") {
 		let t = Math.atan2(18, 11);
 		e.beginPath(), e.arc(588, 312, 18, -Math.PI / 2, Math.PI / 2, !0), e.arc(599, 312, Math.hypot(18, 11), Math.PI - t, Math.PI + t), e.closePath(), e.fillStyle = "#F4EBD0", e.fill(), e.stroke();
-	} else t === "seasons" && [
+	} else if (t === "lotus") {
+		let t = (t, n, r, i) => {
+			e.save(), e.translate(512, 302), e.rotate(t), e.beginPath(), e.moveTo(0, 0), e.quadraticCurveTo(r, -n * .55, 0, -n), e.quadraticCurveTo(-r, -n * .55, 0, 0), e.closePath(), e.fillStyle = i, e.fill(), e.stroke(), e.restore();
+		};
+		t(-1.25, 22, 10, "#F6C1CF"), t(1.25, 22, 10, "#F6C1CF"), t(-.5, 26, 11, "#FBD6DF"), t(.5, 26, 11, "#FBD6DF"), t(0, 30, 12, "#FFE6EC");
+	} else if (t === "shell") {
+		e.beginPath(), e.moveTo(586, 330), e.arc(586, 330, 22, Math.PI * 1.12, Math.PI * 1.88), e.closePath(), e.fillStyle = "#F7D9C4", e.fill(), e.stroke();
+		for (let t = 1; t < 5; t++) {
+			let n = Math.PI * (1.12 + .76 * t / 5);
+			e.beginPath(), e.moveTo(586, 330), e.lineTo(586 + Math.cos(n) * 21, 330 + Math.sin(n) * 21), e.stroke();
+		}
+		e.beginPath(), e.rect(580, 329, 12, 6), e.fillStyle = "#E9BFA6", e.fill(), e.stroke();
+	} else if (t === "crane") {
+		e.fillStyle = "#FFFDF8";
+		let t = (t, n) => {
+			e.beginPath(), t.forEach(([t, n], r) => r ? e.lineTo(t, n) : e.moveTo(t, n)), e.closePath(), e.fillStyle = n, e.fill(), e.stroke();
+		};
+		t([
+			[420, 312],
+			[446, 312],
+			[434, 300]
+		], "#FFFDF8"), t([
+			[434, 300],
+			[446, 312],
+			[458, 282]
+		], "#F1ECF6"), t([
+			[420, 312],
+			[434, 300],
+			[416, 286]
+		], "#FFFDF8"), t([
+			[446, 312],
+			[452, 308],
+			[462, 296]
+		], "#FFFDF8"), t([
+			[462, 296],
+			[468, 297],
+			[463, 301]
+		], "#FFFDF8"), t([
+			[420, 312],
+			[424, 309],
+			[408, 302]
+		], "#FFFDF8");
+	} else t === "konpeito" ? [
+		"#F7B6C8",
+		"#FFE08A",
+		"#B8D8F2"
+	].forEach((t, n) => {
+		let r = 470 + n * 42;
+		e.beginPath();
+		for (let t = 0; t < 16; t++) {
+			let n = t / 16 * Math.PI * 2, i = t % 2 ? 7 : 10;
+			e.lineTo(r + Math.cos(n) * i, 508 + Math.sin(n) * i);
+		}
+		e.closePath(), e.fillStyle = t, e.fill(), e.stroke();
+	}) : t === "seasons" && [
 		"#D88BA6",
 		"#9DBF9E",
 		"#F08A5D",
@@ -5733,12 +6134,12 @@ function Nr(e, t) {
 		e.beginPath(), e.arc(458 + n * 36, 320, 10, 0, Math.PI * 2), e.fillStyle = t, e.fill(), e.stroke();
 	});
 }
-function Pr(e, t, n, r) {
-	let i = t / Or;
-	e.save(), e.scale(i, i), e.translate(-403.2, -264.67999999999995), e.strokeStyle = r, e.lineWidth = n / i, e.lineJoin = "round", kr(e, 14), e.stroke(), e.restore();
+function Fr(e, t, n, r) {
+	let i = t / kr;
+	e.save(), e.scale(i, i), e.translate(-403.2, -264.67999999999995), e.strokeStyle = r, e.lineWidth = n / i, e.lineJoin = "round", Ar(e, 14), e.stroke(), e.restore();
 }
-function Fr(e) {
-	let t = e / Or;
+function Ir(e) {
+	let t = e / kr;
 	return {
 		bodyW: J.w * t,
 		bodyH: J.h * t,
@@ -5750,16 +6151,16 @@ function Fr(e) {
 }
 //#endregion
 //#region src/render/draw.ts
-var Ir = Math.PI * 2;
+var Lr = Math.PI * 2;
 function Y(e, t, n) {
-	let r = fr(e), i = fr(t), a = (e) => Math.round((r >> e & 255) * (1 - n) + (i >> e & 255) * n);
+	let r = pr(e), i = pr(t), a = (e) => Math.round((r >> e & 255) * (1 - n) + (i >> e & 255) * n);
 	return `rgb(${a(16)},${a(8)},${a(0)})`;
 }
 function X(e, t, n, r, i, a) {
 	let o = Math.min(a, r / 2, i / 2);
 	e.beginPath(), e.moveTo(t + o, n), e.arcTo(t + r, n, t + r, n + i, o), e.arcTo(t + r, n + i, t, n + i, o), e.arcTo(t, n + i, t, n, o), e.arcTo(t, n, t + r, n, o), e.closePath();
 }
-function Lr(e, t) {
+function Rr(e, t) {
 	let n = t.length / 2;
 	e.beginPath();
 	let r = (e) => (t[e % n * 2] + t[(e + 1) % n * 2]) / 2, i = (e) => (t[e % n * 2 + 1] + t[(e + 1) % n * 2 + 1]) / 2;
@@ -5767,37 +6168,37 @@ function Lr(e, t) {
 	for (let a = 0; a < n; a++) e.quadraticCurveTo(t[a * 2], t[a * 2 + 1], r(a), i(a));
 	e.closePath();
 }
-function Rr(e, t, n, r, i = .86) {
-	let a = r() * Ir, o = [];
+function zr(e, t, n, r, i = .86) {
+	let a = r() * Lr, o = [];
 	for (let s = 0; s < 9; s++) {
-		let c = a + s / 9 * Ir, l = n * (.84 + .16 * r());
+		let c = a + s / 9 * Lr, l = n * (.84 + .16 * r());
 		o.push(e + Math.cos(c) * l, t + Math.sin(c) * l * i);
 	}
 	return o;
 }
-function zr(e, t, n, r, i, a = !0, o = !1) {
-	let s = Rr(t, n, r, i);
-	e.save(), e.translate(r * .04, r * .2), Lr(e, s), e.fillStyle = "rgba(4,5,14,0.6)", e.fill(), e.restore();
+function Br(e, t, n, r, i, a = !0, o = !1) {
+	let s = zr(t, n, r, i);
+	e.save(), e.translate(r * .04, r * .2), Rr(e, s), e.fillStyle = "rgba(4,5,14,0.6)", e.fill(), e.restore();
 	let c = e.createLinearGradient(t - r * .5, n - r * .85, t + r * .35, n + r * .9);
-	c.addColorStop(0, o ? W.paleHi : W.stoneHi), c.addColorStop(.45, o ? W.pale : W.stone), c.addColorStop(1, o ? W.paleLo : W.stoneLo), Lr(e, s), e.fillStyle = c, e.fill(), e.save(), Lr(e, s), e.clip();
+	c.addColorStop(0, o ? W.paleHi : W.stoneHi), c.addColorStop(.45, o ? W.pale : W.stone), c.addColorStop(1, o ? W.paleLo : W.stoneLo), Rr(e, s), e.fillStyle = c, e.fill(), e.save(), Rr(e, s), e.clip();
 	let l = e.createLinearGradient(0, n + r * .2, 0, n + r);
 	if (l.addColorStop(0, "rgba(10,10,28,0)"), l.addColorStop(1, "rgba(10,10,28,0.45)"), e.fillStyle = l, e.fillRect(t - r * 1.2, n - r, r * 2.4, r * 2.2), a) {
 		let a = 3 + Math.floor(i() * 2);
 		for (let o = 0; o < a; o++) {
 			let a = t + (i() - .5) * r * 1.3, o = n - r * (.45 + i() * .45), s = r * (.28 + i() * .22), c = e.createRadialGradient(a - s * .3, o - s * .4, s * .1, a, o, s);
-			c.addColorStop(0, W.mossHi), c.addColorStop(.7, W.moss), c.addColorStop(1, G(W.moss, 0)), e.fillStyle = c, e.beginPath(), e.ellipse(a, o, s * 1.25, s * .85, 0, 0, Ir), e.fill();
+			c.addColorStop(0, W.mossHi), c.addColorStop(.7, W.moss), c.addColorStop(1, G(W.moss, 0)), e.fillStyle = c, e.beginPath(), e.ellipse(a, o, s * 1.25, s * .85, 0, 0, Lr), e.fill();
 		}
 	}
 	let u = e.createRadialGradient(t - r * .35, n - r * .45, 0, t - r * .35, n - r * .45, r * .7);
-	u.addColorStop(0, "rgba(255,250,235,0.28)"), u.addColorStop(1, "rgba(255,250,235,0)"), e.fillStyle = u, e.fillRect(t - r * 1.2, n - r * 1.2, r * 2.4, r * 2.4), e.restore(), Lr(e, s), e.lineWidth = Math.max(1, r * .06), e.strokeStyle = "rgba(6,6,18,0.75)", e.stroke();
+	u.addColorStop(0, "rgba(255,250,235,0.28)"), u.addColorStop(1, "rgba(255,250,235,0)"), e.fillStyle = u, e.fillRect(t - r * 1.2, n - r * 1.2, r * 2.4, r * 2.4), e.restore(), Rr(e, s), e.lineWidth = Math.max(1, r * .06), e.strokeStyle = "rgba(6,6,18,0.75)", e.stroke();
 }
-function Br(e, t, n, r, i) {
-	Ti(e, t, n, r, i);
+function Vr(e, t, n, r, i) {
+	Ei(e, t, n, r, i);
 }
-function Vr(e, t, n, r, i, a) {
-	let o = r * .43, s = String(i), c = xr.p.boldText ? 1.22 : 1, l = xr.p.boldText || xr.p.increaseContrast;
+function Hr(e, t, n, r, i, a) {
+	let o = r * .43, s = String(i), c = Sr.p.boldText ? 1.22 : 1, l = Sr.p.boldText || Sr.p.increaseContrast;
 	if (a === "ink") {
-		Dr(e, s, t, n, o, [
+		Or(e, s, t, n, o, [
 			{
 				style: "rgba(255,252,240,0.75)",
 				dy: r * .016,
@@ -5813,20 +6214,20 @@ function Vr(e, t, n, r, i, a) {
 		return;
 	}
 	if (a === "warm") {
-		Hr(e, t, n, r), Dr(e, s, t, n, o, [{
+		Ur(e, t, n, r), Or(e, s, t, n, o, [{
 			style: "rgba(255,252,240,0.8)",
 			dy: r * .016,
 			widthK: 1.05
 		}, { style: W.pipInk }], c * (l ? 1.08 : 1));
 		return;
 	}
-	Gr(e, t, n, r * .42, [
+	Kr(e, t, n, r * .42, [
 		[0, "rgba(242,144,122,0.4)"],
 		[.6, "rgba(242,144,122,0.14)"],
 		[1, "rgba(242,144,122,0)"]
 	]);
 	let u = e.createLinearGradient(0, n - o / 2, 0, n + o / 2);
-	u.addColorStop(0, W.coralHi), u.addColorStop(.5, W.coral), u.addColorStop(1, "#E06A50"), Dr(e, s, t, n, o, [{
+	u.addColorStop(0, W.coralHi), u.addColorStop(.5, W.coral), u.addColorStop(1, "#E06A50"), Or(e, s, t, n, o, [{
 		style: "rgba(40,8,4,0.95)",
 		widthK: l ? 1.55 : 1.42
 	}, {
@@ -5834,38 +6235,38 @@ function Vr(e, t, n, r, i, a) {
 		widthK: .86
 	}], c);
 }
-function Hr(e, t, n, r) {
-	Gr(e, t, n, r * .4, [
+function Ur(e, t, n, r) {
+	Kr(e, t, n, r * .4, [
 		[0, "rgba(255,214,140,0.55)"],
 		[.6, "rgba(255,190,100,0.25)"],
 		[1, "rgba(255,170,80,0)"]
 	]);
-	let i = r * .33, a = xr.p.increaseContrast || xr.p.boldText;
-	e.lineWidth = r * (a ? .085 : .07), e.strokeStyle = dr.okRingEdge, e.beginPath(), e.arc(t, n, i, 0, Ir), e.stroke(), e.lineWidth = r * (a ? .055 : .045), e.strokeStyle = dr.okRing, e.beginPath(), e.arc(t, n, i, 0, Ir), e.stroke();
+	let i = r * .33, a = Sr.p.increaseContrast || Sr.p.boldText;
+	e.lineWidth = r * (a ? .085 : .07), e.strokeStyle = fr.okRingEdge, e.beginPath(), e.arc(t, n, i, 0, Lr), e.stroke(), e.lineWidth = r * (a ? .055 : .045), e.strokeStyle = fr.okRing, e.beginPath(), e.arc(t, n, i, 0, Lr), e.stroke();
 }
-function Ur(e, t) {
+function Wr(e, t) {
 	let n = t * .4, r = t * .56, i = t * .35;
 	t * .32;
 	let a = Math.max(2, t * .05);
-	Gr(e, n, r, Math.min(n, i * 1.15), [
+	Kr(e, n, r, Math.min(n, i * 1.15), [
 		[0, G("#FFFFFF", .55)],
 		[.6, G(W.moon, .25)],
 		[1, G(W.moon, 0)]
-	]), Pr(e, t, a * 2.2, "rgba(14,20,48,0.65)");
+	]), Fr(e, t, a * 2.2, "rgba(14,20,48,0.65)");
 	let o = document.createElement("canvas");
 	o.width = Math.ceil(t * .8), o.height = Math.ceil(t);
 	let s = o.getContext("2d");
-	Wr(s, t, .7), s.globalCompositeOperation = "source-atop", s.fillStyle = "rgba(226,238,252,0.62)", s.fillRect(0, 0, o.width, o.height), e.save(), e.globalAlpha = .92, e.drawImage(o, 0, 0), e.restore(), Pr(e, t, a, "#F7FBFF");
+	Gr(s, t, .7), s.globalCompositeOperation = "source-atop", s.fillStyle = "rgba(226,238,252,0.62)", s.fillRect(0, 0, o.width, o.height), e.save(), e.globalAlpha = .92, e.drawImage(o, 0, 0), e.restore(), Fr(e, t, a, "#F7FBFF");
 }
-function Wr(e, t, n, r = "wick") {
-	Mr(e, t, n, r);
+function Gr(e, t, n, r = "wick") {
+	Nr(e, t, n, r);
 }
-function Gr(e, t, n, r, i) {
+function Kr(e, t, n, r, i) {
 	let a = e.createRadialGradient(t, n, 0, t, n, r);
 	for (let [e, t] of i) a.addColorStop(e, t);
-	e.fillStyle = a, e.beginPath(), e.arc(t, n, r, 0, Ir), e.fill();
+	e.fillStyle = a, e.beginPath(), e.arc(t, n, r, 0, Lr), e.fill();
 }
-var Kr = {
+var qr = {
 	flame: [
 		[0, "rgba(255,250,232,1)"],
 		[.18, "rgba(255,244,214,0.95)"],
@@ -5908,9 +6309,9 @@ var Kr = {
 		[1, "rgba(255,170,80,0)"]
 	]
 };
-function qr(e, t) {
+function Jr(e, t) {
 	let n = t / 2;
-	xr.p.increaseContrast || Gr(e, n, n, n, [
+	Sr.p.increaseContrast || Kr(e, n, n, n, [
 		[0, G(W.coral, .4)],
 		[.55, G(W.coral, .14)],
 		[1, G(W.coral, 0)]
@@ -5928,51 +6329,51 @@ function qr(e, t) {
 //#endregion
 //#region src/render/court.ts
 var Z = Math.PI * 2;
-function Jr(e) {
+function Yr(e) {
 	return .55 + .45 * Math.exp(-Math.max(0, e - 1) / 1.7);
 }
-function Yr(e) {
+function Xr(e) {
 	return Math.exp(-Math.max(0, e - 1) / 1.7);
 }
-var Xr = [
+var Zr = [
 	.89,
 	.78,
 	.63
 ];
-function Zr(e, t) {
+function Qr(e, t) {
 	let n = Math.exp(-Math.max(0, e - .5) / 1.7);
-	for (let e = 0; e < 3; e++) t[e] = Xr[e] + (1 - Xr[e]) * n;
+	for (let e = 0; e < 3; e++) t[e] = Zr[e] + (1 - Zr[e]) * n;
 	return t;
 }
-function Qr(e, t) {
+function $r(e, t) {
 	return Math.max(t, Math.round(e * .06));
 }
-var $r = (e, t, n) => {
+var ei = (e, t, n) => {
 	let r = Math.max(0, Math.min(1, (n - e) / (t - e)));
 	return r * r * (3 - 2 * r);
 };
-function ei(e, t, n) {
+function ti(e, t, n) {
 	let r = [
 		0,
 		0,
 		0
 	];
-	for (let i = 0; i < t; i++) Zr(n - .5 + (i + .5) / t, r), e.fillStyle = `rgb(${Math.round(255 * r[0])},${Math.round(255 * r[1])},${Math.round(255 * r[2])})`, e.fillRect(i, 0, 1, t);
+	for (let i = 0; i < t; i++) Qr(n - .5 + (i + .5) / t, r), e.fillStyle = `rgb(${Math.round(255 * r[0])},${Math.round(255 * r[1])},${Math.round(255 * r[2])})`, e.fillRect(i, 0, 1, t);
 }
-function ti(e, t) {
+function ni(e, t) {
 	let n = e.createImageData(t, t), r = t / 2, i = [
 		0,
 		0,
 		0
 	];
 	for (let e = 0; e < t; e++) for (let a = 0; a < t; a++) {
-		Zr(Math.hypot(a + .5 - r, e + .5 - r) / t, i);
+		Qr(Math.hypot(a + .5 - r, e + .5 - r) / t, i);
 		let o = (e * t + a) * 4;
 		n.data[o] = 255 * i[0], n.data[o + 1] = 255 * i[1], n.data[o + 2] = 255 * i[2], n.data[o + 3] = 255;
 	}
 	e.putImageData(n, 0, 0);
 }
-var ni = [
+var ri = [
 	[0, "rgba(255,240,200,0.85)"],
 	[.14, "rgba(255,226,166,0.62)"],
 	[.3, "rgba(255,204,128,0.3)"],
@@ -5980,23 +6381,23 @@ var ni = [
 	[.7, "rgba(220,150,80,0.03)"],
 	[1, "rgba(200,130,70,0)"]
 ];
-function ri(e, t, n) {
+function ii(e, t, n) {
 	let r = e.createImageData(t, t), i = r.data, a = t / 2;
 	for (let e = 0; e < t; e++) for (let r = 0; r < t; r++) {
-		let o = r + .5 - a, s = (e + .5 - a) / .86, c = Math.hypot(o, s) / n, l = Math.max(0, -o / (Math.hypot(o, s) || 1)), u = $r(.42, .7, c) * (1 - $r(.72, .84, c)) * l * l * (.7 + .3 * Math.max(0, -s / n)), d = (e * t + r) * 4;
+		let o = r + .5 - a, s = (e + .5 - a) / .86, c = Math.hypot(o, s) / n, l = Math.max(0, -o / (Math.hypot(o, s) || 1)), u = ei(.42, .7, c) * (1 - ei(.72, .84, c)) * l * l * (.7 + .3 * Math.max(0, -s / n)), d = (e * t + r) * 4;
 		i[d] = 255, i[d + 1] = 190, i[d + 2] = 100, i[d + 3] = 255 * u * .8;
 	}
 	e.putImageData(r, 0, 0);
 }
-function ii(e, t, n) {
-	let r = wi(t), i = e.createImageData(t, t), a = i.data, o = t / 2, s = r.hw, c = (r.bottom - r.top) / 2, l = o + r.cy;
+function ai(e, t, n) {
+	let r = Ti(t), i = e.createImageData(t, t), a = i.data, o = t / 2, s = r.hw, c = (r.bottom - r.top) / 2, l = o + r.cy;
 	for (let e = 0; e < t; e++) for (let i = 0; i < t; i++) {
-		let u = Math.abs(i + .5 - o) - (s - r.r), d = Math.abs(e + .5 - l) - (c - r.r), f = Math.hypot(Math.max(u, 0), Math.max(d, 0)) + Math.min(Math.max(u, d), 0) - r.r, p = (i + .5 - o) / s, m = (e + .5 - l) / c, h = n === 0 ? -p : n === 1 ? p : n === 2 ? -m : m, g = $r(-t * .09, -t * .01, f) * (1 - $r(-t * .005, t * .012, f)) * $r(.25, .95, h), _ = (e * t + i) * 4;
+		let u = Math.abs(i + .5 - o) - (s - r.r), d = Math.abs(e + .5 - l) - (c - r.r), f = Math.hypot(Math.max(u, 0), Math.max(d, 0)) + Math.min(Math.max(u, d), 0) - r.r, p = (i + .5 - o) / s, m = (e + .5 - l) / c, h = n === 0 ? -p : n === 1 ? p : n === 2 ? -m : m, g = ei(-t * .09, -t * .01, f) * (1 - ei(-t * .005, t * .012, f)) * ei(.25, .95, h), _ = (e * t + i) * 4;
 		a[_] = 255, a[_ + 1] = 196, a[_ + 2] = 108, a[_ + 3] = 255 * g * .85;
 	}
 	e.putImageData(i, 0, 0);
 }
-var ai = 1.6, oi = [
+var oi = 1.6, si = [
 	[
 		255,
 		204,
@@ -6018,22 +6419,22 @@ var ai = 1.6, oi = [
 		255
 	]
 ];
-function si(e, t, n = .27, r = oi[0]) {
+function ci(e, t, n = .27, r = si[0]) {
 	let i = e.createImageData(t, t), a = t / 2;
 	for (let e = 0; e < t; e++) for (let o = 0; o < t; o++) {
-		let s = Math.abs(o + .5 - a) / a, c = Math.abs(e + .5 - a) / a, l = (1 - $r(0, 1, (s ** 4 + c ** 4) ** .25)) ** 1.6, u = (e * t + o) * 4;
+		let s = Math.abs(o + .5 - a) / a, c = Math.abs(e + .5 - a) / a, l = (1 - ei(0, 1, (s ** 4 + c ** 4) ** .25)) ** 1.6, u = (e * t + o) * 4;
 		i.data[u] = r[0], i.data[u + 1] = r[1], i.data[u + 2] = r[2], i.data[u + 3] = 255 * Math.min(1, l * n);
 	}
 	e.putImageData(i, 0, 0);
 }
-function ci(e, t, n) {
+function li(e, t, n) {
 	e.save(), e.translate(t / 2, n / 2), e.scale(1, n / t);
 	let r = e.createRadialGradient(0, 0, 0, 0, 0, t / 2);
 	r.addColorStop(0, "rgba(40,18,6,0.7)"), r.addColorStop(.55, "rgba(40,18,6,0.4)"), r.addColorStop(1, "rgba(40,18,6,0)"), e.fillStyle = r, e.beginPath(), e.arc(0, 0, t / 2, 0, Z), e.fill(), e.restore();
 }
-var li = null, Q = 128;
-function ui() {
-	if (li) return li;
+var ui = null, Q = 128;
+function di() {
+	if (ui) return ui;
 	let e = document.createElement("canvas");
 	e.width = Q, e.height = Q;
 	let t = e.getContext("2d"), n = t.createImageData(Q, Q), r = K(53340), i = [
@@ -6061,10 +6462,10 @@ function ui() {
 		let s = Math.round(128 + (r - .5) * 2 * 90), c = (e * Q + t) * 4;
 		n.data[c] = s, n.data[c + 1] = s, n.data[c + 2] = s, n.data[c + 3] = 255;
 	}
-	return t.putImageData(n, 0, 0), li = e, e;
+	return t.putImageData(n, 0, 0), ui = e, e;
 }
-function di(e, t, n, r, i, a, o, s = 1) {
-	let c = ui(), l = e.createPattern(c, "repeat");
+function fi(e, t, n, r, i, a, o, s = 1) {
+	let c = di(), l = e.createPattern(c, "repeat");
 	if (!l) return;
 	let u = Math.max(r, i) * s * 2 / Q;
 	l.setTransform(new DOMMatrix([
@@ -6076,7 +6477,7 @@ function di(e, t, n, r, i, a, o, s = 1) {
 		n - a() * Q * u
 	])), e.save(), e.globalCompositeOperation = "overlay", e.globalAlpha = o, e.fillStyle = l, e.fillRect(t, n, r, i), e.restore();
 }
-function fi(e, t, n, r, i) {
+function pi(e, t, n, r, i) {
 	let a = [
 		0,
 		0,
@@ -6085,7 +6486,7 @@ function fi(e, t, n, r, i) {
 	].map(() => r * (.05 + i() * .07)), o = () => (i() - .5) * r * .012;
 	e.beginPath(), e.moveTo(t + a[0], n + o()), e.lineTo(t + r - a[1], n + o()), e.quadraticCurveTo(t + r, n, t + r + o(), n + a[1]), e.lineTo(t + r + o(), n + r - a[2]), e.quadraticCurveTo(t + r, n + r, t + r - a[2], n + r + o()), e.lineTo(t + a[3], n + r + o()), e.quadraticCurveTo(t, n + r, t + o(), n + r - a[3]), e.lineTo(t + o(), n + a[0]), e.quadraticCurveTo(t, n, t + a[0], n), e.closePath();
 }
-var pi = /* @__PURE__ */ new Map(), mi = "stone", hi = {
+var mi = /* @__PURE__ */ new Map(), hi = "stone", gi = {
 	stone: [
 		W.floorHi,
 		"#2A3050",
@@ -6115,8 +6516,28 @@ var pi = /* @__PURE__ */ new Map(), mi = "stone", hi = {
 		"#35425F",
 		"#313E5B",
 		"#34415E"
+	],
+	pebble: [
+		"#2A3842",
+		"#27343E",
+		"#2D3B45",
+		"#2A3842",
+		"#25323B",
+		"#2C3A43",
+		"#283640",
+		"#2B3943"
+	],
+	deck: [
+		"#3A3030",
+		"#362C2C",
+		"#3D3332",
+		"#3A3030",
+		"#33292A",
+		"#3C3231",
+		"#372D2D",
+		"#3B3130"
 	]
-}, gi = [
+}, _i = [
 	"#F0C688",
 	"#ECC084",
 	"#EEC282",
@@ -6126,13 +6547,13 @@ var pi = /* @__PURE__ */ new Map(), mi = "stone", hi = {
 	"#EDC083",
 	"#F1C88C"
 ];
-function _i(e, t, n, r = !1) {
-	let i = `${e}:${t}:${+!!r}:${r ? "" : mi}`, a = pi.get(i);
+function vi(e, t, n, r = !1) {
+	let i = `${e}:${t}:${+!!r}:${r ? "" : hi}`, a = mi.get(i);
 	if (a) return a;
 	let o = document.createElement("canvas");
 	o.width = e, o.height = e;
-	let s = o.getContext("2d"), c = pr(`slab${t}`), l = K(c), u = r ? gi[t % 8] : hi[mi][t % 8], d = s.createLinearGradient(0, 0, e * .35, e);
-	r ? (d.addColorStop(0, Y(u, "#FFE2A8", .35)), d.addColorStop(.55, u), d.addColorStop(1, Y(u, "#B87A44", .45))) : (d.addColorStop(0, Y(u, "#3A4064", .18)), d.addColorStop(.55, u), d.addColorStop(1, W.floorLo)), fi(s, 0, 0, e, K(c)), s.fillStyle = d, s.fill(), s.save(), fi(s, 0, 0, e, K(c)), s.clip(), di(s, 0, 0, e, e, l, r ? .18 : .32, 1.1), di(s, 0, 0, e, e, l, r ? .18 : .21, .45);
+	let s = o.getContext("2d"), c = mr(`slab${t}`), l = K(c), u = r ? _i[t % 8] : gi[hi][t % 8], d = s.createLinearGradient(0, 0, e * .35, e);
+	r ? (d.addColorStop(0, Y(u, "#FFE2A8", .35)), d.addColorStop(.55, u), d.addColorStop(1, Y(u, "#B87A44", .22))) : (d.addColorStop(0, Y(u, "#3A4064", .18)), d.addColorStop(.55, u), d.addColorStop(1, W.floorLo)), pi(s, 0, 0, e, K(c)), s.fillStyle = d, s.fill(), s.save(), pi(s, 0, 0, e, K(c)), s.clip(), fi(s, 0, 0, e, e, l, r ? .18 : .32, 1.1), fi(s, 0, 0, e, e, l, r ? .18 : .21, .45);
 	for (let t = 0; t < 7; t++) s.fillStyle = t < 4 ? r ? `rgba(110,60,24,${.1 + l() * .1})` : `rgba(8,10,24,${.13 + l() * .15})` : r ? `rgba(255,246,220,${.12 + l() * .1})` : `rgba(220,226,255,${.04 + l() * .05})`, s.beginPath(), s.ellipse(l() * e, l() * e, e * (.006 + l() * .012), e * (.005 + l() * .009), l() * 3, 0, Z), s.fill();
 	if (t % 2 == 1 && !r) {
 		s.strokeStyle = r ? "rgba(96,50,20,0.5)" : "rgba(8,10,24,0.3)", s.lineWidth = Math.max(1, .9 * n), s.lineCap = "round", s.beginPath();
@@ -6146,31 +6567,38 @@ function _i(e, t, n, r = !1) {
 		let t = s.createRadialGradient(e * .6, e * .55, 0, e * .6, e * .55, e * .4);
 		t.addColorStop(0, r ? "rgba(120,64,24,0.14)" : "rgba(8,10,24,0.12)"), t.addColorStop(1, "rgba(8,10,24,0)"), s.fillStyle = t, s.fillRect(0, 0, e, e);
 	}
-	if (!r && mi !== "stone") {
-		let t = mi === "garden" ? 5 : 9;
+	if (!r && hi === "pebble") for (let t = 0; t < 6; t++) s.fillStyle = `rgba(${170 + Math.round(l() * 30)},${190 + Math.round(l() * 25)},${200 + Math.round(l() * 25)},${.18 + l() * .16})`, s.beginPath(), s.ellipse(e * (.12 + l() * .76), e * (.12 + l() * .76), e * (.035 + l() * .03), e * (.025 + l() * .02), l() * 3, 0, Z), s.fill();
+	else if (!r && hi === "deck") {
+		s.strokeStyle = "rgba(10,6,6,0.32)", s.lineWidth = Math.max(1, .9 * n);
+		for (let t = 1; t < 3; t++) s.beginPath(), s.moveTo(0, e * t / 3 + (l() - .5) * e * .02), s.lineTo(e, e * t / 3 + (l() - .5) * e * .02), s.stroke();
+		let t = s.createLinearGradient(0, 0, e, e);
+		t.addColorStop(0, "rgba(180,200,220,0)"), t.addColorStop(.5, "rgba(180,200,220,0.07)"), t.addColorStop(1, "rgba(180,200,220,0)"), s.fillStyle = t, s.fillRect(0, 0, e, e);
+	}
+	if (!r && (hi === "garden" || hi === "snow")) {
+		let t = hi === "garden" ? 5 : 9;
 		for (let n = 0; n < t; n++) {
 			let t = l() < .5, n = t ? l() < .5 ? e * .06 : e * .94 : e * (.1 + l() * .8), r = t ? e * (.1 + l() * .8) : l() < .5 ? e * .06 : e * .94;
-			s.fillStyle = mi === "garden" ? `rgba(124,176,108,${.3 + l() * .25})` : `rgba(232,242,255,${.22 + l() * .25})`, s.beginPath(), s.ellipse(n, r, e * (.03 + l() * .04), e * (.02 + l() * .025), l() * 3, 0, Z), s.fill();
+			s.fillStyle = hi === "garden" ? `rgba(124,176,108,${.3 + l() * .25})` : `rgba(232,242,255,${.22 + l() * .25})`, s.beginPath(), s.ellipse(n, r, e * (.03 + l() * .04), e * (.02 + l() * .025), l() * 3, 0, Z), s.fill();
 		}
 	}
-	let f = s.createRadialGradient(e / 2, e / 2, e * .32, e / 2, e / 2, e * .75);
-	return f.addColorStop(0, "rgba(0,0,0,0)"), f.addColorStop(1, r ? "rgba(90,40,10,0.24)" : "rgba(4,5,14,0.16)"), s.fillStyle = f, s.fillRect(0, 0, e, e), s.restore(), pi.set(i, o), o;
+	let f = s.createRadialGradient(e / 2, e / 2, e * (r ? .42 : .32), e / 2, e / 2, e * .75);
+	return f.addColorStop(0, "rgba(0,0,0,0)"), f.addColorStop(1, r ? "rgba(90,40,10,0.10)" : "rgba(4,5,14,0.16)"), s.fillStyle = f, s.fillRect(0, 0, e, e), s.restore(), mi.set(i, o), o;
 }
-function vi(e, t, n, r, i, a, o = !1) {
+function yi(e, t, n, r, i, a, o = !1) {
 	let s = Math.floor(i() * 8), c = Math.floor(i() * 4);
-	e.save(), e.translate(t + r / 2, n + r / 2), e.rotate(c * Math.PI / 2), e.drawImage(_i(r, s, a, o), -r / 2, -r / 2, r, r), e.restore(), e.drawImage(yi(r, a, o), t, n, r, r);
+	e.save(), e.translate(t + r / 2, n + r / 2), e.rotate(c * Math.PI / 2), e.drawImage(vi(r, s, a, o), -r / 2, -r / 2, r, r), e.restore(), e.drawImage(bi(r, a, o), t, n, r, r);
 }
-function yi(e, t, n) {
-	let r = `bevel${e}:${+!!n}`, i = pi.get(r);
+function bi(e, t, n) {
+	let r = `bevel${e}:${+!!n}`, i = mi.get(r);
 	if (i) return i;
 	let a = document.createElement("canvas");
 	a.width = e, a.height = e;
 	let o = a.getContext("2d");
 	X(o, 0, 0, e, e, e * .09), o.clip();
 	let s = Math.max(1, 1.1 * t);
-	return o.fillStyle = n ? "rgba(255,246,220,0.3)" : "rgba(210,218,255,0.075)", o.fillRect(0, 0, e, s), o.fillRect(e - s, 0, s, e), o.fillStyle = n ? "rgba(80,36,10,0.32)" : "rgba(4,5,14,0.28)", o.fillRect(0, e - s * 1.4, e, s * 1.4), o.fillRect(0, 0, s * 1.2, e), pi.set(r, a), a;
+	return o.fillStyle = n ? "rgba(255,246,220,0.3)" : "rgba(210,218,255,0.075)", o.fillRect(0, 0, e, s), o.fillRect(e - s, 0, s, e), o.fillStyle = n ? "rgba(80,36,10,0.18)" : "rgba(4,5,14,0.28)", o.fillRect(0, e - s * 1.4, e, s * 1.4), o.fillRect(0, 0, s * 1.2, e), mi.set(r, a), a;
 }
-var bi = {
+var xi = {
 	track: {
 		top: "#383C5E",
 		mid: "#2A2D4A",
@@ -6193,8 +6621,8 @@ var bi = {
 		rim: "rgba(200,210,255,0.3)"
 	}
 };
-function xi(e, t, n, r, i) {
-	let { cs: a, u: o } = t, s = bi[n], c = K(pr(`court:${r}`)), l = t.gx - t.wall, u = t.gy - t.wall, d = t.cols * a + t.wall * 2, f = t.rows * a + t.wall * 2, p = Math.min(t.wall * .8, 9 * o), m = t.vig ?? 0;
+function Si(e, t, n, r, i) {
+	let { cs: a, u: o } = t, s = xi[n], c = K(mr(`court:${r}`)), l = t.gx - t.wall, u = t.gy - t.wall, d = t.cols * a + t.wall * 2, f = t.rows * a + t.wall * 2, p = Math.min(t.wall * .8, 9 * o), m = t.vig ?? 0;
 	for (let n = 0; n < 8 && m > 0; n++) {
 		let r = m * (1 - n / 8);
 		e.fillStyle = "rgba(3,4,12,0.05)", X(e, l - r, u - r * .7, d + r * 2, f + t.face + r * 1.7, p + r), e.fill();
@@ -6209,7 +6637,7 @@ function xi(e, t, n, r, i) {
 		let u = Math.min(i, a) * .22;
 		l && (X(e, n + .5 * o, r + a - u, i - o, u + t.face, u), e.fillStyle = s.side, e.fill());
 		let d = c(), f = e.createLinearGradient(n, r, n + i * .3, r + a);
-		f.addColorStop(0, Y(s.top, W.moon, .04 + .06 * d)), f.addColorStop(1, Y(s.mid, s.top, .3 * d)), X(e, n, r, i, a, u), e.fillStyle = f, e.fill(), e.save(), X(e, n, r, i, a, u), e.clip(), di(e, n, r, i, a, c, .55, 1.2), e.fillStyle = s.rim, e.fillRect(n, r, i, Math.max(1, 1.1 * o)), e.fillStyle = "rgba(4,5,14,0.35)", e.fillRect(n, r + a - Math.max(1, 1.4 * o), i, Math.max(1, 1.4 * o)), e.restore();
+		f.addColorStop(0, Y(s.top, W.moon, .04 + .06 * d)), f.addColorStop(1, Y(s.mid, s.top, .3 * d)), X(e, n, r, i, a, u), e.fillStyle = f, e.fill(), e.save(), X(e, n, r, i, a, u), e.clip(), fi(e, n, r, i, a, c, .55, 1.2), e.fillStyle = s.rim, e.fillRect(n, r, i, Math.max(1, 1.1 * o)), e.fillStyle = "rgba(4,5,14,0.35)", e.fillRect(n, r + a - Math.max(1, 1.4 * o), i, Math.max(1, 1.4 * o)), e.restore();
 	}, v = (e, t) => {
 		let n = 0;
 		for (; n < e - 1;) {
@@ -6228,23 +6656,23 @@ function xi(e, t, n, r, i) {
 		e.beginPath(), e.moveTo(a - 1.2 * o, s), e.quadraticCurveTo(a + m * p * .4, s - p * .6, a + m * p * .7, s - p), e.quadraticCurveTo(a + m * p * .2, s - p * .3, a + 1.2 * o, s), e.closePath(), e.fill();
 	}
 	if (n !== "track") {
-		let i = K(pr(`frame:${r}`));
+		let i = K(mr(`frame:${r}`));
 		n === "daily" && (X(e, l + t.wall * .42, u + t.wall * .42, d - t.wall * .84, f - t.wall * .84, p * .7), e.strokeStyle = "rgba(244,235,208,0.5)", e.lineWidth = Math.max(1, 1.1 * o), e.stroke());
 		for (let r = 0; r < (n === "daily" ? 12 : 20); r++) {
 			let a = r % 4, s = .05 + .9 * i(), c = a < 2 ? l + s * d : a === 2 ? l + t.wall * .42 : l + d - t.wall * .42, p = a === 0 ? u + t.wall * .42 : a === 1 ? u + f - t.wall * .42 : u + s * f, m = n === "deduce" && r % 3 == 0 ? "rgba(255,214,140,0.95)" : `rgba(244,235,208,${(.5 + i() * .4).toFixed(2)})`;
-			Ci(e, c, p, (1 + i() * 1.6) * o, m);
+			wi(e, c, p, (1 + i() * 1.6) * o, m);
 		}
 	}
 	{
 		let n = Math.min(a * 1.15, 76 * o), r = l + d / 2 - n / 2;
 		e.fillStyle = "rgba(4,5,14,0.45)", X(e, r - 1.5 * o, u - h - 1 * o, n + 3 * o, t.wall + h + 1 * o, 4 * o), e.fill();
 		let i = e.createLinearGradient(0, u - h, 0, u + t.wall);
-		i.addColorStop(0, Y(s.top, W.moon, .2)), i.addColorStop(1, Y(s.top, W.moon, .05)), e.fillStyle = i, X(e, r, u - h, n, t.wall + h - 2 * o, 4 * o), e.fill(), e.save(), X(e, r, u - h, n, t.wall + h - 2 * o, 4 * o), e.clip(), di(e, r, u - h, n, t.wall + h, c, .5, .6), e.fillStyle = "rgba(244,235,208,0.3)", e.fillRect(r, u - h, n, Math.max(1, 1.2 * o)), e.restore();
+		i.addColorStop(0, Y(s.top, W.moon, .2)), i.addColorStop(1, Y(s.top, W.moon, .05)), e.fillStyle = i, X(e, r, u - h, n, t.wall + h - 2 * o, 4 * o), e.fill(), e.save(), X(e, r, u - h, n, t.wall + h - 2 * o, 4 * o), e.clip(), fi(e, r, u - h, n, t.wall + h, c, .5, .6), e.fillStyle = "rgba(244,235,208,0.3)", e.fillRect(r, u - h, n, Math.max(1, 1.2 * o)), e.restore();
 	}
 	let b = t.gx - t.gap / 2, x = t.gy - t.gap / 2, S = t.cols * a + t.gap, C = t.rows * a + t.gap;
 	X(e, b - 1.5 * o, x - 1.5 * o, S + 3 * o, C + 3 * o, p * .55), e.fillStyle = "#0A0C1E", e.fill(), X(e, b, x, S, C, p * .45), e.fillStyle = W.grout, e.fill();
-	let w = Qr(a, t.gap), T = a - w, E = K(pr(`slabs:${r}`));
-	for (let n = 0; n < t.rows; n++) for (let r = 0; r < t.cols; r++) if (i(r, n)) vi(e, t.gx + r * a + w / 2, t.gy + n * a + w / 2, T, E, o);
+	let w = $r(a, t.gap), T = a - w, E = K(mr(`slabs:${r}`));
+	for (let n = 0; n < t.rows; n++) for (let r = 0; r < t.cols; r++) if (i(r, n)) yi(e, t.gx + r * a + w / 2, t.gy + n * a + w / 2, T, E, o);
 	else {
 		let i = t.gx + r * a + w / 2, o = t.gy + n * a + w / 2;
 		e.fillStyle = "#15182E", X(e, i, o, T, T, T * .1), e.fill(), E();
@@ -6255,13 +6683,13 @@ function xi(e, t, n, r, i) {
 	let O = e.createLinearGradient(b + S, 0, b + S - a * .18, 0);
 	O.addColorStop(0, "rgba(3,4,12,0.42)"), O.addColorStop(1, "rgba(3,4,12,0)"), e.fillStyle = O, e.fillRect(b + S - a * .18, x, a * .18, C), e.restore();
 }
-function Si(e, t, n, r) {
+function Ci(e, t, n, r) {
 	let { cs: i, u: a } = t;
 	e.fillStyle = "#5A3A22", e.fillRect(t.gx - t.gap / 2, t.gy - t.gap / 2, t.cols * i + t.gap, t.rows * i + t.gap);
-	let o = Qr(i, t.gap), s = i - o, c = K(pr(`slabs:${n}`));
-	for (let n = 0; n < t.rows; n++) for (let l = 0; l < t.cols; l++) r(l, n) ? vi(e, t.gx + l * i + o / 2, t.gy + n * i + o / 2, s, c, a, !0) : c();
+	let o = $r(i, t.gap), s = i - o, c = K(mr(`slabs:${n}`));
+	for (let n = 0; n < t.rows; n++) for (let l = 0; l < t.cols; l++) r(l, n) ? yi(e, t.gx + l * i + o / 2, t.gy + n * i + o / 2, s, c, a, !0) : c();
 }
-function Ci(e, t, n, r, i) {
+function wi(e, t, n, r, i) {
 	e.fillStyle = i, e.beginPath();
 	for (let i = 0; i < 8; i++) {
 		let a = i / 8 * Z - Math.PI / 2, o = i % 2 == 0 ? r : r * .32;
@@ -6269,7 +6697,7 @@ function Ci(e, t, n, r, i) {
 	}
 	e.closePath(), e.fill();
 }
-function wi(e) {
+function Ti(e) {
 	let t = e * .365, n = -e * .35, r = e * .25;
 	return {
 		hw: t,
@@ -6280,11 +6708,11 @@ function wi(e) {
 		cy: (n + r) / 2
 	};
 }
-function Ti(e, t, n, r, i) {
+function Ei(e, t, n, r, i) {
 	let a = r * .46;
-	zr(e, t, n, a, i, !1, !0);
-	let o = n + r * Ei, s = e.createRadialGradient(t - a * .1, o - a * .12, 0, t, o, a * .7);
-	s.addColorStop(0, "rgba(250,251,255,0.26)"), s.addColorStop(.7, "rgba(240,242,250,0.12)"), s.addColorStop(1, "rgba(240,242,250,0)"), e.fillStyle = s, e.beginPath(), e.ellipse(t, o, a * .72, a * .66, (i() - .5) * .3, 0, Z), e.fill(), e.save(), e.beginPath(), e.ellipse(t, n, a * .95, a * .83, 0, 0, Z), e.clip(), di(e, t - a, n - a, a * 2, a * 2, i, .7, .5), di(e, t - a, n - a, a * 2, a * 2, i, .45, .2);
+	Br(e, t, n, a, i, !1, !0);
+	let o = n + r * Di, s = e.createRadialGradient(t - a * .1, o - a * .12, 0, t, o, a * .7);
+	s.addColorStop(0, "rgba(250,251,255,0.26)"), s.addColorStop(.7, "rgba(240,242,250,0.12)"), s.addColorStop(1, "rgba(240,242,250,0)"), e.fillStyle = s, e.beginPath(), e.ellipse(t, o, a * .72, a * .66, (i() - .5) * .3, 0, Z), e.fill(), e.save(), e.beginPath(), e.ellipse(t, n, a * .95, a * .83, 0, 0, Z), e.clip(), fi(e, t - a, n - a, a * 2, a * 2, i, .7, .5), fi(e, t - a, n - a, a * 2, a * 2, i, .45, .2);
 	for (let o = 0; o < 9; o++) {
 		let o = i() * Z, s = a * (.35 + i() * .5);
 		e.fillStyle = `rgba(70,76,110,${(.18 + i() * .22).toFixed(2)})`, e.beginPath(), e.arc(t + Math.cos(o) * s, n + Math.sin(o) * s * .86, r * (.004 + i() * .007), 0, Z), e.fill();
@@ -6298,27 +6726,27 @@ function Ti(e, t, n, r, i) {
 	}
 	e.lineTo(t - c * a * .5, n + a), e.lineTo(t + c * a, n + a), e.closePath(), e.fill(), e.restore();
 }
-var Ei = -.03, Di = [
+var Di = -.03, Oi = [
 	0,
 	Math.PI,
 	Math.PI / 2,
 	-Math.PI / 2
-], Oi = [
+], ki = [
 	1,
 	-1,
 	0,
 	0
-], ki = [
+], Ai = [
 	0,
 	0,
 	1,
 	-1
 ];
-function Ai(e, t, n, r, i, a, o) {
+function ji(e, t, n, r, i, a, o) {
 	i.fill(-1), a.fill(0), o.fill(-1);
 	for (let n = 0; n < 64; n++) (n & 7) >= e || n >> 3 >= t || !r(n) || (i[n] = 0);
 	for (let s = 0; s < 64; s++) if (i[s] === 0 && r(s)) for (let r = 0; r < 4; r++) {
-		let c = (s & 7) + Oi[r], l = (s >> 3) + ki[r], u = 1;
+		let c = (s & 7) + ki[r], l = (s >> 3) + Ai[r], u = 1;
 		for (; c >= 0 && l >= 0 && c < e && l < t;) {
 			let e = l * 8 + c;
 			if (n(e)) {
@@ -6326,78 +6754,78 @@ function Ai(e, t, n, r, i, a, o) {
 				(o[t] < 0 || o[t] > u) && (o[t] = u);
 				break;
 			}
-			(i[e] < 0 || i[e] > u) && (i[e] = u, a[e] = r), c += Oi[r], l += ki[r], u++;
+			(i[e] < 0 || i[e] > u) && (i[e] = u, a[e] = r), c += ki[r], l += Ai[r], u++;
 		}
 	}
 }
-var ji = .5, Mi = 1.5, Ni = 2.3;
-function Pi(e, t, n) {
+var Mi = .5, Ni = 1.5, Pi = 2.3;
+function Fi(e, t, n) {
 	let r = document.createElement("canvas");
 	return r.width = Math.max(1, Math.ceil(e)), r.height = Math.max(1, Math.ceil(t)), n(r.getContext("2d"), r.width, r.height), r;
 }
-function Fi(e, t, n = ni) {
+function Ii(e, t, n = ri) {
 	let r = e.createRadialGradient(t / 2, t / 2, 0, t / 2, t / 2, t / 2);
 	for (let [e, t] of n) r.addColorStop(e, t);
 	e.fillStyle = r, e.fillRect(0, 0, t, t);
 }
-function Ii(e) {
-	let t = ji, n = Math.max(4, Math.round(e * t)), r = [];
-	for (let e = 0; e <= 8; e++) r.push(Pi(n, n, (t, n) => ei(t, n, Math.max(1, e))));
-	let i = Math.round(e * Mi * 2 * t), a = e * .43;
+function Li(e) {
+	let t = Mi, n = Math.max(4, Math.round(e * t)), r = [];
+	for (let e = 0; e <= 8; e++) r.push(Fi(n, n, (t, n) => ti(t, n, Math.max(1, e))));
+	let i = Math.round(e * Ni * 2 * t), a = e * .43;
 	return {
-		src: Pi(n, n, (e, t) => ti(e, t)),
+		src: Fi(n, n, (e, t) => ni(e, t)),
 		ray: r,
-		pool: Pi(i, i, (e, t) => Fi(e, t)),
-		rim: Pi(a * Ni * t, a * Ni * t, (e, n) => ri(e, n, a * t)),
+		pool: Fi(i, i, (e, t) => Ii(e, t)),
+		rim: Fi(a * Pi * t, a * Pi * t, (e, n) => ii(e, n, a * t)),
 		marker: [
 			0,
 			1,
 			2,
 			3
-		].map((e) => Pi(n, n, (t, n) => ii(t, n, e))),
-		bloom: Pi(Math.round(e * ai * t * .5), Math.round(e * ai * t * .5), (e, t) => si(e, t))
+		].map((e) => Fi(n, n, (t, n) => ai(t, n, e))),
+		bloom: Fi(Math.round(e * oi * t * .5), Math.round(e * oi * t * .5), (e, t) => ci(e, t))
 	};
 }
-function Li(e, t, n, r, i, a, o, s, c, l, u, d, f = !0) {
+function Ri(e, t, n, r, i, a, o, s, c, l, u, d, f = !0) {
 	for (let d = 0; d < 64; d++) {
 		let f = l.d[d];
 		if (f < 0 || (d & 7) >= s || d >> 3 >= c) continue;
 		let p = i + (d & 7) * o, m = a + (d >> 3) * o;
-		e.drawImage(t, n + (d & 7) * o, r + (d >> 3) * o, o, o, p, m, o, o), e.save(), e.globalCompositeOperation = "multiply", e.translate(p + o / 2, m + o / 2), f === 0 ? e.drawImage(u.src, -o / 2, -o / 2, o, o) : (e.rotate(Di[l.dir[d]]), e.drawImage(u.ray[Math.min(8, f)], -o / 2, -o / 2, o, o)), e.restore();
+		e.drawImage(t, n + (d & 7) * o, r + (d >> 3) * o, o, o, p, m, o, o), e.save(), e.globalCompositeOperation = "multiply", e.translate(p + o / 2, m + o / 2), f === 0 ? e.drawImage(u.src, -o / 2, -o / 2, o, o) : (e.rotate(Oi[l.dir[d]]), e.drawImage(u.ray[Math.min(8, f)], -o / 2, -o / 2, o, o)), e.restore();
 	}
 	e.save(), e.globalCompositeOperation = "lighter";
-	let p = o * ai;
+	let p = o * oi;
 	for (let t = 0; t < 64; t++) {
 		let n = l.d[t];
-		n < 0 || (t & 7) >= s || t >> 3 >= c || (e.globalAlpha = Jr(n), e.drawImage(u.bloom, i + ((t & 7) + .5) * o - p / 2, a + ((t >> 3) + .5) * o - p / 2, p, p));
+		n < 0 || (t & 7) >= s || t >> 3 >= c || (e.globalAlpha = Yr(n), e.drawImage(u.bloom, i + ((t & 7) + .5) * o - p / 2, a + ((t >> 3) + .5) * o - p / 2, p, p));
 	}
 	for (let t = 0; t < 64; t++) for (let n = 0; n < 4; n++) {
 		let r = l.rim[t * 4 + n];
 		if (r < 0) continue;
 		let s = i + ((t & 7) + .5) * o, c = a + ((t >> 3) + .5) * o;
-		e.globalAlpha = Yr(r);
+		e.globalAlpha = Xr(r);
 		{
-			let r = o * .43 * Ni * (d(t) ? 1.07 : 1);
-			e.save(), e.translate(s, c - (d(t) ? 0 : o * .02)), e.rotate(Di[n]), e.drawImage(u.rim, -r / 2, -r / 2, r, r), e.restore();
+			let r = o * .43 * Pi * (d(t) ? 1.07 : 1);
+			e.save(), e.translate(s, c - (d(t) ? 0 : o * .02)), e.rotate(Oi[n]), e.drawImage(u.rim, -r / 2, -r / 2, r, r), e.restore();
 		}
 	}
 	if (e.globalAlpha = 1, f) for (let t = 0; t < 64; t++) {
 		if (l.d[t] !== 0) continue;
-		let n = i + ((t & 7) + .5) * o, r = a + ((t >> 3) + .5) * o, s = o * Mi * 2;
+		let n = i + ((t & 7) + .5) * o, r = a + ((t >> 3) + .5) * o, s = o * Ni * 2;
 		e.drawImage(u.pool, n - s / 2, r - s / 2, s, s);
 	}
 	e.restore();
 }
 //#endregion
 //#region src/render/wick.ts
-var Ri = "#3B2C45";
-function zi(e, t, n, r = 0) {
+var zi = "#3B2C45";
+function Bi(e, t, n, r = 0) {
 	let i = t / 2, a = t / 2, o = t / 26, s = e.createRadialGradient(i, a + 1.5 * o, 0, i, a + 1.5 * o, t * .5);
 	s.addColorStop(0, "rgba(255,236,196,0.62)"), s.addColorStop(.6, "rgba(255,232,186,0.4)"), s.addColorStop(1, "rgba(255,232,186,0)"), e.fillStyle = s, e.fillRect(0, 0, t, t);
 	let c = 4.6 * o, l = a + 2 * o, u = r * 1.3 * o, d = (t, n, r, i, a) => {
 		e.fillStyle = a, e.beginPath(), e.ellipse(t, n, r, i, 0, 0, Math.PI * 2), e.fill();
 	}, f = (t) => {
-		e.lineWidth = t, e.strokeStyle = Ri, e.lineCap = "round", e.stroke();
+		e.lineWidth = t, e.strokeStyle = zi, e.lineCap = "round", e.stroke();
 	}, p = (t) => {
 		e.globalAlpha = t;
 		for (let e of [-1, 1]) d(i + e * 7.6 * o, l + 3.9 * o, 2.4 * o, 1.35 * o, "#F28C8C");
@@ -6409,23 +6837,23 @@ function zi(e, t, n, r = 0) {
 		e.beginPath(), e.moveTo(i - 1.4 * o, l + 3.2 * o), e.quadraticCurveTo(i, l + 5 * o, i + 1.4 * o, l + 3.2 * o), f(1.2 * o);
 	} else if (n === "worried") {
 		p(.5);
-		for (let e of [-1, 1]) d(i + e * c + u, l + .4 * o, 1.45 * o, 1.45 * o, Ri);
+		for (let e of [-1, 1]) d(i + e * c + u, l + .4 * o, 1.45 * o, 1.45 * o, zi);
 		e.beginPath(), e.moveTo(i - c - 2.2 * o, l - 2.6 * o), e.lineTo(i - c + 1.8 * o, l - 3.8 * o), e.moveTo(i + c - 1.8 * o, l - 3.8 * o), e.lineTo(i + c + 2.2 * o, l - 2.6 * o), e.moveTo(i - 2 * o, l + 4 * o), e.quadraticCurveTo(i - 1 * o, l + 3 * o, i, l + 4 * o), e.quadraticCurveTo(i + 1 * o, l + 5 * o, i + 2 * o, l + 4 * o), f(1.1 * o);
 	} else if (n === "sleepy") {
 		p(.5);
 		for (let t of [-1, 1]) e.beginPath(), e.moveTo(i + t * c - 1.9 * o, l), e.quadraticCurveTo(i + t * c, l + 1.8 * o, i + t * c + 1.9 * o, l), f(1.3 * o);
 	} else {
 		p(.75);
-		for (let e of [-1, 1]) d(i + e * c + u, l, 1.55 * o, 1.95 * o, Ri), d(i + e * c + u + .55 * o, l - .75 * o, .55 * o, .55 * o, "#FFFFFF");
+		for (let e of [-1, 1]) d(i + e * c + u, l, 1.55 * o, 1.95 * o, zi), d(i + e * c + u + .55 * o, l - .75 * o, .55 * o, .55 * o, "#FFFFFF");
 		e.beginPath(), e.moveTo(i - 1 * o, l + 3.3 * o), e.quadraticCurveTo(i, l + 4.2 * o, i + 1 * o, l + 3.3 * o), f(1.05 * o);
 	}
 }
 //#endregion
 //#region src/web/board.ts
-var Bi = (e, t) => {
+var Vi = (e, t) => {
 	let n = document.createElement("canvas");
 	return n.width = Math.max(1, Math.ceil(e)), n.height = Math.max(1, Math.ceil(t)), n;
-}, Vi = class {
+}, Hi = class {
 	constructor(e, t) {
 		A(this, "level", void 0), A(this, "seed", void 0), A(this, "canvas", void 0), A(this, "ctx", void 0), A(this, "g", void 0), A(this, "base", void 0), A(this, "lit", void 0), A(this, "stamps", void 0), A(this, "shadow", void 0), A(this, "d", /* @__PURE__ */ new Int8Array(64)), A(this, "dir", /* @__PURE__ */ new Int8Array(64)), A(this, "rim", /* @__PURE__ */ new Int8Array(256)), A(this, "u", 1), this.level = e, this.seed = t, this.canvas = document.createElement("canvas"), this.ctx = this.canvas.getContext("2d");
 	}
@@ -6449,17 +6877,17 @@ var Bi = (e, t) => {
 			vig: 12 * n
 		};
 		let g = (e, t) => !o(this.level.stones, t * 8 + e);
-		this.base = Bi(a, m);
+		this.base = Vi(a, m);
 		let _ = this.base.getContext("2d");
-		xi(_, this.g, "daily", this.seed, g);
+		Si(_, this.g, "daily", this.seed, g);
 		for (let e = 0; e < 64; e++) {
 			if ((e & 7) >= r || e >> 3 >= i || !o(this.level.stones, e)) continue;
-			let t = f + ((e & 7) + .5) * u, n = p + ((e >> 3) + .5) * u, a = K(pr(`${this.seed}:${e}`));
-			this.level.clues[e] === 255 ? zr(_, t, n - u * .02, u * .43, a) : Br(_, t, n, u, a);
+			let t = f + ((e & 7) + .5) * u, n = p + ((e >> 3) + .5) * u, a = K(mr(`${this.seed}:${e}`));
+			this.level.clues[e] === 255 ? Br(_, t, n - u * .02, u * .43, a) : Vr(_, t, n, u, a);
 		}
-		this.lit = Bi(a, m), Si(this.lit.getContext("2d"), this.g, this.seed, g), this.stamps = Ii(u);
+		this.lit = Vi(a, m), Ci(this.lit.getContext("2d"), this.g, this.seed, g), this.stamps = Li(u);
 		let v = u * .72, y = u * .22;
-		return this.shadow = Bi(v, y), ci(this.shadow.getContext("2d"), this.shadow.width, this.shadow.height), m / n;
+		return this.shadow = Vi(v, y), li(this.shadow.getContext("2d"), this.shadow.width, this.shadow.height), m / n;
 	}
 	cells() {
 		let { gx: e, gy: t, cs: n, cols: r, rows: i } = this.g, a = [];
@@ -6475,30 +6903,30 @@ var Bi = (e, t) => {
 		let { ctx: i, g: a } = this, { gx: s, gy: c, cs: l, cols: u, rows: d } = a;
 		i.clearRect(0, 0, a.cw, a.ch), i.drawImage(this.base, 0, 0);
 		let f = (t) => o(e.lanterns, t);
-		Ai(u, d, (t) => o(e.stones, t), f, this.d, this.dir, this.rim), Li(i, this.lit, 0, 0, s, c, l, u, d, {
+		ji(u, d, (t) => o(e.stones, t), f, this.d, this.dir, this.rim), Ri(i, this.lit, 0, 0, s, c, l, u, d, {
 			d: this.d,
 			dir: this.dir,
 			rim: this.rim
 		}, this.stamps, (t) => e.clues[t] !== 255);
-		let p = wi(l).cy;
-		for (let e of t.stones) Vr(i, s + ((e.cell & 7) + .5) * l, c + ((e.cell >> 3) + .5) * l + p, l, e.need, e.have > e.need ? "over" : e.need > 0 && e.have === e.need ? "warm" : "ink");
-		let m = new Set(t.conflicts.flat()), h = Math.round(l * .92), g = Math.max(8, Math.round(Fr(h).bodyW * .92)), _ = n ? "happy" : "idle";
+		let p = Ti(l).cy;
+		for (let e of t.stones) Hr(i, s + ((e.cell & 7) + .5) * l, c + ((e.cell >> 3) + .5) * l + p, l, e.need, e.have > e.need ? "over" : e.need > 0 && e.have === e.need ? "warm" : "ink");
+		let m = new Set(t.conflicts.flat()), h = Math.round(l * .92), g = Math.max(8, Math.round(Ir(h).bodyW * .92)), _ = n ? "happy" : "idle";
 		for (let e = 0; e < 64; e++) {
 			if (!f(e)) continue;
 			let t = s + ((e & 7) + .5) * l, n = c + ((e >> 3) + .5) * l - l * .03;
-			i.drawImage(this.shadow, t - this.shadow.width / 2, n + h * .37 - this.shadow.height / 2), i.save(), i.translate(t - h * .4, n - h * .56), Wr(i, h, 1), i.translate(h * .4 - g / 2, h * .56 - g / 2), zi(i, g, m.has(e) ? "worried" : _), i.restore(), i.save(), i.globalCompositeOperation = "lighter", i.translate(t, n - l * .02), i.scale(1, 1.15), i.globalAlpha = .6, Gr(i, 0, 0, l * .22, Kr.flame), i.restore();
+			i.drawImage(this.shadow, t - this.shadow.width / 2, n + h * .37 - this.shadow.height / 2), i.save(), i.translate(t - h * .4, n - h * .56), Gr(i, h, 1), i.translate(h * .4 - g / 2, h * .56 - g / 2), Bi(i, g, m.has(e) ? "worried" : _), i.restore(), i.save(), i.globalCompositeOperation = "lighter", i.translate(t, n - l * .02), i.scale(1, 1.15), i.globalAlpha = .6, Kr(i, 0, 0, l * .22, qr.flame), i.restore();
 		}
 		let v = Math.round(l * .8);
 		for (let [e, n] of t.conflicts) {
 			let t = s + (((e & 7) + (n & 7)) / 2 + .5) * l, r = c + (((e >> 3) + (n >> 3)) / 2 + .5) * l;
-			i.save(), i.translate(t - v / 2, r - v / 2), qr(i, v), i.restore();
+			i.save(), i.translate(t - v / 2, r - v / 2), Jr(i, v), i.restore();
 		}
-		r >= 0 && (i.save(), i.globalAlpha = .9, i.translate(s + ((r & 7) + .5) * l - h * .4, c + ((r >> 3) + .5) * l - l * .03 - h * .56), Ur(i, h), i.restore());
+		r >= 0 && (i.save(), i.globalAlpha = .9, i.translate(s + ((r & 7) + .5) * l - h * .4, c + ((r >> 3) + .5) * l - l * .03 - h * .56), Wr(i, h), i.restore());
 	}
 };
 //#endregion
 //#region src/web/logic.ts
-function Hi(e, t) {
+function Ui(e, t) {
 	let n = on(t);
 	return {
 		date: t,
@@ -6506,8 +6934,8 @@ function Hi(e, t) {
 		asked: e !== null && Number.isInteger(e) && e >= 1 && e !== n ? e : null
 	};
 }
-var Ui = "duskwick-web-v1", Wi = "duskwick-web-deep-v1", Gi = "duskwick-web-deep-intro", Ki = "duskwick-web-store";
-function qi(e, t = []) {
+var Wi = "duskwick-web-v1", Gi = "duskwick-web-deep-v1", Ki = "duskwick-web-deep-intro", qi = "duskwick-web-store";
+function Ji(e, t = []) {
 	return {
 		v: 1,
 		date: e,
@@ -6519,7 +6947,7 @@ function qi(e, t = []) {
 		days: t
 	};
 }
-function Ji(e, t) {
+function Yi(e, t) {
 	let n = null;
 	try {
 		n = e ? JSON.parse(e) : null;
@@ -6527,7 +6955,7 @@ function Ji(e, t) {
 		n = null;
 	}
 	let r = Array.isArray(n?.days) ? n.days.filter((e) => typeof e == "string" && /^\d{4}-\d\d-\d\d$/.test(e)).slice(-400) : [];
-	if (!n || n.v !== 1 || n.date !== t || !Array.isArray(n.moves)) return qi(t, r);
+	if (!n || n.v !== 1 || n.date !== t || !Array.isArray(n.moves)) return Ji(t, r);
 	let i = (e) => typeof e == "number" && Number.isFinite(e) && e >= 0 ? Math.floor(e) : 0;
 	return {
 		v: 1,
@@ -6540,7 +6968,7 @@ function Ji(e, t) {
 		days: r
 	};
 }
-function Yi(e, t) {
+function Xi(e, t) {
 	let n = yn.init("web", e);
 	for (let e of t) n = yn.apply(n, {
 		x: e & 7,
@@ -6548,22 +6976,22 @@ function Yi(e, t) {
 	}) ?? n;
 	return n;
 }
-function Xi(e, t) {
+function Zi(e, t) {
 	let n = new Set(e), r = bn(t);
 	n.has(t) || r--;
 	let i = 0;
 	for (; n.has(xn(r));) i++, r--;
 	return i;
 }
-function Zi(e) {
+function Qi(e) {
 	return {
 		...e,
 		solved: !0,
 		days: e.days.includes(e.date) ? e.days : [...e.days, e.date].slice(-400)
 	};
 }
-function Qi(e, t, n = {}) {
-	let r = Xi(n.days ?? t.days, t.date);
+function $i(e, t, n = {}) {
+	let r = Zi(n.days ?? t.days, t.date);
 	return Sn(e, {
 		dateISO: t.date,
 		seconds: Math.max(1, Math.round(t.ms / 1e3)),
@@ -6576,12 +7004,12 @@ function Qi(e, t, n = {}) {
 		deep: n.deep === !0
 	}).replace(/([?&])ct=share$/, "$1ct=web");
 }
-function $i(e) {
+function ea(e) {
 	return typeof e != "string" || !/^https:\/\/apps\.apple\.com\//.test(e) ? null : /[?&]ct=/.test(e) ? e : `${e}${e.includes("?") ? "&" : "?"}ct=web_daily`;
 }
 //#endregion
 //#region src/web/words.ts
-var ea = {
+var ta = {
 	"//": "Store screenshot captions. Every line only claims what the 1.0 build shows (App Review 2.3.3 / 2.3.7): lantern faces are on by default; the rules are the in-app rules; the postcard, streak, shields, village (5 residents), letters, gifts, cottage decorating, Today's puzzle and the settings (dot numbers, sound, vibration) are in the build. No timer claim (the postcard shows the time); 'no rush' instead. Terms follow docs/i18n-glossary.md. Non-en/ko lines are AI drafts: native review before upload.",
 	"//changes": "Full-village build (2026-10-18): en-US 04 (7 residents, autumn night, market stall), 05 (furnished cottage, drawer without the dialogue card) and 06 (Pip's letter) re-captured. Other locales: re-capture all 8 with make-store.sh (their 04 sub still says nothing about the count; update it to 7 when translating).",
 	shots: [
@@ -6814,7 +7242,7 @@ var ea = {
 			["安靜、離線、隨你喜歡", "不趕時間 · 沒有體力限制 · 可用圓點數字"]
 		]
 	}
-}, ta = {
+}, na = {
 	en: {
 		asked: "This link was for #{a}. Today's puzzle is #{n}, the same for everyone.",
 		tomorrow: "A new puzzle arrives tomorrow.",
@@ -6936,12 +7364,12 @@ var ea = {
 		inApp: "已有 App？在 App 裡繼續"
 	}
 };
-function na(e) {
-	let t = sr(e), n = ea[t]?.c ?? ea.en.c, r = (e, t) => t ? e.replace(/\{(\w+)\}/g, (e, n) => n in t ? String(t[n]) : e) : e;
+function ra(e) {
+	let t = cr(e), n = ta[t]?.c ?? ta.en.c, r = (e, t) => t ? e.replace(/\{(\w+)\}/g, (e, n) => n in t ? String(t[n]) : e) : e;
 	return {
 		lang: t,
-		t: (e, n) => ur(t, e, n),
-		web: (e, n) => r(ta[t][e], n),
+		t: (e, n) => dr(t, e, n),
+		web: (e, n) => r(na[t][e], n),
 		rules: {
 			head: n[1][0],
 			lines: n[1][2] ?? []
@@ -6949,14 +7377,14 @@ function na(e) {
 		pitch: [[n[0][0], n[0][1]], [n[3][0], n[3][1]]]
 	};
 }
-H.filter((e) => e in ta && e in ar);
+H.filter((e) => e in na && e in or);
 //#endregion
 //#region src/web/main.ts
-var ra = "\n.dw{max-width:440px;margin:0 auto 24px;color:inherit;font:inherit}\n.dw-note{font-size:.95em;opacity:.85;margin:0 0 8px}\n.dw-title{margin:0;font-size:1.5em;line-height:1.3}\n.dw-sub{margin:2px 0 10px;opacity:.8}\n.dw-rules{margin:0 0 12px;padding-left:1.2em;font-size:.95em;line-height:1.45}\n.dw-stage{position:relative;background:#141228;border-radius:18px;overflow:hidden;touch-action:manipulation}\n.dw-stage canvas{display:block}\n.dw-cell{position:absolute;margin:0;padding:0;border:0;background:transparent;cursor:pointer;border-radius:8px;-webkit-tap-highlight-color:transparent}\n.dw-cell:focus-visible{outline:3px solid #FFC864;outline-offset:-3px}\n.dw-cell[aria-disabled=true]{cursor:default}\n.dw-bar{display:flex;gap:10px;justify-content:center;margin:12px 0 4px}\n.dw-btn{font:inherit;font-size:1em;min-height:44px;padding:0 20px;border-radius:999px;border:2px solid currentColor;background:transparent;color:inherit;cursor:pointer}\n.dw-btn.dw-main{background:var(--accent,#FFC864);border-color:var(--accent,#FFC864);color:var(--on,#1E1A33);font-weight:700}\n.dw-btn[disabled]{opacity:.4;cursor:default}\n.dw-done{margin-top:14px;padding:16px;border-radius:16px;background:rgba(255,200,100,.12);text-align:center}\n.dw-done h2{margin:0 0 4px;padding:0;border:0;font-size:1.3em}\n.dw-stats{margin:0 0 12px;font-size:1.1em}\n.dw-small{font-size:.9em;opacity:.8;margin:8px 0 0}\n.dw-pitch{margin:14px 0 8px;line-height:1.4}\n.dw-streak{margin:0 0 12px}\n.dw-deep{display:block;margin:14px auto 4px;padding:12px 16px;max-width:320px;border-radius:14px;background:#1E1A33;color:#F4EBD0;text-decoration:none}\n.dw-deep strong{display:block;font-size:1.1em}\n.dw-card{padding:20px 18px;border-radius:18px;background:#1E1A33;color:#F4EBD0;text-align:center}\n.dw-card h2{margin:0 0 8px;padding:0;border:0;font-size:1.3em}\n.dw-card p{margin:0 0 16px;line-height:1.45}\n.dw-links{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px}\n.dw-links a{display:inline-flex;align-items:center;text-decoration:none}\n.dw [hidden]{display:none!important}\n.dw-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}\n";
-function ia(e = /* @__PURE__ */ new Date()) {
+var ia = "\n.dw{max-width:440px;margin:0 auto 24px;color:inherit;font:inherit}\n.dw-note{font-size:.95em;opacity:.85;margin:0 0 8px}\n.dw-title{margin:0;font-size:1.5em;line-height:1.3}\n.dw-sub{margin:2px 0 10px;opacity:.8}\n.dw-rules{margin:0 0 12px;padding-left:1.2em;font-size:.95em;line-height:1.45}\n.dw-stage{position:relative;background:#141228;border-radius:18px;overflow:hidden;touch-action:manipulation}\n.dw-stage canvas{display:block}\n.dw-cell{position:absolute;margin:0;padding:0;border:0;background:transparent;cursor:pointer;border-radius:8px;-webkit-tap-highlight-color:transparent}\n.dw-cell:focus-visible{outline:3px solid #FFC864;outline-offset:-3px}\n.dw-cell[aria-disabled=true]{cursor:default}\n.dw-bar{display:flex;gap:10px;justify-content:center;margin:12px 0 4px}\n.dw-btn{font:inherit;font-size:1em;min-height:44px;padding:0 20px;border-radius:999px;border:2px solid currentColor;background:transparent;color:inherit;cursor:pointer}\n.dw-btn.dw-main{background:var(--accent,#FFC864);border-color:var(--accent,#FFC864);color:var(--on,#1E1A33);font-weight:700}\n.dw-btn[disabled]{opacity:.4;cursor:default}\n.dw-done{margin-top:14px;padding:16px;border-radius:16px;background:rgba(255,200,100,.12);text-align:center}\n.dw-done h2{margin:0 0 4px;padding:0;border:0;font-size:1.3em}\n.dw-stats{margin:0 0 12px;font-size:1.1em}\n.dw-small{font-size:.9em;opacity:.8;margin:8px 0 0}\n.dw-pitch{margin:14px 0 8px;line-height:1.4}\n.dw-streak{margin:0 0 12px}\n.dw-deep{display:block;margin:14px auto 4px;padding:12px 16px;max-width:320px;border-radius:14px;background:#1E1A33;color:#F4EBD0;text-decoration:none}\n.dw-deep strong{display:block;font-size:1.1em}\n.dw-card{padding:20px 18px;border-radius:18px;background:#1E1A33;color:#F4EBD0;text-align:center}\n.dw-card h2{margin:0 0 8px;padding:0;border:0;font-size:1.3em}\n.dw-card p{margin:0 0 16px;line-height:1.45}\n.dw-links{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:8px}\n.dw-links a{display:inline-flex;align-items:center;text-decoration:none}\n.dw [hidden]{display:none!important}\n.dw-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}\n";
+function aa(e = /* @__PURE__ */ new Date()) {
 	return `${e.getFullYear()}-${String(e.getMonth() + 1).padStart(2, "0")}-${String(e.getDate()).padStart(2, "0")}`;
 }
-var aa = {
+var oa = {
 	get(e) {
 		try {
 			return localStorage.getItem(e);
@@ -6974,13 +7402,13 @@ function $(e, t = "", n = "") {
 	let r = document.createElement(e);
 	return t && (r.className = t), n && (r.textContent = n), r;
 }
-function oa(e, t = new URLSearchParams(location.search).has("deep")) {
-	let n = na([...navigator.languages ?? [], navigator.language]), r = Hi(e.dataset.n ? Number(e.dataset.n) : null, ia()), i = t ? St(r.date) : bt(r.date), a = t ? Wi : Ui, s = Ji(aa.get(a), r.date), c = t ? Ji(aa.get(Ui), r.date).days : null, l = () => c ?? s.days, u = (e = "") => Qi(i, s, {
+function sa(e, t = new URLSearchParams(location.search).has("deep")) {
+	let n = ra([...navigator.languages ?? [], navigator.language]), r = Ui(e.dataset.n ? Number(e.dataset.n) : null, aa()), i = t ? St(r.date) : bt(r.date), a = t ? Gi : Wi, s = Yi(oa.get(a), r.date), c = t ? Yi(oa.get(Wi), r.date).days : null, l = () => c ?? s.days, u = (e = "") => $i(i, s, {
 		strip: e,
 		deep: t,
 		days: l()
-	}), d = Yi(i, s.moves), f = -1, p = new Vi(i, `${t ? "web-deep" : "web"}:${r.date}`), m = $("style");
-	m.textContent = ra, document.head.appendChild(m);
+	}), d = Xi(i, s.moves), f = -1, p = new Hi(i, `${t ? "web-deep" : "web"}:${r.date}`), m = $("style");
+	m.textContent = ia, document.head.appendChild(m);
 	let h = $("section", "dw");
 	h.lang = n.lang, r.asked !== null && h.appendChild($("p", "dw-note", n.web("asked", {
 		a: r.asked,
@@ -6997,10 +7425,10 @@ function oa(e, t = new URLSearchParams(location.search).has("deep")) {
 		cols: i.w
 	})), v.appendChild(p.canvas), p.canvas.setAttribute("aria-hidden", "true"), h.appendChild(v);
 	let y = $("div", "dw-bar"), b = $("button", "dw-btn", n.t("undo")), x = $("button", "dw-btn", n.t("hint"));
-	if (y.append(b, x), h.appendChild(y), t && !s.solved && aa.get("duskwick-web-deep-intro") !== "1") {
+	if (y.append(b, x), h.appendChild(y), t && !s.solved && oa.get("duskwick-web-deep-intro") !== "1") {
 		let e = $("div", "dw-card"), t = $("button", "dw-btn dw-main", n.t("daily.offerYes"));
 		e.append($("h2", "", `🌙 ${n.web("deep")}`), $("p", "", n.web("deepRule")), t), v.before(e), v.hidden = y.hidden = !0, t.addEventListener("click", () => {
-			aa.set(Gi, "1"), e.remove(), v.hidden = y.hidden = !1, te(), D[0]?.b.focus();
+			oa.set(Ki, "1"), e.remove(), v.hidden = y.hidden = !1, j(), D[0]?.b.focus();
 		});
 	}
 	let S = $("div", "dw-done");
@@ -7010,10 +7438,10 @@ function oa(e, t = new URLSearchParams(location.search).has("deep")) {
 	let w = 0, T = () => {
 		w && (s.ms += Date.now() - w), w = !s.solved && s.moves.length && document.visibilityState === "visible" ? Date.now() : 0;
 	}, E = () => {
-		T(), aa.set(a, JSON.stringify(s));
+		T(), oa.set(a, JSON.stringify(s));
 	};
 	document.addEventListener("visibilitychange", E), addEventListener("pagehide", E);
-	let D = [], O = cr(n.lang), ee = (e, t) => {
+	let D = [], O = lr(n.lang), ee = (e, t) => {
 		let r = n.t("cell.pos", {
 			row: (e >> 3) + 1,
 			col: (e & 7) + 1
@@ -7031,8 +7459,8 @@ function oa(e, t = new URLSearchParams(location.search).has("deep")) {
 		let e = Vt(i, d, s.moves);
 		p.draw(d, e, s.solved, f);
 		for (let { i: t, b: n } of D) n.setAttribute("aria-label", ee(t, e)), n.setAttribute("aria-disabled", String(s.solved || k(t)));
-		b.disabled = s.solved || s.moves.length === 0, x.disabled = s.solved, s.solved && P();
-	}, te = () => {
+		b.disabled = s.solved || s.moves.length === 0, x.disabled = s.solved, s.solved && F();
+	}, j = () => {
 		let t = Math.min(440, v.parentElement?.clientWidth || e.clientWidth || 360);
 		p.layout(t, devicePixelRatio || 1);
 		for (let { b: e } of D) e.remove();
@@ -7043,45 +7471,45 @@ function oa(e, t = new URLSearchParams(location.search).has("deep")) {
 				top: `${e.y}px`,
 				width: `${e.s}px`,
 				height: `${e.s}px`
-			}), t.addEventListener("click", () => M(e.i)), v.appendChild(t), {
+			}), t.addEventListener("click", () => N(e.i)), v.appendChild(t), {
 				i: e.i,
 				b: t
 			};
 		}), A();
-	}, j = (e) => {
+	}, M = (e) => {
 		C.textContent = n.t(e);
-	}, ne = (e, t) => {
+	}, te = (e, t) => {
 		s = {
 			...s,
 			moves: [...s.moves, ...e]
-		}, d = Yi(i, s.moves);
+		}, d = Xi(i, s.moves);
 		let n = Vt(i, d, s.moves);
-		n.complete ? (T(), s = Zi(s), f = -1, j("ann.solved")) : j(n.conflicts.length ? "ann.conflict" : t), E(), A();
-	}, M = (e) => {
-		s.solved || k(e) || (f = -1, ne([e], o(d.lanterns, e) ? "ann.removed" : "ann.placed"));
+		n.complete ? (T(), s = Qi(s), f = -1, M("ann.solved")) : M(n.conflicts.length ? "ann.conflict" : t), E(), A();
+	}, N = (e) => {
+		s.solved || k(e) || (f = -1, te([e], o(d.lanterns, e) ? "ann.removed" : "ann.placed"));
 	};
 	b.addEventListener("click", () => {
 		!s.solved && s.moves.length && (s = {
 			...s,
 			moves: s.moves.slice(0, -1),
 			undos: s.undos + 1
-		}, d = Yi(i, s.moves), f = -1, E(), j("ann.undone"), A());
+		}, d = Xi(i, s.moves), f = -1, E(), M("ann.undone"), A());
 	}), x.addEventListener("click", () => {
 		if (s.solved) return;
 		let e = tn(i, d, s.moves[s.moves.length - 1], s.moves);
 		e.kind !== "none" && (s = {
 			...s,
 			hints: s.hints + 1
-		}, e.kind === "removeWrong" ? (f = -1, ne(e.cells, "ann.hint")) : (f = e.cell, j("ann.hint"), E(), A()));
+		}, e.kind === "removeWrong" ? (f = -1, te(e.cells, "ann.hint")) : (f = e.cell, M("ann.hint"), E(), A()));
 	});
-	let N = !1;
-	function P() {
-		if (N) return;
-		N = !0;
+	let P = !1;
+	function F() {
+		if (P) return;
+		P = !0;
 		let e = u(On(i, s.moves)), a = e.split("\n");
 		g.textContent = a[0], S.replaceChildren($("h2", "", n.t("ann.solved")));
 		for (let e of a.slice(1, -1)) S.appendChild($("p", "dw-stats", e.replace(/ 🔥\d+$/, "")));
-		t || S.appendChild($("p", "dw-streak", `${n.t("res.streakLbl")} 🔥${Xi(s.days, s.date)}`));
+		t || S.appendChild($("p", "dw-streak", `${n.t("res.streakLbl")} 🔥${Zi(s.days, s.date)}`));
 		let o = $("button", "dw-btn dw-main", n.t("share")), c = $("p", "dw-small");
 		if (c.setAttribute("aria-live", "polite"), o.addEventListener("click", async () => {
 			try {
@@ -7107,22 +7535,22 @@ function oa(e, t = new URLSearchParams(location.search).has("deep")) {
 		let d = $("p", "dw-pitch");
 		for (let [e, t] of n.pitch) d.append($("strong", "", e), document.createElement("br"), $("span", "", t), document.createElement("br"));
 		S.appendChild(d);
-		let f = $i(globalThis.APP_STORE_URL);
+		let f = ea(globalThis.APP_STORE_URL);
 		if (f) {
 			let e = $("div", "dw-links"), t = $("a", "dw-btn dw-main", n.web("store"));
 			t.href = f;
 			let i = $("a", "dw-btn", n.web("inApp"));
-			i.href = `duskwick://today?w=${kn(l(), r.date)}`, i.hidden = aa.get(Ki) !== "1", t.addEventListener("click", () => {
-				aa.set(Ki, "1"), i.hidden = !1;
+			i.href = `duskwick://today?w=${kn(l(), r.date)}`, i.hidden = oa.get(qi) !== "1", t.addEventListener("click", () => {
+				oa.set(qi, "1"), i.hidden = !1;
 			}), e.append(t, i), S.appendChild(e);
 		} else S.appendChild($("p", "dw-small", n.web("soon")));
 		S.hidden = !1;
 	}
-	let re = 0;
+	let ne = 0;
 	addEventListener("resize", () => {
 		let e = v.parentElement?.clientWidth ?? 0;
-		Math.abs(e - re) > 8 && (re = e, te());
-	}), te(), re = v.parentElement?.clientWidth ?? 0, T(), globalThis.__dw = {
+		Math.abs(e - ne) > 8 && (ne = e, j());
+	}), j(), ne = v.parentElement?.clientWidth ?? 0, T(), globalThis.__dw = {
 		date: r.date,
 		n: r.n,
 		deep: t,
@@ -7130,7 +7558,7 @@ function oa(e, t = new URLSearchParams(location.search).has("deep")) {
 		save: () => s
 	};
 }
-var sa = document.getElementById("dw-play");
-sa && oa(sa);
+var ca = document.getElementById("dw-play");
+ca && sa(ca);
 //#endregion
-export { oa as mount };
+export { sa as mount };

@@ -23,12 +23,12 @@ const page = (n) => `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Duskwick #${n}</title>
+<title>Wickhollow #${n}</title>
 <meta name="description" content="Daily lantern puzzle #${n}: light every tile, and never let two lanterns see each other.">
 <link rel="canonical" href="${BASE}${n}/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Duskwick">
-<meta property="og:title" content="Duskwick #${n}">
+<meta property="og:site_name" content="Wickhollow">
+<meta property="og:title" content="Wickhollow #${n}">
 <meta property="og:description" content="Daily lantern puzzle #${n}. A calm puzzle, new every day.">
 <meta property="og:url" content="${BASE}${n}/">
 <meta property="og:image" content="${BASE}og.jpg">
@@ -41,11 +41,11 @@ ${appId ? `<meta name="apple-itunes-app" content="app-id=${appId}, app-argument=
 <main>
 <img class="icon" src="../icon.png" alt="" width="72" height="72">
 <div id="dw-play" data-n="${n}">
-<h1>Duskwick #${n}</h1>
+<h1>Wickhollow #${n}</h1>
 <p>A calm lantern puzzle, new every day. Everyone gets the same board. Light every tile and never let two lanterns see each other.</p>
-<p><a class="btn" href="duskwick://daily/${n}">Open in Duskwick</a>
+<p><a class="btn" href="duskwick://daily/${n}">Open in Wickhollow</a>
 <a class="btn" data-store="Download on the App Store" aria-disabled="true">Coming soon to the App Store</a></p>
-<p class="muted">"Open in Duskwick" needs the app installed; it opens today's daily. 앱이 설치되어 있으면 오늘의 데일리가 열립니다.</p>
+<p class="muted">"Open in Wickhollow" needs the app installed; it opens today's daily. 앱이 설치되어 있으면 오늘의 데일리가 열립니다.</p>
 </div>
 <p class="muted"><a href="../">About &amp; support</a> · <a href="../privacy/">Privacy</a></p>
 </main>
@@ -63,5 +63,5 @@ for (let n = 1; n <= N; n++) {
 // self-check: the last page is complete and the first one points at its own number
 const a = readFileSync(`${root}1/index.html`, "utf8");
 const z = readFileSync(`${root}${N}/index.html`, "utf8");
-if (!a.includes("duskwick://daily/1\"") || !a.includes('id="dw-play" data-n="1"') || !z.includes("../play/play.js") || !z.includes(`Duskwick #${N}`) || /undefined|\$\{/.test(a + z)) throw new Error("self-check failed");
+if (!a.includes("duskwick://daily/1\"") || !a.includes('id="dw-play" data-n="1"') || !z.includes("../play/play.js") || !z.includes(`Wickhollow #${N}`) || /undefined|\$\{/.test(a + z)) throw new Error("self-check failed");
 console.log(`wrote ${N} pages${appId ? ` with Smart App Banner id ${appId}` : " (no App Store address yet: no banner)"}`);
