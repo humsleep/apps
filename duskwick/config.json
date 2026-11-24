@@ -10,5 +10,6 @@
   },
   "flags": {
     "banner": false
-  }
+  },
+  "lanternMap": "https://wickhollow-lanterns.teumteum-app.workers.dev"
 }
