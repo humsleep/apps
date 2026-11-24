@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>모쏠 탈출기 데이터 삭제</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body style="--accent:#c2295a">
+<header class="site"><a href="../../mossol/">← 모쏠 탈출기</a></header>
+<main>
+<h1>모쏠 탈출기 데이터 삭제 요청</h1>
+<p class="muted">앱: 「모쏠 탈출기 : 100일 연애 시뮬레이션」 · 개발자: 안혁</p>
+
+<p>앱에는 회원가입·로그인·서버가 없어 개발자가 보관하는 계정 정보가 없습니다. 게임 진행 정보는 이용자 기기 안에만 저장됩니다.</p>
+
+<h2>1. 기기의 게임 데이터 지우기 (바로 삭제)</h2>
+<ul>
+  <li>앱 › <strong>설정</strong> › <strong>데이터</strong> › <strong>저장 데이터 초기화</strong>: 진행 중인 생, 하트, 출석, 엔딩 앨범, 내 성별·이름·MBTI가 지워집니다.</li>
+  <li>또는 앱을 삭제하면 기기의 모든 게임 데이터가 함께 지워집니다.</li>
+</ul>
+
+<h2>2. 이용 통계·광고 데이터 삭제 요청</h2>
+<p>이용 통계(Firebase Analytics), 오류 보고(Firebase Crashlytics), 광고(Google AdMob)는 이름·이메일 없이 기기별 식별자로 처리됩니다.</p>
+<ul>
+  <li><strong>humsleep@naver.com</strong> 으로 제목 「모쏠 탈출기 데이터 삭제 요청」을 보내 주세요. 접수 후 30일 안에 처리 결과를 답장합니다. 개발자는 이름·이메일로 기기를 특정할 수 없으므로, 특정할 수 없는 데이터는 아래 3의 기간이 지나면 자동으로 지워집니다.</li>
+  <li>Android 기기 설정 › 개인정보 보호 › 광고에서 광고 ID를 재설정하거나 삭제할 수 있습니다.</li>
+</ul>
+
+<h2>3. 삭제되는 것과 보관되는 것</h2>
+<table>
+  <tr><th>데이터</th><th>처리</th></tr>
+  <tr><td>게임 진행 정보(기기)</td><td>위 1의 방법으로 즉시 삭제</td></tr>
+  <tr><td>이용 통계 이벤트</td><td>요청 시 삭제, 요청이 없어도 2개월 뒤 자동 삭제</td></tr>
+  <tr><td>오류 보고</td><td>요청 시 삭제, 요청이 없어도 90일 뒤 자동 삭제</td></tr>
+  <tr><td>구매 기록</td><td>결제는 Google Play·원스토어가 처리하며 각 스토어의 정책에 따라 보관됩니다. 개발자는 결제 정보를 받지 않습니다.</td></tr>
+</table>
+
+<p>자세한 내용은 <a href="../privacy/">개인정보처리방침</a>을 참고하세요.</p>
+
+<hr>
+<h2 lang="en">Data deletion (English)</h2>
+<p lang="en">Mossol has no accounts or servers; game progress is stored only on your device. Delete it in the app via <strong>Settings › Data › Reset saved data</strong>, or by uninstalling the app.
+To request deletion of analytics, crash-report and ad data, email <strong>humsleep@naver.com</strong> with the subject "Mossol data deletion". We reply within 30 days.
+Analytics events are deleted automatically after 2 months and crash reports after 90 days. Purchase records are kept by Google Play / ONE store under their own policies.</p>
+</main>
+</body>
+</html>
